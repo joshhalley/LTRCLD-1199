@@ -6,20 +6,15 @@
 
 ---
 
-## Device Access (SSH)
+## Device Access (SSH + RDP)
 
 Use the following information to access the lab devices over SSH.
 
-> The values below are placeholders – fill them based on your lab environment.
+| Name           | IP        | Username       | Password   |
+|----------------|---------------|----------------|------------|
+| Lab Ubuntu     | 198.18.1.100  | root           | C1sco12345 |
+| cat8Kv-task-1  | 198.18.1.11   | admin          | C1sco12345 |
+| cat8Kv-task-2  | 198.18.2.12   | admin          | C1sco12345 |
+| cat8Kv-task-3  | 198.18.2.13   | admin          | C1sco12345 |
+| Lab Windows    | 198.18.1.20   | administrator  | C1sco12345 |
 
-| Device Name | Role           | Management IP | SSH Port | Username | Password |
-|------------|----------------|--------------:|---------:|----------|----------|
-| c8kv-1     | C8000v Router  |               | 22       |          |          |
-| c8kv-2     | C8000v Router  |               | 22       |          |          |
-| docker-1   | Docker Host    |               | 22       |          |          |
-| jump-1     | Jump Host      |               | 22       |          |          |
-
-Example SSH command:
-
-```code
-ssh <username>@<management-ip>
