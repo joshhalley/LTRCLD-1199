@@ -32,12 +32,9 @@ Use the top navigation bar to jump directly to each task, or use the links below
 ## Lab Flow
 
 1. **Review the topology**  
-   - Open the [Topology](topology.md) page to understand the devices, addressing, and roles.
+   - Open the [Topology](topology.md) page to understand the devices, addressing, roles and access details
 
-2. **Get access details**  
-   - Open the [Lab Access](access.md) page for jump host, VPN, and credentials.
-
-3. **Complete the tasks in order**
+2. **Complete the tasks in order**
    - Task 1 – Manual deployment using App-Hosting  
    - Task 2 – Automating deployment with Terraform  
    - Task 3 – Integrating with Kubernetes
