@@ -12,7 +12,7 @@ The process includes:
 
 **Steps in this task:**
 
-* [Step 1: Retrieve Image from Container Registry](#step-1-retrieve-image-from-container-registry)
+* [Step 1: Retrieve Image from Container Registry](#step-1-check-container-registry-and-retrive-image)
 * [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
 * [Step 3: SCP File to Router](#step-3-scp-file-to-router)
 * [Step 4: Verify MD5 Hash](#step-4-verify-md5-hash)
@@ -26,13 +26,20 @@ The process includes:
 
 ---
 
-## Step 1: Retrieve Image from Container Registry
+## Step 1: Check Container Registry and retrive image
 
+* Check the docker registry 
 * Pull the required image from a container registry
 * This image will be used to create a TAR file for router deployment
 
 ```code
-docker pull 198.18.5.101:5000/swiss-knife:task-1
+curl -s http://198.18.5.101:5000/v2/_catalog
+```
+
+{"repositories":["monitoring","node-exporter","smokeping","snmp-exporter","swiss-knife-alpine","wireshark"]}
+
+```code
+docker pull 198.18.5.101:5000/swiss-knife-alpine:latest
 ```
 
 Verify the image was downloaded:
@@ -40,10 +47,10 @@ Verify the image was downloaded:
 ```code
 docker images
 
-root@ubuntu-lab:~# docker images 
-REPOSITORY                      TAG       IMAGE ID       CREATED        SIZE
-198.18.5.101:5000/swiss-knife   task-1    220ea965062d   26 hours ago   1.13GB
-root@ubuntu-lab:~#
+root@ubuntu-lab:~# docker images
+REPOSITORY                             TAG       IMAGE ID       CREATED      SIZE
+198.18.5.101:5000/swiss-knife-alpine   latest    ef61409cede7   2 days ago   270MB
+root@ubuntu-lab:~# 
 ```
 
 ---
@@ -54,13 +61,15 @@ root@ubuntu-lab:~#
 * This file will be transferred to the router
 
 ```code
-docker save 198.18.5.101:5000/swiss-knife:task-1 -o swiss-knife-task-1.tar
+docker save 198.18.5.101:5000/swiss-knife-alpine:latest -o swiss-knife-alpine.tar
 ```
 
 Verify the TAR file exists:
 
 ```code
-ls -lh swiss-knife-task-1.tar
+root@ubuntu-lab:~# ls -lh swiss-knife-alpine.tar
+-rw------- 1 root root 264M Jan 13 11:55 swiss-knife-alpine.tar
+root@ubuntu-lab:~# 
 ```
 
 ---
@@ -76,14 +85,14 @@ ls -lh swiss-knife-task-1.tar
 cat8Kv-task-1#copy scp: bootflash:
 Address or name of remote host []? 198.18.9.100
 Source username [admin]? root
-Source filename []? swiss-knife-task-1.tar
-Destination filename [swiss-knife-task-1.tar]? 
+Source filename []? swiss-knife-alpine.tar
+Destination filename [swiss-knife-alpine.tar]? 
 ```
 
 Verify the file on the router:
 
 ```code
-dir bootflash: | include swiss-knife-task-1.tar
+dir bootflash: | include swiss-knife-alpine.tar
 ```
 
 ---
@@ -94,13 +103,13 @@ dir bootflash: | include swiss-knife-task-1.tar
 * Ensures no corruption occurred during transfer
 
 ```code
-verify /md5 bootflash:swiss-knife-task-1.tar
+verify /md5 bootflash:swiss-knife-alpine.tar
 ```
 
 Compare with local checksum:
 
 ```code
-md5sum swiss-knife-task-1.tar
+md5sum swiss-knife-alpine.tar
 ```
 
 ---
@@ -143,9 +152,24 @@ show app-hosting list
 
 * Install the application from the TAR file
 * This step extracts and prepares the container
+* Enable terminal monitor to see the logs for progress
 
 ```code
-app-hosting install appid swiss_knife package bootflash:swiss-knife-task-1.tar
+app-hosting install appid swiss_knife package bootflash:swiss-knife-alpine.tar
+```
+In case the following error is seen
+App signature validation is required. App signature file package.cert or package.sign not found in package
+enable and disable app hosting signature verification 
+
+```code
+cat8Kv-task-1(config)#app-hosting signed-verification 
+cat8Kv-task-1(config)#
+*Jan 13 12:00:22.429: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification enabled successfully
+cat8Kv-task-1(config)#
+cat8Kv-task-1(config)#no app-hosting signed-verification 
+cat8Kv-task-1(config)#
+*Jan 13 12:00:35.447: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification disabled successfully
+cat8Kv-task-1(config)#
 ```
 
 Validate installation:
@@ -205,16 +229,61 @@ OK
 
 ---
 
-## Step 10: Test Tool B
+## Step 10: KCAT (KFAFKACAT)
 
-* Verify network connectivity
+* kcat is used to test Kafka connectivity, auth, topics, and message flow without needing any app code
+* In our lab the Infra Ubuntu 1 (198.18.5.101) is running Kafka Broker
+* Objective of this task is to show how to verify Kafka connectivity, list topics, produce and consume messages without a need of any Kafka tool on the router itself
+
+* Basic connectivity test. Verify the router/container can reach Kafka broker.
 
 ```code
-ping 10.1.1.2
+kcat -b 198.18.5.101:9092 -L
 ```
 
 Expected result:
-5/5 replies received.
+swissknife:/root# kcat -b 198.18.5.101:9092 -L
+Metadata for all topics (from broker 1: 198.18.5.101:9092/1):
+ 1 brokers:
+  broker 1 at 198.18.5.101:9092 (controller)
+ 1 topics:
+  topic "netops-test" with 1 partitions:
+    partition 0, leader 1, replicas: 1, isrs: 1
+
+What this proves:
+• TCP connectivity
+• Broker reachable
+• Metadata exchange works
+
+* List topics (read-only check)
+```code
+kcat -b infra-ubuntu:9092 -L | grep topic
+```
+Used when:
+• Kafka is up but app says topic missing
+• Validate environment is correct
+
+* Produce test messages (router → Kafka)
+Send messages from Cat8Kv container:
+```code
+echo "hello-from-cat8kv" | \
+kcat -b 198.18.5.101:9092 -t netops-test -P
+```
+
+What this demonstrates:
+• Router can publish telemetry / logs / events
+• Kafka path is working
+
+* Consume messages (verification)
+From the same container or Ubuntu:
+```code
+kcat -b 198.18.5.101:9092 -t netops-test -C
+```
+This confirms:
+• Messages arrived
+• No encoding issues
+• Ordering visible
+
 
 ---
 

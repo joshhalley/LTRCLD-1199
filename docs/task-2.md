@@ -15,7 +15,7 @@ You will:
 **Steps in this task:**
 
 * [Prerequisites: Router Preparation](#prerequisites-router-preparation)
-* [Step 1: Retrieve Image from Container Registry](#step-1-retrieve-image-from-container-registry)
+* [Step 1: Retrieve Image from Container Registry](#step-1-check-container-registry-and-retrive-image)
 * [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
 * [Step 3: SCP File to Router](#step-3-scp-file-to-router)
 * [Step 4: Verify MD5 Hash](#step-4-verify-md5-hash)
@@ -47,8 +47,8 @@ ip http secure-server
 restconf
 !
 iox
- app-hosting signature-verification
- no app-hosting signature-verification
+ app-hosting signed-verification 
+ no app-hosting signed-verification 
 !
 end
 wr mem
@@ -81,13 +81,20 @@ Once these checks succeed, proceed to **Task-2: Deploy App-Hosting Using Terrafo
 
 ---
 
-## Step 1: Retrieve Image from Container Registry
+## Step 1: Check Container Registry and retrive image
 
-• Pull the required image from the container registry
-• This image will be used by the Terraform-managed app-hosting workflow
+* Check the docker registry 
+* Pull the required image from a container registry
+* This image will be used to create a TAR file for router deployment
 
 ```code
-docker pull 198.18.5.101:5000/swiss-knife:task-2
+curl -s http://198.18.5.101:5000/v2/_catalog
+```
+
+{"repositories":["monitoring","node-exporter","smokeping","snmp-exporter","swiss-knife-alpine","wireshark"]}
+
+```code
+docker pull 198.18.5.101:5000/wireshark:latest
 ```
 
 Validate the download:
@@ -104,13 +111,13 @@ docker images
 • This is the image format required for IOS-XE app hosting
 
 ```code
-docker save 198.18.5.101:5000/swiss-knife:task-2 -o swiss-knife-task-2.tar
+docker save 198.18.5.101:5000/wireshark:latest -o wireshark.tar
 ```
 
 Verify the TAR file exists:
 
 ```code
-ls -lh swiss-knife-task-2.tar
+ls -lh wireshark.tar
 ```
 
 ---
@@ -118,7 +125,7 @@ ls -lh swiss-knife-task-2.tar
 
 ## Step 3: SCP File to Router
 
-* Copy the TAR image from your machine to the router
+* Copy the both TAR images from your machine to the router
 * The file will be stored in bootflash
 * Initiate the copy from the router cat8Kv-task-2
 
@@ -126,14 +133,22 @@ ls -lh swiss-knife-task-2.tar
 cat8Kv-task-2#copy scp: bootflash:
 Address or name of remote host []? 198.18.9.100
 Source username [admin]? root
-Source filename []? swiss-knife-task-2.tar
-Destination filename [swiss-knife-task-2.tar]? 
+Source filename []? swiss-knife-alpine.tar
+Destination filename [swiss-knife-alpine.tar]? 
+```
+
+```code
+cat8Kv-task-2#copy scp: bootflash:
+Address or name of remote host []? 198.18.9.100
+Source username [admin]? root
+Source filename []? wireshark.tar
+Destination filename [wireshark.tar]? 
 ```
 
 Verify the file on the router:
 
 ```code
-dir bootflash: | include swiss-knife-task-2.tar
+dir bootflash: | include tar
 ```
 
 ---
@@ -144,13 +159,13 @@ dir bootflash: | include swiss-knife-task-2.tar
 * Ensures no corruption occurred during transfer
 
 ```code
-verify /md5 bootflash:swiss-knife-task-1.tar
+verify /md5 bootflash:wireshark.tar
 ```
 
 Compare with local checksum:
 
 ```code
-md5sum swiss-knife-task-1.tar
+md5sum wireshark.tar
 ```
 
 
@@ -204,7 +219,7 @@ Build the provider binary:
 ```bash
 cd terraform-provider-ciscoapphosting
 go build -o terraform-provider-ciscoapphosting
-chmod +x terraform-provider-ciscoapphosting
+
 ```
 
 ---
@@ -216,8 +231,7 @@ Terraform must be instructed to use the **local provider** instead of the public
 Create the Terraform CLI configuration file:
 
 ```bash
-mkdir -p ~/.config
-nano ~/.config/terraformrc
+nano ~/.terraformrc
 ```
 
 Paste the following content:
@@ -279,7 +293,7 @@ resource "ciscoapphosting_app" "swiss_knife" {
   name     = "swiss_knife"
   platform = "c8000v"
 
-  image    = "bootflash:swiss-knife-task-2.tar"
+  image    = "bootflash:swiss-knife-alpine.tar"
 
   vpg_id   = 0
   vpg_ip   = "198.18.101.1"
