@@ -1,3 +1,4 @@
+````markdown
 # HTTP Testing & Troubleshooting with `curl` , `wget` and `httpie` 
 
 ---
@@ -6,7 +7,7 @@
 
 ```bash
 curl https://www.google.com
-```
+````
 
 ### What this tells you
 
@@ -142,7 +143,7 @@ curl -vk https://example.com:8443
 
 * Skips TLS certificate verification (curl continues even if the CA chain is incomplete)
 
-### When to use it
+### When to use it (lab-only guidance)
 
 * Internal services using:
 
@@ -328,7 +329,7 @@ Use case:
 
 ---
 
-## 11) HTTPie – API Calls
+## 11) HTTPie – Practical Guide 
 
 * HTTPie does the same job as curl.
 * It presents the request and response in a more human-readable format (JSON-first, cleaner defaults

@@ -1,5 +1,5 @@
 
-# MTR – Network & App Troubleshooting
+# MTR – Practical Guide for Network & App Troubleshooting
 
 This guide explains how to use **MTR (My Traceroute)** effectively in **modern, policy-driven networks** (SD-WAN, firewalls, cloud, app-hosting).
 
