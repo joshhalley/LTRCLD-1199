@@ -87,6 +87,7 @@ Once these checks succeed, proceed to **Task-2: Deploy App-Hosting Using Terrafo
 
 ## Step 1: Check Container Registry and retrieve image
 
+* Login to the Lab Ubuntu (ssh 198.18.1.100)
 * Check the docker registry 
 * Pull the required image from a container registry
 * This image will be used to create a TAR file for router deployment
@@ -128,7 +129,7 @@ ls -lh wireshark.tar
 
 ## Step 3: SCP File to Router
 
-* Copy the both TAR images from your machine to the router
+* Copy the wireshark and swiss_knife TAR images from your machine to the router
 * The file will be stored in bootflash
 * Initiate the copy from the router cat8Kv-task-2
 

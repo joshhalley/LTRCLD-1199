@@ -34,6 +34,12 @@ Think of fping as:
 ---
 
 ### 1. Basic reachability test
+* Login to the Cat8Kv-Task-1 (ssh 198.18.1.11)
+* Connect to the swiss_knife container
+```bash
+app-hosting connect appid swiss_knife session /bin/bash
+```
+
 ```bash
 fping 8.8.8.8
 ```

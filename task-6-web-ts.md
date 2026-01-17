@@ -21,6 +21,11 @@
 ---
 
 ## 1) Basic Connectivity Test (GET)
+* Login to the Cat8Kv-Task-1 (ssh 198.18.1.11)
+* Connect to the swiss_knife container
+```bash
+app-hosting connect appid swiss_knife session /bin/bash
+```
 
 ```bash
 curl https://www.google.com

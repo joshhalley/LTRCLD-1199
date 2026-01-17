@@ -88,6 +88,11 @@ HOST: swissknife                  Loss%   Snt   Last   Avg  Best  Wrst StDev
 ---
 
 ## 3. Recommended Baseline Command
+* Login to the Cat8Kv-Task-1 (ssh 198.18.1.11)
+* Connect to the swiss_knife container
+```bash
+app-hosting connect appid swiss_knife session /bin/bash
+```
 
 ```bash
 mtr -r -n -w -c 20 <destination>

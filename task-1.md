@@ -29,6 +29,7 @@ The process includes:
 
 ## Step 1: Check Container Registry and retrieve image
 
+* Login to the Lab Ubuntu (ssh 198.18.1.100)
 * Check the docker registry 
 * Pull the required image from a container registry
 * This image will be used to create a TAR file for router deployment
