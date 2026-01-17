@@ -268,7 +268,7 @@ nano main.tf
 
 ---
 
-## Step 9: Paste and Review `main.tf`
+## Step 9: Paste and Review `main.tf` to install the swiss-knife container
 
 Paste the following configuration **as provided** (modify IP addresses only if instructed):
 
@@ -387,55 +387,106 @@ You should see:
 
 
 
-## Step 13: Test Tool A
+## Step 9: Update and Review `main.tf` to install the wireshark container
 
-• Test the exposed service from your local machine
+Paste the following configuration **as provided** (modify IP addresses only if instructed):
 
-```code
-curl http://10.1.1.2:8080/health
+```hcl
+
+resource "ciscoapphosting_app" "wireshark" {
+  host     = "198.18.9.12"
+  name     = "wireshark"
+  platform = "c8000v"
+
+  image    = "bootflash:wireshark.tar"
+
+  vpg_id   = 0
+  vpg_ip   = "198.18.101.1"
+  vpg_mask = "255.255.255.0"
+
+  guest_ip      = "198.18.101.6"
+  guest_netmask = "255.255.255.0"
+  guest_gateway = "198.18.101.1"
+  nameserver0   = "8.8.8.8"
+
+  docker = true
+}
+```
+
+Review the file:
+
+```bash
+cat main.tf
+```
+
+Confirm:
+
+* Correct router IP
+* Correct image name on `bootflash`
+* `vpg_id = 0`
+
+---
+
+## Step 10: Terraform Init
+
+Initialize the Terraform project:
+
+```bash
+terraform init
+```
+
+Expected output includes:
+
+```text
+Warning: Provider development overrides are in effect
+```
+
+✅ This is expected
+❌ Do not attempt to remove this warning
+
+---
+
+## Step 11: Terraform Plan and Apply
+
+Review the execution plan:
+
+```bash
+terraform plan
+```
+
+Apply the configuration:
+
+```bash
+terraform apply
+```
+
+When prompted, type:
+
+```text
+yes
 ```
 
 Expected output:
 
-```code
-OK
+```text
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
 ---
 
-## Step 14: Test Tool B
+## Step 12: Verify Deployment on the Router
 
-• Verify connectivity to the container
+On the C8000v router, verify the application and networking:
 
-```code
-ping 10.1.1.2
+```bash
+show app-hosting list
 ```
 
-Expected:
-5/5 success
+You should see:
 
----
+* App state: **RUNNING**
+* Now we have 2 containers running
 
-## Step 15: Test Tool C
-
-• Connect to the container shell for live troubleshooting
-
-```code
-app-hosting connect appid netops-toolkit /bin/bash
-```
-
-Inside container:
-
-```code
-ifconfig
-tcpdump -i eth0
-```
-
-Exit with:
-
-```code
-exit
-```
 
 ---
 
