@@ -126,11 +126,6 @@ dig +short google.com
 
 ---
 
-Here are **practical, minimal nmap examples**, written to **complement `nc`, not replace it**.
-This keeps the mental model clean for router + Linux users.
-
----
-
 # nmap – Practical Examples
 
 nmap is used **before** tools like `nc`, `curl`, or `openssl` to answer:

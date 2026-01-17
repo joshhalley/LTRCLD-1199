@@ -20,9 +20,6 @@ The process includes:
 * [Step 6: App Hosting Install](#step-6-app-hosting-install)
 * [Step 7: App Hosting Activate](#step-7-app-hosting-activate)
 * [Step 8: App Hosting Run](#step-8-app-hosting-run)
-* [Step 9: Test Tool A](#step-9-test-tool-a)
-* [Step 10: Test Tool B](#step-10-test-tool-b)
-* [Step 11: Test Tool C](#step-11-test-tool-c)
 
 ---
 
@@ -211,34 +208,10 @@ Ensure it is running:
 show app-hosting detail appid swiss_knife
 ```
 
----
-
-## Step 9: Test Tool A
-
-* Run a basic application health check
+Connect to the container and explore
 
 ```code
-curl http://10.1.1.2:8080/health
-```
-
-Expected output:
-
-```code
-OK
+app-hosting connect appid swiss_knife session /bin/bash
 ```
 
 ---
-
-
-
-## Step 11: Test Tool C
-
-* Perform packet capture inside the container
-
-```code
-app-hosting connect appid net-tools /bin/bash
-tcpdump -i eth0
-```
-
----
-

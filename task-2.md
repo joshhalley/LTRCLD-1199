@@ -27,9 +27,7 @@ You will:
 * [Step 10: Terraform Init](#step-10-terraform-init)
 * [Step 11: Terraform Plan and Apply](#step-11-terraform-plan-and-apply)
 * [Step 12: Verify Deployment on the Router](#step-12-verify-deployment-on-the-router)
-* [Step 13: Test Tool A](#step-13-test-tool-a)
-* [Step 14: Test Tool B](#step-14-test-tool-b)
-* [Step 15: Test Tool C](#step-15-test-tool-c)
+
 
 ---
 ## Prerequisites: Router Preparation
@@ -385,9 +383,13 @@ You should see:
 * `VirtualPortGroup0` configured with IP address
 * `router ospf 1` with a network statement for the VPG IP
 
+Connect to the container and explore
 
+```code
+app-hosting connect appid swiss_knife session /bin/bash
+```
 
-## Step 9: Update and Review `main.tf` to install the wireshark container
+## Step 13: Update and Review `main.tf` to install the wireshark container
 
 Paste the following configuration **as provided** (modify IP addresses only if instructed):
 
@@ -427,7 +429,7 @@ Confirm:
 
 ---
 
-## Step 10: Terraform Init
+## Step 14: Terraform Init
 
 Initialize the Terraform project:
 
@@ -446,7 +448,7 @@ Warning: Provider development overrides are in effect
 
 ---
 
-## Step 11: Terraform Plan and Apply
+## Step 15: Terraform Plan and Apply
 
 Review the execution plan:
 
@@ -474,7 +476,7 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
 ---
 
-## Step 12: Verify Deployment on the Router
+## Step 16: Verify Deployment on the Router
 
 On the C8000v router, verify the application and networking:
 
@@ -487,6 +489,11 @@ You should see:
 * App state: **RUNNING**
 * Now we have 2 containers running
 
+Connect to the container and explore
+
+```code
+app-hosting connect appid wireshark session /bin/bash
+```
 
 ---
 

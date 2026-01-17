@@ -1,13 +1,16 @@
-## Step 10: KCAT (KFAFKA CAT)
+# KCAT (KFAFKA CAT)
 
 * kcat is used to test Kafka connectivity, auth, topics, and message flow without needing any app code
 * In our lab the Infra Ubuntu 1 (198.18.5.101) is running Kafka Broker
 * Objective of this task is to show how to verify Kafka connectivity, list topics, produce and consume messages without a need of any Kafka tool on the router itself
 
+## Step 1
+
 * Login to Cat8Kv-task1 and connect to the swiss_knife container
 ```code
 app-hosting connect appid swiss_knife session /bin/bash
 ```
+## Step 2
 
 * Basic connectivity test. Verify the router/container can reach Kafka broker.
 
@@ -31,6 +34,8 @@ What this proves:
  Broker reachable \
  Metadata exchange works
 
+## Step 3
+
 * List topics (read-only check)
 ```code
 kcat -b 198.18.5.101:9092 -L | grep topic
@@ -38,6 +43,8 @@ kcat -b 198.18.5.101:9092 -L | grep topic
 Used when:
  Kafka is up but app says topic missing
  Validate environment is correct
+
+## Step 4
 
 * Produce test messages (router → Kafka)
 * Send messages from Cat8Kv container:
@@ -49,6 +56,8 @@ kcat -b 198.18.5.101:9092 -t netops-test -P
 What this demonstrates:
  Router can publish telemetry / logs / events \
  Kafka path is working
+
+## Step 5
 
 * Consume messages (verification)
 

@@ -27,9 +27,6 @@ In this task, you will:
 * [Step 8: Create Manifest File](#step-8-create-manifest-file)
 * [Step 9: Kubectl Apply](#step-9-kubectl-apply)
 * [Step 10: Check Kubernetes Node and Pod Health](#step-10-check-kubernetes-node-and-pod-health)
-* [Step 11: Test Tool A](#step-11-test-tool-a)
-* [Step 12: Test Tool B](#step-12-test-tool-b)
-* [Step 13: Test Tool C](#step-13-test-tool-c)
 
 ---
 
@@ -231,58 +228,6 @@ Expected state:
 
 ```code
 RUNNING
-```
-
----
-
-## Step 11: Test Tool A
-
-• Test HTTP access
-
-```code
-curl http://10.1.1.2:8080/health
-```
-
-Expected:
-
-```code
-OK
-```
-
----
-
-## Step 12: Test Tool B
-
-• Test reachability
-
-```code
-ping 10.1.1.2
-```
-
-Expected result:
-5/5 success
-
----
-
-## Step 13: Test Tool C
-
-• Access container shell via Kubernetes
-
-```code
-kubectl exec -it c8kv-net-tools -- /bin/sh
-```
-
-Inside container:
-
-```code
-ifconfig
-netstat -tulnp
-```
-
-Exit:
-
-```code
-exit
 ```
 
 ---
