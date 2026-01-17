@@ -1,5 +1,22 @@
 # Task 3: Kubernetes-Based Container Orchestration
 
+[⬅️ Back to Main Menu](README.md)
+
+## Table of Contents
+
+- [Step 1: Retrieve Image from Container Registry](#step-1-retrieve-image-from-container-registry)
+- [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
+- [Step 3: Activate SCP on Router](#step-3-activate-scp-on-router)
+- [Step 4: SCP File to Router](#step-4-scp-file-to-router)
+- [Step 5: Verify MD5 Hash](#step-5-verify-md5-hash)
+- [Step 6: Install KIND](#step-6-install-kind)
+- [Step 7: Install Virtual Kubelet Provider](#step-7-install-virtual-kubelet-provider)
+- [Step 8: Create Manifest File](#step-8-create-manifest-file)
+- [Step 9: Kubectl Apply](#step-9-kubectl-apply)
+- [Step 10: Check Kubernetes Node and Pod Health](#step-10-check-kubernetes-node-and-pod-health)
+
+---
+
 This task introduces Kubernetes-based orchestration to manage containerized network tools running on **Cisco IOS XE Router** devices.
 
 In this task, you will:
@@ -34,13 +51,13 @@ In this task, you will:
 
 • Pull the container image used for Kubernetes deployment
 
-```code
+```bash
 docker pull myregistry.example.com/tools/k8s-net-tools:latest
 ```
 
 Verify image:
 
-```code
+```bash
 docker images
 ```
 
@@ -50,13 +67,13 @@ docker images
 
 • Convert the image to a TAR format for IOS-XE app hosting
 
-```code
+```bash
 docker save myregistry.example.com/tools/k8s-net-tools:latest -o k8s-net-tools.tar
 ```
 
 Verify:
 
-```code
+```bash
 ls -lh k8s-net-tools.tar
 ```
 
@@ -66,7 +83,7 @@ ls -lh k8s-net-tools.tar
 
 • Enable SCP if not already active
 
-```code
+```bash
 conf t
 ip scp server enable
 end
@@ -75,7 +92,7 @@ write memory
 
 Verify:
 
-```code
+```bash
 show running-config | include scp
 ```
 
@@ -85,13 +102,13 @@ show running-config | include scp
 
 • Copy TAR file to the router
 
-```code
+```bash
 scp k8s-net-tools.tar admin@10.10.10.1:bootflash:
 ```
 
 Verify:
 
-```code
+```bash
 dir bootflash: | include k8s-net-tools
 ```
 
@@ -101,13 +118,13 @@ dir bootflash: | include k8s-net-tools
 
 • Validate file integrity
 
-```code
+```bash
 verify /md5 bootflash:k8s-net-tools.tar
 ```
 
 Local comparison:
 
-```code
+```bash
 md5sum k8s-net-tools.tar
 ```
 
@@ -117,7 +134,7 @@ md5sum k8s-net-tools.tar
 
 • Install Kubernetes in Docker (KIND) on your Linux / jump host
 
-```code
+```bash
 curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
 chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
@@ -125,13 +142,13 @@ sudo mv ./kind /usr/local/bin/kind
 
 Create a cluster:
 
-```code
+```bash
 kind create cluster --name c8kv-lab
 ```
 
 Verify:
 
-```code
+```bash
 kubectl cluster-info --context kind-c8kv-lab
 ```
 
@@ -141,19 +158,19 @@ kubectl cluster-info --context kind-c8kv-lab
 
 • Install the Virtual Kubelet to represent C8Kv as a Kubernetes node
 
-```code
+```bash
 kubectl apply -f https://raw.githubusercontent.com/virtual-kubelet/virtual-kubelet/main/deploy/virtual-kubelet.yaml
 ```
 
 Verify node registration:
 
-```code
+```bash
 kubectl get nodes
 ```
 
 Expected output:
 
-```code
+```bash
 c8kv-virtual-node   Ready
 ```
 
@@ -165,13 +182,13 @@ c8kv-virtual-node   Ready
 
 • Create manifest file for your containerized tool
 
-```code
+```bash
 nano c8kv-tool.yaml
 ```
 
 Example:
 
-```code
+```bash
 apiVersion: v1
 kind: Pod
 metadata:
@@ -192,13 +209,13 @@ Save and exit.
 
 • Deploy container via Kubernetes
 
-```code
+```bash
 kubectl apply -f c8kv-tool.yaml
 ```
 
 Verify pod:
 
-```code
+```bash
 kubectl get pods -o wide
 ```
 
@@ -208,25 +225,25 @@ kubectl get pods -o wide
 
 • Check Kubernetes cluster status
 
-```code
+```bash
 kubectl get nodes
 ```
 
 • Check pod state
 
-```code
+```bash
 kubectl get pods
 ```
 
 • On the C8Kv router, verify application status
 
-```code
+```bash
 show app-hosting list
 ```
 
 Expected state:
 
-```code
+```bash
 RUNNING
 ```
 
@@ -235,3 +252,5 @@ RUNNING
 * [Main Menu](/README.md/#table-of-content)
 
 ---
+
+[⬅️ Return to Main Menu](README.md)

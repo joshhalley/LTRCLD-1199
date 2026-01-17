@@ -1,4 +1,22 @@
-# HTTP Testing & Troubleshooting with `curl` , `wget` and `httpie` 
+# Task 6: Web Testing & Troubleshooting (curl, wget, httpie)
+
+[⬅️ Back to Main Menu](README.md)
+
+## Table of Contents
+
+- [1) Basic Connectivity Test (GET)](#1-basic-connectivity-test-get)
+- [2) Headers Only (`-I`) — “Is the web service up?”](#2-headers-only-i-is-the-web-service-up)
+- [3) Verbose Mode (`-v`) — “Show me *what* fails and *where*”](#3-verbose-mode-v-show-me-what-fails-and-where)
+- [4) Force a Specific IP While Keeping the Hostname (`--resolve`)](#4-force-a-specific-ip-while-keeping-the-hostname-resolve)
+- [5) Test a Specific Port](#5-test-a-specific-port)
+- [6) About `-k` (Insecure TLS)](#6-about-k-insecure-tls)
+- [7) Application Timing (Great for “slow app” complaints)](#7-application-timing-great-for-slow-app-complaints)
+- [8) API Calls](#8-api-calls)
+- [9) Recommended “Quick Checks” (Copy/Paste)](#9-recommended-quick-checks-copypaste)
+- [10) `wget` — File Download + Availability Checks](#10-wget-file-download-availability-checks)
+- [11) HTTPie – API Calls](#11-httpie-api-calls)
+- [12) Comparing curl, wget, and httpie](#12-comparing-curl-wget-and-httpie)
+- [13) Tool Selection Cheat Sheet](#13-tool-selection-cheat-sheet)
 
 ---
 
@@ -224,7 +242,6 @@ From the output notice that, **httpbin is echoing back exactly what it received*
 * The **`data`** field shows the raw request body (`{"user":"test","pass":"test"}`), confirming the POST payload arrived intact.
 * The **`headers`** section reflects your request headers (for example `Content-Type: application/json`), confirming the request was processed as sent.
 
-
 ---
 
 ## 9) Recommended “Quick Checks” (Copy/Paste)
@@ -285,7 +302,6 @@ Use case:
 
 ### 10.3 Resume a download — `-c`
 
-
 ```bash
 wget -c wget https://releases.ubuntu.com/22.04/ubuntu-22.04.5-live-server-amd64.iso
 ```
@@ -331,13 +347,12 @@ Use case:
 ## 11) HTTPie – API Calls
 
 * HTTPie does the same job as curl.
-* It presents the request and response in a more human-readable format (JSON-first, cleaner defaults
+* It presents the request and response in a more human-readable format (JSON-first, cleaner defaults).
 ---
 
 ### 11.1 Basic GET 
 
 Use `--verify=no` : The container **doesn’t have the full CA chain installed**
-
 
 ```bash
 http --verify=no https://httpbin.org/get
@@ -368,7 +383,7 @@ http --verify=no -h https://httpbin.org/get
 ```bash
 http --verify=no --verbose https://httpbin.org/get
 ```
-* HTTPie prints the request headers first (you already saw that part),
+* HTTPie prints the request headers first (),
 * It attempts the TLS connection and fails unless --verify=no is used.
 
 ---
@@ -393,7 +408,7 @@ http --verify=no POST https://httpbin.org/post user=test pass=test
 | httpie | APIs, JSON, readability           |
 
 ---
-## 13} Tool Selection Cheat Sheet
+## 13) Tool Selection Cheat Sheet
 
 | Question                   | Tool   |
 | -------------------------- | ------ |
@@ -405,3 +420,5 @@ http --verify=no POST https://httpbin.org/post user=test pass=test
 | Is API behaving correctly? | httpie |
 
 ---
+
+[⬅️ Return to Main Menu](README.md)

@@ -1,4 +1,20 @@
-# iPerf3 Network Performance Testing (Swiss-Knife on C8Kv)
+# Task 10: iPerf3 Network Performance Testing
+
+[⬅️ Back to Main Menu](README.md)
+
+## Table of Contents
+
+- [1. Topology and Roles](#1-topology-and-roles)
+- [2. Start iPerf3 Server (cat8Kv-task-2)](#2-start-iperf3-server-cat8kv-task-2)
+- [3. TCP Throughput Tests (cat8Kv-task-1)](#3-tcp-throughput-tests-cat8kv-task-1)
+- [4. UDP Performance and Loss Tests](#4-udp-performance-and-loss-tests)
+- [5. JSON Output and Automation](#5-json-output-and-automation)
+- [6. Troubleshooting Checklist](#6-troubleshooting-checklist)
+- [7. Key iperf3 Options Reference](#7-key-iperf3-options-reference)
+- [8. Expected Outcome](#8-expected-outcome)
+- [Sample Output and Analysis – TCP Throughput Test](#sample-output-and-analysis-tcp-throughput-test)
+
+---
 
 This task uses **iperf3** inside the **Swiss-Knife** container to validate **throughput, directionality, parallelism, UDP behavior, and MTU impact** between two Catalyst 8000v routers.
 
@@ -335,3 +351,5 @@ Connecting to host 198.18.101.5, port 5201
 | Stable cwnd           | Healthy TCP equilibrium           |
 
 ---
+
+[⬅️ Return to Main Menu](README.md)

@@ -1,5 +1,21 @@
+# Task 5: MTR Path Analysis (My Traceroute)
 
-# MTR – Network & App Troubleshooting
+[⬅️ Back to Main Menu](README.md)
+
+## Table of Contents
+
+- [1. Sample Output (For Reference)](#1-sample-output-for-reference)
+- [2. How to Interpret This Output](#2-how-to-interpret-this-output)
+- [3. Recommended Baseline Command](#3-recommended-baseline-command)
+- [4. ICMP MTR (Default Mode)](#4-icmp-mtr-default-mode)
+- [5. UDP MTR (Application-like Traffic)](#5-udp-mtr-application-like-traffic)
+- [6. TCP MTR (Most Reliable for Apps)](#6-tcp-mtr-most-reliable-for-apps)
+- [7. MTR Using URLs (Hostname Resolution)](#7-mtr-using-urls-hostname-resolution)
+- [8. Loss Interpretation Cheat Sheet](#8-loss-interpretation-cheat-sheet)
+- [9. Tool Selection Guidance](#9-tool-selection-guidance)
+- [10. Key Takeaways](#10-key-takeaways)
+
+---
 
 This guide explains how to use **MTR (My Traceroute)** effectively in **modern, policy-driven networks** (SD-WAN, firewalls, cloud, app-hosting).
 
@@ -229,3 +245,4 @@ mtr -r -n -T -P 443 <resolved-ip>
 
 ---
 
+[⬅️ Return to Main Menu](README.md)

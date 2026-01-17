@@ -1,4 +1,18 @@
-# fping and dig – Reachability & DNS Validation
+# Task 4: General Network Validation (fping, dig, nmap)
+
+[⬅️ Back to Main Menu](README.md)
+
+## Table of Contents
+
+- [fping – Fast ICMP Reachability Testing](#fping-fast-icmp-reachability-testing)
+- [dig – DNS Query and Resolution Testing](#dig-dns-query-and-resolution-testing)
+- [nmap – Practical Examples](#nmap-practical-examples)
+- [1. Check if a host is reachable (Ping scan)](#1-check-if-a-host-is-reachable-ping-scan)
+- [2. Scan specific TCP ports](#2-scan-specific-tcp-ports)
+- [3. Fast scan of common ports](#3-fast-scan-of-common-ports)
+- [How fping, dig and nmap fit in the flow](#how-fping-dig-and-nmap-fit-in-the-flow)
+
+---
 
 These tools answer two very specific questions:
 
@@ -126,7 +140,7 @@ dig +short google.com
 
 ---
 
-# nmap – Practical Examples
+## nmap – Practical Examples
 
 nmap is used **before** tools like `nc`, `curl`, or `openssl` to answer:
 
@@ -205,3 +219,6 @@ nmap -F 198.18.102.5
 > Use **dig** to validate the *name resolution*.
 > Use **nmap** to discover, not to troubleshoot application logic.
 
+---
+
+[⬅️ Return to Main Menu](README.md)

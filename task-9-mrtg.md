@@ -1,4 +1,26 @@
-# 📊 MRTG Monitoring Lab – Cisco C8000v (Cat8Kv)
+# Task 9: MRTG Interface Monitoring
+
+[⬅️ Back to Main Menu](README.md)
+
+## Table of Contents
+
+- [Lab Objective](#lab-objective)
+- [Lab Components and Roles](#lab-components-and-roles)
+- [Step 1: Pull Image from Docker Registry (on Lab Ubuntu)](#step-1-pull-image-from-docker-registry-on-lab-ubuntu)
+- [Step 2: Copy Image TAR to Cat8Kv-Task-1](#step-2-copy-image-tar-to-cat8kv-task-1)
+- [Step 3: Configure App-Hosting on Cat8Kv-Task-1](#step-3-configure-app-hosting-on-cat8kv-task-1)
+- [Step 4: Enable SNMP on All Routers (Task-1/2/3)](#step-4-enable-snmp-on-all-routers-task-123)
+- [Step 5: Connect to the Container and Verify SNMP](#step-5-connect-to-the-container-and-verify-snmp)
+- [Step 6: Create MRTG Config Files](#step-6-create-mrtg-config-files)
+- [Step 7: Router MRTG Targets (Clean Names, No Spaces)](#step-7-router-mrtg-targets-clean-names-no-spaces)
+- [Step 8: Initialize MRTG and Generate Graphs](#step-8-initialize-mrtg-and-generate-graphs)
+- [Step 9: Start Web Server (lighttpd)](#step-9-start-web-server-lighttpd)
+- [Step 10: Enable Continuous Polling (Cron every 5 minutes)](#step-10-enable-continuous-polling-cron-every-5-minutes)
+- [Step 11: View the Graphs](#step-11-view-the-graphs)
+- [Notes / Tips](#notes-tips)
+- [📈 Optional Traffic Generation with iPerf3 (Observation Step)](#optional-traffic-generation-with-iperf3-observation-step)
+
+---
 
 ## Lab Objective
 
@@ -135,7 +157,7 @@ Include: /opt/mrtg/routers/r3.cfg
 
 ```cfg
 ############################
-# Cat8Kv-Task-1
+### Cat8Kv-Task-1
 ############################
 
 Target[Cat8Kv_Task1_Gig5]: 1.3.6.1.2.1.2.2.1.10.2&1.3.6.1.2.1.2.2.1.16.2:public@198.18.100.1:::::2
@@ -167,7 +189,7 @@ PageTop[Cat8Kv_Task1_MemPool1]: <h1>Cat8Kv-Task-1 Memory Pool 1</h1>
 
 ```cfg
 ############################
-# Cat8Kv-Task-2
+### Cat8Kv-Task-2
 ############################
 
 Target[Cat8Kv_Task2_Gig5]: 1.3.6.1.2.1.2.2.1.10.2&1.3.6.1.2.1.2.2.1.16.2:public@198.18.7.12:::::2
@@ -199,7 +221,7 @@ PageTop[Cat8Kv_Task2_MemPool1]: <h1>Cat8Kv-Task-2 Memory Pool 1</h1>
 
 ```cfg
 ############################
-# Cat8Kv-Task-3
+### Cat8Kv-Task-3
 ############################
 
 Target[Cat8Kv_Task3_Gig5]: 1.3.6.1.2.1.2.2.1.10.2&1.3.6.1.2.1.2.2.1.16.2:public@198.18.8.13:::::2
@@ -394,3 +416,5 @@ http://198.18.100.6:8080
 This concludes the MRTG monitoring lab.
 
 ---
+
+[⬅️ Return to Main Menu](README.md)

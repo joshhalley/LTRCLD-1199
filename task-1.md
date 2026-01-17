@@ -1,4 +1,19 @@
-# Task 1: App Hosting Deployment on IOS-XE - Manual
+# Task 1: App-Hosting Deployment on IOS-XE (Manual)
+
+[⬅️ Back to Main Menu](README.md)
+
+## Table of Contents
+
+- [Step 1: Check Container Registry and retrieve image](#step-1-check-container-registry-and-retrieve-image)
+- [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
+- [Step 3: SCP File to Router](#step-3-scp-file-to-router)
+- [Step 4: Verify MD5 Hash](#step-4-verify-md5-hash)
+- [Step 5: App Hosting Configuration](#step-5-app-hosting-configuration)
+- [Step 6: App Hosting Install](#step-6-app-hosting-install)
+- [Step 7: App Hosting Activate](#step-7-app-hosting-activate)
+- [Step 8: App Hosting Run](#step-8-app-hosting-run)
+
+---
 
 This task focuses on deploying a containerized troubleshooting application on a Cisco IOS-XE router using the **App Hosting** feature.
 
@@ -12,7 +27,7 @@ The process includes:
 
 **Steps in this task:**
 
-* [Step 1: Retrieve Image from Container Registry](#step-1-check-container-registry-and-retrive-image)
+* [Step 1: Retrieve Image from Container Registry](#step-1-check-container-registry-and-retrieve-image)
 * [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
 * [Step 3: SCP File to Router](#step-3-scp-file-to-router)
 * [Step 4: Verify MD5 Hash](#step-4-verify-md5-hash)
@@ -23,25 +38,25 @@ The process includes:
 
 ---
 
-## Step 1: Check Container Registry and retrive image
+## Step 1: Check Container Registry and retrieve image
 
 * Check the docker registry 
 * Pull the required image from a container registry
 * This image will be used to create a TAR file for router deployment
 
-```code
+```bash
 curl -s http://198.18.5.101:5000/v2/_catalog
 ```
 
 {"repositories":["monitoring","node-exporter","smokeping","snmp-exporter","swiss-knife-alpine","wireshark"]}
 
-```code
+```bash
 docker pull 198.18.5.101:5000/swiss-knife-alpine:latest
 ```
 
 Verify the image was downloaded:
 
-```code
+```bash
 docker images
 
 root@ubuntu-lab:~# docker images
@@ -57,13 +72,13 @@ root@ubuntu-lab:~#
 * Convert the Docker image into a TAR archive
 * This file will be transferred to the router
 
-```code
+```bash
 docker save 198.18.5.101:5000/swiss-knife-alpine:latest -o swiss-knife-alpine.tar
 ```
 
 Verify the TAR file exists:
 
-```code
+```bash
 root@ubuntu-lab:~# ls -lh swiss-knife-alpine.tar
 -rw------- 1 root root 264M Jan 13 11:55 swiss-knife-alpine.tar
 root@ubuntu-lab:~# 
@@ -71,14 +86,13 @@ root@ubuntu-lab:~#
 
 ---
 
-
 ## Step 3: SCP File to Router
 
 * Copy the TAR image from your machine to the router
 * The file will be stored in bootflash
 * Initiate the copy from the router cat8Kv-task-1
 
-```code
+```bash
 cat8Kv-task-1#copy scp: bootflash:
 Address or name of remote host []? 198.18.9.100
 Source username [admin]? root
@@ -88,7 +102,7 @@ Destination filename [swiss-knife-alpine.tar]?
 
 Verify the file on the router:
 
-```code
+```bash
 dir bootflash: | include swiss-knife-alpine.tar
 ```
 
@@ -99,13 +113,13 @@ dir bootflash: | include swiss-knife-alpine.tar
 * Confirm file integrity on the router
 * Ensures no corruption occurred during transfer
 
-```code
+```bash
 verify /md5 bootflash:swiss-knife-alpine.tar
 ```
 
 Compare with local checksum:
 
-```code
+```bash
 md5sum swiss-knife-alpine.tar
 ```
 
@@ -118,7 +132,7 @@ md5sum swiss-knife-alpine.tar
 * Configure network connectivity for the application
 * Allocate IP address and gateway for the container
 
-```code
+```bash
 conf t
 
  iox
@@ -138,7 +152,7 @@ end
 
 Verify configuration:
 
-```code
+```bash
 show run | sec app-hosting
 show app-hosting list
 ```
@@ -151,14 +165,14 @@ show app-hosting list
 * This step extracts and prepares the container
 * Enable terminal monitor to see the logs for progress
 
-```code
+```bash
 app-hosting install appid swiss_knife package bootflash:swiss-knife-alpine.tar
 ```
 In case the following error is seen
 App signature validation is required. App signature file package.cert or package.sign not found in package
 enable and disable app hosting signature verification 
 
-```code
+```bash
 cat8Kv-task-1(config)#app-hosting signed-verification 
 cat8Kv-task-1(config)#
 *Jan 13 12:00:22.429: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification enabled successfully
@@ -171,7 +185,7 @@ cat8Kv-task-1(config)#
 
 Validate installation:
 
-```code
+```bash
 show app-hosting detail appid swiss_knife
 ```
 
@@ -182,13 +196,13 @@ show app-hosting detail appid swiss_knife
 * Activate the application
 * Makes it ready to start
 
-```code
+```bash
 app-hosting activate appid swiss_knife
 ```
 
 Verify state:
 
-```code
+```bash
 show app-hosting list
 ```
 
@@ -198,20 +212,22 @@ show app-hosting list
 
 * Start the container application
 
-```code
+```bash
 app-hosting start appid swiss_knife
 ```
 
 Ensure it is running:
 
-```code
+```bash
 show app-hosting detail appid swiss_knife
 ```
 
 Connect to the container and explore
 
-```code
+```bash
 app-hosting connect appid swiss_knife session /bin/bash
 ```
 
 ---
+
+[⬅️ Return to Main Menu](README.md)

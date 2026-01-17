@@ -1,4 +1,17 @@
-# socat Practical Use Cases
+# Task 7: socat Practical Use Cases
+
+[⬅️ Back to Main Menu](README.md)
+
+## Table of Contents
+
+- [Accessing the Lab Containers](#accessing-the-lab-containers)
+- [Use Case 1: Simple TCP Listener](#use-case-1-simple-tcp-listener)
+- [Use Case 2: TCP Port Forwarding (Proxy) + Verbose/Debug](#use-case-2-tcp-port-forwarding-proxy-verbosedebug)
+- [Use Case 3: UDP Send and Receive (IPv4 Explicit)](#use-case-3-udp-send-and-receive-ipv4-explicit)
+- [Use Case 4: File Transfer Over TCP (TXT, One-Way)](#use-case-4-file-transfer-over-tcp-txt-one-way)
+- [Use Case 5: Inline Traffic Inspection Using Two Router Containers](#use-case-5-inline-traffic-inspection-using-two-router-containers)
+
+---
 
 `socat` is a versatile data-transfer utility that can relay traffic between sockets, files, and processes.  
 In this lab, `socat` is used to validate connectivity, simulate services, proxy traffic, generate traffic, transfer files, and inspect application flows running inside containers.
@@ -22,7 +35,7 @@ Each container is deployed on a separate **Catalyst 8000v (C8Kv)** router using 
 
 ---
 
-### Step 1: SSH to the Router dierctly from the PC
+### Step 1: SSH to the Router directly from the PC
 
 Connect to the router hosting the container.
 
@@ -206,3 +219,5 @@ curl -v http://198.18.100.5:8081/
 * Cat8Kv-task-2 Container logs incoming requests via the python HTTP server
 
 ---
+
+[⬅️ Return to Main Menu](README.md)

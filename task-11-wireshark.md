@@ -1,4 +1,21 @@
-# Live Packet Capture Using Wireshark and ERSPAN
+# Task 11: Wireshark Live Packet Capture (Web GUI + ERSPAN)
+
+[⬅️ Back to Main Menu](README.md)
+
+## Table of Contents
+
+- [Task Overview](#task-overview)
+- [Step 1 – Connect to the Wireshark Container](#step-1-connect-to-the-wireshark-container)
+- [Step 2 – Enable Packet Capture Permissions (One-Time Fix)](#step-2-enable-packet-capture-permissions-one-time-fix)
+- [Step 3 – Restart the Wireshark Application](#step-3-restart-the-wireshark-application)
+- [Step 4 – Configure ERSPAN on Cat8Kv-Task-1](#step-4-configure-erspan-on-cat8kv-task-1)
+- [Step 5 – Access the Wireshark Web GUI](#step-5-access-the-wireshark-web-gui)
+- [Step 6 – Start Packet Capture](#step-6-start-packet-capture)
+- [Step 7 – Generate SSH Traffic](#step-7-generate-ssh-traffic)
+- [Step 8 – Observe the Live Capture](#step-8-observe-the-live-capture)
+- [What You Have Demonstrated](#what-you-have-demonstrated)
+
+---
 
 In this task, you will use **Wireshark running inside a container** to perform **live packet capture** from a remote router interface using **ERSPAN**.
 This demonstrates how App-Hosting on Cisco edge devices can be used for **real-time traffic visibility** without deploying external probes.
@@ -177,3 +194,4 @@ This approach is ideal for **on-demand troubleshooting**, **remote operations**,
 
 ---
 
+[⬅️ Return to Main Menu](README.md)
