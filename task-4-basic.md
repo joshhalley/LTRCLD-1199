@@ -1,4 +1,4 @@
-# Task 4: General Network Validation (fping, dig, nmap)
+# Task 4: Basic Network Validation (fping, dig, nmap)
 
 [⬅️ Back to Main Menu](README.md)
 

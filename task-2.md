@@ -17,7 +17,7 @@
 - [Step 10: Terraform Init](#step-10-terraform-init)
 - [Step 11: Terraform Plan and Apply](#step-11-terraform-plan-and-apply)
 - [Step 12: Verify Deployment on the Router](#step-12-verify-deployment-on-the-router)
-- [Step 13: Update and Review `main.tf` to install the wireshark container](#step-13-update-and-review-maintf-to-install-the-wireshark-container)
+- [Step 13: Update and Review `main.tf` to install the wireshark container](#step-13-install-wireshark-container)
 - [Step 14: Terraform Init](#step-14-terraform-init)
 - [Step 15: Terraform Plan and Apply](#step-15-terraform-plan-and-apply)
 - [Step 16: Verify Deployment on the Router](#step-16-verify-deployment-on-the-router)
@@ -35,22 +35,6 @@ You will:
 * Deploy the app-hosting configuration via Terraform
 * Verify the container is running on the C8Kv
 * Test the installed tools
-
-**Steps in this task:**
-
-* [Prerequisites: Router Preparation](#prerequisites-router-preparation)
-* [Step 1: Retrieve Image from Container Registry](#step-1-check-container-registry-and-retrieve-image)
-* [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
-* [Step 3: SCP File to Router](#step-3-scp-file-to-router)
-* [Step 4: Verify MD5 Hash](#step-4-verify-md5-hash)
-* [Step 5: Verify Tool Versions](#step-5-verify-tool-versions)
-* [Step 6: Clone and Build the App-Hosting Terraform Provider](#step-6-clone-and-build-the-app-hosting-terraform-provider)
-* [Step 7: Configure Terraform to Use the Local Provider](#step-7-configure-terraform-to-use-the-local-provider)
-* [Step 8: Create the Terraform Working Directory](#step-8-create-the-terraform-working-directory)
-* [Step 9: Review and Paste main.tf](#step-9-review-and-paste-maintf)
-* [Step 10: Terraform Init](#step-10-terraform-init)
-* [Step 11: Terraform Plan and Apply](#step-11-terraform-plan-and-apply)
-* [Step 12: Verify Deployment on the Router](#step-12-verify-deployment-on-the-router)
 
 ---
 ## Prerequisites: Router Preparation
@@ -409,8 +393,9 @@ Connect to the container and explore
 app-hosting connect appid swiss_knife session /bin/bash
 ```
 
-## Step 13: Update and Review `main.tf` to install the wireshark container
+## Step 13: Install Wireshark container
 
+Update and Review `main.tf` 
 Paste the following configuration **as provided** (modify IP addresses only if instructed):
 
 ```hcl

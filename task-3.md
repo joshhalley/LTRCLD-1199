@@ -32,19 +32,6 @@ In this task, you will:
 
 > ⚠️ *Note: Full Kubernetes integration tuning will be enhanced later by another team member.*
 
-**Steps in this task:**
-
-* [Step 1: Retrieve Image from Container Registry](#step-1-retrieve-image-from-container-registry)
-* [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
-* [Step 3: Activate SCP on Router](#step-3-activate-scp-on-router)
-* [Step 4: SCP File to Router](#step-4-scp-file-to-router)
-* [Step 5: Verify MD5 Hash](#step-5-verify-md5-hash)
-* [Step 6: Install KIND](#step-6-install-kind)
-* [Step 7: Install Virtual Kubelet Provider](#step-7-install-virtual-kubelet-provider)
-* [Step 8: Create Manifest File](#step-8-create-manifest-file)
-* [Step 9: Kubectl Apply](#step-9-kubectl-apply)
-* [Step 10: Check Kubernetes Node and Pod Health](#step-10-check-kubernetes-node-and-pod-health)
-
 ---
 
 ## Step 1: Retrieve Image from Container Registry

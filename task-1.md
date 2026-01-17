@@ -25,17 +25,6 @@ The process includes:
 * Installing and activating the application using App Hosting
 * Testing the deployed application
 
-**Steps in this task:**
-
-* [Step 1: Retrieve Image from Container Registry](#step-1-check-container-registry-and-retrieve-image)
-* [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
-* [Step 3: SCP File to Router](#step-3-scp-file-to-router)
-* [Step 4: Verify MD5 Hash](#step-4-verify-md5-hash)
-* [Step 5: App Hosting Configuration](#step-5-app-hosting-configuration)
-* [Step 6: App Hosting Install](#step-6-app-hosting-install)
-* [Step 7: App Hosting Activate](#step-7-app-hosting-activate)
-* [Step 8: App Hosting Run](#step-8-app-hosting-run)
-
 ---
 
 ## Step 1: Check Container Registry and retrieve image
