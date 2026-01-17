@@ -17,7 +17,7 @@
 - [Step 10: Terraform Init](#step-10-terraform-init)
 - [Step 11: Terraform Plan and Apply](#step-11-terraform-plan-and-apply)
 - [Step 12: Verify Deployment on the Router](#step-12-verify-deployment-on-the-router)
-- [Step 13: Update and Review `main.tf` to install the wireshark container](#step-13-install-wireshark-container)
+- [Step 13: Install Wireshark container](#step-13-install-wireshark-container)
 - [Step 14: Terraform Init](#step-14-terraform-init)
 - [Step 15: Terraform Plan and Apply](#step-15-terraform-plan-and-apply)
 - [Step 16: Verify Deployment on the Router](#step-16-verify-deployment-on-the-router)

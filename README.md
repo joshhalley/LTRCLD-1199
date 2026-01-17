@@ -10,11 +10,13 @@ Welcome to **LTRCLD-1199**, a hands-on lab for deploying and operating container
 
 ## Index
 
+### Lab Overview
 - [Lab Objectives](#lab-objectives)
 - [Prerequisites](#prerequisites)
 - [Lab Topology](#lab-topology)
 - [Device Access (SSH + RDP)](#device-access-ssh--rdp)
 
+### Lab Tasks
 - **Task 1**: [App-Hosting Deployment on IOS-XE (Manual)](task-1.md)
 - **Task 2**: [App-Hosting Automation with Terraform](task-2.md)
 - **Task 3**: [Kubernetes-Based Container Orchestration](task-3.md)
@@ -40,6 +42,7 @@ By the end of this lab, you will be able to:
 - Validate that tools are running and accessible for troubleshooting work
 
 ---
+
 ## Prerequisites
 
 To get the most value from this lab, you should be familiar with:
