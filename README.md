@@ -33,7 +33,7 @@ Use the top navigation bar to jump directly to each task, or use the links below
 
 ## Topology Diagram
 
-![Lab Topology](images/topology.jpg)
+![Lab Topology][def]
 
 ---
 
@@ -74,3 +74,6 @@ By the end of this lab, you will be able to:
 - Validate that tools are running and accessible for troubleshooting work
 ---
 
+
+
+[def]: images/topology.jpg
