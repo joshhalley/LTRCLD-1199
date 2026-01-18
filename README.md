@@ -28,7 +28,7 @@ Welcome to **LTRCLD-1199**, a hands-on lab for deploying and operating container
 - **Task 9**: [MRTG Interface Monitoring](task-9-mrtg.md)
 - **Task 10**: [iPerf3 Network Performance Testing](task-10-iperf3.md)
 - **Task 11**: [Wireshark Live Packet Capture (ERSPAN)](task-11-wireshark.md)
-
+- **Task 12**: [Telegraf Monitoring with Prometheus Exporter](task-12-telegraf.md)
 ---
 
 ## Lab Objectives
