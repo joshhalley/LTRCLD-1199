@@ -35,9 +35,9 @@ Each container is deployed on a separate **Catalyst 8000v (C8Kv)** router using 
 
 ---
 
-### Step 1: SSH to the Router directly from the PC
+### Step 1: SSH to both the Routers directly from the PC
 
-Connect to the router hosting the container.
+Connect to the cat8kv-task-1 and cat8kv-task-2 hosting the swiss knife container.
 
 ### Step 2: Access the Swiss-Knife Container
 
@@ -177,7 +177,7 @@ Inspect application traffic inline while forwarding it between two router-hosted
 ### Lab Topology
 
 * Cat8Kv-task-1 Container (Proxy / Inspection): `198.18.100.5`
-* Cat8Kv-task-1 Container (Backend Service): `198.18.101.5`
+* Cat8Kv-task-2 Container (Backend Service): `198.18.101.5`
 * Lab Ubuntu (Client): `198.18.9.100`
 
 ---

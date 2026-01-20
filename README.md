@@ -60,16 +60,28 @@ To get the most value from this lab, you should be familiar with:
 
 ---
 
-## Device Access (SSH + RDP)
+## Device Access Out of Band (SSH + RDP)
 
-Use the following information to access the lab devices.
+Use the following information to access the lab devices via OOB
 
-| Name          | IP           | Username       | Password   |
-|--------------|--------------|----------------|------------|
+| Name         | IP            | Username       | Password   |
+|--------------|---------------|----------------|------------|
 | Lab Ubuntu   | 198.18.1.100  | root           | C1sco12345 |
 | cat8Kv-task-1| 198.18.1.11   | admin          | C1sco12345 |
 | cat8Kv-task-2| 198.18.2.12   | admin          | C1sco12345 |
 | cat8Kv-task-3| 198.18.2.13   | admin          | C1sco12345 |
 | Lab Windows  | 198.18.1.20   | administrator  | C1sco12345 |
+
+---
+
+| Name         | LAN IP        | WAN IP         | Container GW   |
+|--------------|---------------|----------------|----------------|
+| cat8Kv-task-1| 198.18.9.11   | 198.18.6.11    | 198.18.100.1   |
+| cat8Kv-task-2| 198.18.9.12   | 198.18.7.11    | 198.18.101.1   |
+| cat8Kv-task-3| 198.18.9.13   | 198.18.8.11    | 198.18.102.1   |
+
+* LAN IP is towards LAB Ubuntu
+* WAN IP is towards Mgmt Ubuntu, other Cat8Kvs and Internet
+* Container GW is the IP of the virtualportgroup interface, which will be default GW for all containers on that router
 
 ---

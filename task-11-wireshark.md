@@ -52,8 +52,14 @@ Run the following commands **inside the container**:
 
 ```bash
 sudo -i
+```
+```bash
 which dumpcap
+```
+```bash
 setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap
+```
+```bash
 getcap /usr/bin/dumpcap
 ```
 
@@ -81,10 +87,12 @@ Expected output:
 
 ## Step 3 – Restart the Wireshark Application
 
-Restart the application so the new permissions take effect.
+Exit the wireshark container and restart the application so the new permissions take effect.
 
 ```bash
 app-hosting stop appid wireshark
+```
+```bash
 app-hosting start appid wireshark
 ```
 
@@ -107,6 +115,7 @@ ip access-list extended 100
 
 ```bash
 monitor session 11 type erspan-source
+ no shutdown
  source interface GigabitEthernet6
  filter access-group 100
  destination
@@ -114,6 +123,10 @@ monitor session 11 type erspan-source
   mtu 1464
   ip address 198.18.101.6
   origin ip address 198.18.6.11
+```
+Verify ERSPAN Status
+```bash
+show monitor session all
 ```
 
 ### Explanation

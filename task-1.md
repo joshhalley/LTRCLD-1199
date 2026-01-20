@@ -37,8 +37,10 @@ The process includes:
 ```bash
 curl -s http://198.18.5.101:5000/v2/_catalog
 ```
+Sample output
+root@ubuntu-lab:~# curl -s http://198.18.5.101:5000/v2/_catalog
+{"repositories":["mrtg","swiss-knife-alpine","telegraf-alpine","wireshark"]}
 
-{"repositories":["monitoring","node-exporter","smokeping","snmp-exporter","swiss-knife-alpine","wireshark"]}
 
 ```bash
 docker pull 198.18.5.101:5000/swiss-knife-alpine:latest
@@ -48,12 +50,11 @@ Verify the image was downloaded:
 
 ```bash
 docker images
-
+```
 root@ubuntu-lab:~# docker images
 REPOSITORY                             TAG       IMAGE ID       CREATED      SIZE
 198.18.5.101:5000/swiss-knife-alpine   latest    ef61409cede7   2 days ago   270MB
 root@ubuntu-lab:~# 
-```
 
 ---
 
@@ -69,9 +70,7 @@ docker save 198.18.5.101:5000/swiss-knife-alpine:latest -o swiss-knife-alpine.ta
 Verify the TAR file exists:
 
 ```bash
-root@ubuntu-lab:~# ls -lh swiss-knife-alpine.tar
--rw------- 1 root root 264M Jan 13 11:55 swiss-knife-alpine.tar
-root@ubuntu-lab:~# 
+ls -lh swiss-knife-alpine.tar
 ```
 
 ---
@@ -81,6 +80,7 @@ root@ubuntu-lab:~#
 * Copy the TAR image from your machine to the router
 * The file will be stored in bootflash
 * Initiate the copy from the router cat8Kv-task-1
+* Login to cat8Kv-task-1 using 198.18.1.11
 
 ```bash
 cat8Kv-task-1#copy scp: bootflash:
@@ -144,7 +144,6 @@ Verify configuration:
 
 ```bash
 show run | sec app-hosting
-show app-hosting list
 ```
 
 ---

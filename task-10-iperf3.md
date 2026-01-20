@@ -40,7 +40,7 @@ You will run:
 2.1 Connect to the Swiss-Knife container:
 
 ```bash
-cat8Kv-task-2# app-hosting connect appid swiss_knife session /bin/bash
+app-hosting connect appid swiss_knife session /bin/bash
 ```
 
 2.2 Start iPerf3 in server mode:
@@ -65,7 +65,7 @@ iperf3 -s
 3.1 Connect to the Swiss-Knife container:
 
 ```bash
-cat8Kv-task-1# app-hosting connect appid swiss_knife session /bin/bash
+app-hosting connect appid swiss_knife session /bin/bash
 ```
 
 3.2 Basic TCP throughput (client → server):

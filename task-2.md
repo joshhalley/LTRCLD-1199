@@ -42,7 +42,7 @@ You will:
 Before starting **Task-2**, the C8000v router must be prepared for **RESTCONF** access and **IOX App-Hosting**.
 Terraform uses RESTCONF APIs to manage App-Hosting resources, and the lab container images are **unsigned**, so signature verification must be disabled.
 
-Run the following commands on the **C8000v router**:
+Run the following commands on the **cat8Kv-task-2** SSH 198.18.1.12:
 
 ```ios
 conf t
@@ -69,8 +69,8 @@ show app-hosting infra
 From the **Lab Ubuntu VM**, verify RESTCONF connectivity before running Terraform:
 
 ```bash
-curl -k -u <USERNAME>:<PASSWORD> -H "Accept: application/yang-data+json" \
-https://<ROUTER_IP>/restconf/data/Cisco-IOS-XE-native:native/iox
+curl -k -u admin:C1sco12345 -H "Accept: application/yang-data+json" \
+https://198.18.9.12/restconf/data/Cisco-IOS-XE-native:native/iox
 ```
 
 Expected response:
@@ -91,12 +91,13 @@ Once these checks succeed, proceed to **Task-2: Deploy App-Hosting Using Terrafo
 * Check the docker registry 
 * Pull the required image from a container registry
 * This image will be used to create a TAR file for router deployment
+* In this task we will deploy 2 containers in cat8Kv-task-2, wireshark and swiss_knife (pulled in task 1)
 
 ```bash
 curl -s http://198.18.5.101:5000/v2/_catalog
 ```
-
-{"repositories":["monitoring","node-exporter","smokeping","snmp-exporter","swiss-knife-alpine","wireshark"]}
+Sample Ouptut
+{"repositories":["mrtg","swiss-knife-alpine","telegraf-alpine","wireshark"]}
 
 ```bash
 docker pull 198.18.5.101:5000/wireshark:latest
@@ -132,7 +133,9 @@ ls -lh wireshark.tar
 * Copy the wireshark and swiss_knife TAR images from your machine to the router
 * The file will be stored in bootflash
 * Initiate the copy from the router cat8Kv-task-2
+* Login to cat8Kv-task-3 using 198.18.1.12
 
+Copy swiss knife container
 ```bash
 cat8Kv-task-2#copy scp: bootflash:
 Address or name of remote host []? 198.18.9.100
@@ -140,7 +143,7 @@ Source username [admin]? root
 Source filename []? swiss-knife-alpine.tar
 Destination filename [swiss-knife-alpine.tar]? 
 ```
-
+Copy wireshark container
 ```bash
 cat8Kv-task-2#copy scp: bootflash:
 Address or name of remote host []? 198.18.9.100
@@ -174,7 +177,7 @@ md5sum wireshark.tar
 
 ## Step 5: Verify Tool Versions
 
-Terraform and Go are already installed on the participant VM.
+Terraform and Go are already installed on the Lab Ubuntu (SSH 198.18.1.100)
 Verify the versions before proceeding.
 
 ### Verify Terraform Version
@@ -183,7 +186,7 @@ Verify the versions before proceeding.
 terraform version
 ```
 
-Expected output (version may vary):
+Expected output (ignore the out of date message):
 
 ```text
 Terraform v1.6.6
@@ -351,6 +354,7 @@ Review the execution plan:
 ```bash
 terraform plan
 ```
+Enable `terminal monitor` on cat8kv-task-2 to observe the app hosting logs
 
 Apply the configuration:
 
@@ -374,7 +378,7 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
 ## Step 12: Verify Deployment on the Router
 
-On the C8000v router, verify the application and networking:
+On the cat8Kv-task-2 router, verify the application and networking:
 
 ```bash
 show app-hosting list
@@ -397,7 +401,7 @@ app-hosting connect appid swiss_knife session /bin/bash
 ## Step 13: Install Wireshark container
 
 Update and Review `main.tf` 
-Paste the following configuration **as provided** (modify IP addresses only if instructed):
+Paste the following configuration **as provided** at the end of main.tf created above (modify IP addresses only if instructed):
 
 ```hcl
 
@@ -484,7 +488,7 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
 ## Step 16: Verify Deployment on the Router
 
-On the C8000v router, verify the application and networking:
+On the cat8Kv-task-2 router, verify the application and networking:
 
 ```bash
 show app-hosting list
@@ -500,10 +504,6 @@ Connect to the container and explore
 ```bash
 app-hosting connect appid wireshark session /bin/bash
 ```
-
----
-
-* [Main Menu](/README.md/#table-of-content)
 
 ---
 

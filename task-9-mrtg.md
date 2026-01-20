@@ -52,8 +52,10 @@ Graphs are served via a lightweight web server on the container.
 Pull from the **Docker registry hosted on Mgmt Ubuntu**:
 
 ```bash
-docker pull 198.18.5.101:5000/monitoring:latest
-docker save 198.18.5.101:5000/monitoring:latest -o monitoring.tar
+docker pull 198.18.5.101:5000/mrtg:latest
+```
+```bash
+docker save 198.18.5.101:5000/mrtg:latest -o mrtg.tar
 ```
 
 ---
@@ -66,8 +68,8 @@ From **Cat8Kv-Task-1**:
 Cat8Kv-Task-1# copy scp: bootflash:
 Address or name of remote host []? 198.18.9.100
 Source username [admin]? root
-Source filename []? monitoring.tar
-Destination filename [monitoring.tar]?
+Source filename []? mrtg.tar
+Destination filename [mrtg.tar]?
 Password:
 ```
 
@@ -76,7 +78,7 @@ Password:
 ## Step 3: Configure App-Hosting on Cat8Kv-Task-1
 
 ```text
-app-hosting appid monitor
+app-hosting appid mrtg
  app-vnic gateway0 virtualportgroup 0 guest-interface 0
   guest-ipaddress 198.18.100.6 netmask 255.255.255.0
  app-default-gateway 198.18.100.1 guest-interface 0
@@ -86,9 +88,9 @@ app-hosting appid monitor
 Install and start:
 
 ```text
-app-hosting install appid monitor package bootflash:monitoring.tar
-app-hosting activate appid monitor
-app-hosting start appid monitor
+app-hosting install appid mrtg package bootflash:monitoring.tar
+app-hosting activate appid mrtg
+app-hosting start appid mrtg
 ```
 
 ---
@@ -100,19 +102,19 @@ Run on **each router**:
 ```text
 conf t
  snmp-server community public RO
- snmp-server ifindex persist
+ snmp ifmib ifindex persist
 end
 write memory
 ```
 
-> `snmp-server ifindex persist` keeps interface indexes stable (prevents MRTG graphs from breaking after reload).
+> `snmp ifmib ifindex persist` keeps interface indexes stable (prevents MRTG graphs from breaking after reload).
 
 ---
 
 ## Step 5: Connect to the Container and Verify SNMP
 
 ```text
-app-hosting connect appid monitor session /bin/bash
+app-hosting connect appid mrtg session /bin/bash
 ```
 
 Test SNMP:
@@ -126,6 +128,8 @@ snmpwalk -v2c -c public 198.18.100.1 sysDescr.0
 ## Step 6: Create MRTG Config Files
 
 ### 6.1 Global MRTG Config: `/opt/mrtg/mrtg.cfg`
+
+vi /opt/mrtg/mrtg.cfg
 
 ```cfg
 ### ===== Global =====
@@ -154,6 +158,8 @@ Include: /opt/mrtg/routers/r3.cfg
 ---
 
 ### 7.1 Task-1 Targets: `/opt/mrtg/routers/r1.cfg` (IP: `198.18.100.1`)
+
+vi /opt/mrtg/routers/r1.cfg
 
 ```cfg
 ############################
@@ -187,6 +193,8 @@ PageTop[Cat8Kv_Task1_MemPool1]: <h1>Cat8Kv-Task-1 Memory Pool 1</h1>
 
 ### 7.2 Task-2 Targets: `/opt/mrtg/routers/r2.cfg` (IP: `198.18.7.12`)
 
+vi /opt/mrtg/routers/r2.cfg
+
 ```cfg
 ############################
 ### Cat8Kv-Task-2
@@ -218,6 +226,8 @@ PageTop[Cat8Kv_Task2_MemPool1]: <h1>Cat8Kv-Task-2 Memory Pool 1</h1>
 ---
 
 ### 7.3 Task-3 Targets: `/opt/mrtg/routers/r3.cfg` (IP: `198.18.8.13`)
+
+vi /opt/mrtg/routers/r3.cfg
 
 ```cfg
 ############################
@@ -253,13 +263,16 @@ PageTop[Cat8Kv_Task3_MemPool1]: <h1>Cat8Kv-Task-3 Memory Pool 1</h1>
 
 ```bash
 mrtg /opt/mrtg/mrtg.cfg --check
-
+```
+```bash
 rm -f /opt/mrtg/html/*.log /opt/mrtg/html/*.old
-
+```
+```bash
 mrtg /opt/mrtg/mrtg.cfg
 mrtg /opt/mrtg/mrtg.cfg
 mrtg /opt/mrtg/mrtg.cfg
-
+```
+```bash
 indexmaker /opt/mrtg/mrtg.cfg > /opt/mrtg/html/index.html
 ```
 
@@ -326,7 +339,7 @@ RDP to 198.18.1.20
 Open browser:
 
 ```text
-http://198.18.100.6:8080
+http://198.18.100.6:8080/index.html
 ```
 
 You should see:
@@ -351,11 +364,6 @@ Example:
 
 * `ifDescr.2 = GigabitEthernet5`
 * `ifDescr.3 = GigabitEthernet6`
-
----
-
-Perfect — below is a **clean add-on section** you can **append at the end of the same `mrtg-lab.md` file**.
-No changes to earlier content needed.
 
 ---
 
@@ -393,7 +401,7 @@ After traffic generation:
 2. Refresh the MRTG web page:
 
 ```text
-http://198.18.100.6:8080
+http://198.18.100.6:8080/index.html
 ```
 
 3. Observe:
