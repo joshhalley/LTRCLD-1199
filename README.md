@@ -66,13 +66,15 @@ Use the following information to access the lab devices via OOB
 
 | Name         | IP            | Username       | Password   |
 |--------------|---------------|----------------|------------|
-| Lab Ubuntu   | 198.18.1.100  | root           | C1sco12345 |
+| Ubuntu LAB   | 198.18.1.100  | root           | C1sco12345 |
 | cat8Kv-task-1| 198.18.1.11   | admin          | C1sco12345 |
 | cat8Kv-task-2| 198.18.2.12   | admin          | C1sco12345 |
 | cat8Kv-task-3| 198.18.2.13   | admin          | C1sco12345 |
-| Lab Windows  | 198.18.1.20   | administrator  | C1sco12345 |
+| Windows LAB  | 198.18.1.20   | administrator  | C1sco12345 |
 
 ---
+
+## IP Address Details
 
 | Name         | LAN IP        | WAN IP         | Container GW   |
 |--------------|---------------|----------------|----------------|
@@ -83,5 +85,6 @@ Use the following information to access the lab devices via OOB
 * LAN IP is towards LAB Ubuntu
 * WAN IP is towards Mgmt Ubuntu, other Cat8Kvs and Internet
 * Container GW is the IP of the virtualportgroup interface, which will be default GW for all containers on that router
+* Container IPs will be part of respective GW subnet stating from .5
 
 ---

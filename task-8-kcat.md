@@ -17,6 +17,7 @@ kcat is a lightweight CLI tool to validate **Kafka connectivity, topics, and mes
 - [Step 3: List topics (read-only check)](#step-3-list-topics-read-only-check)
 - [Step 4: Produce messages to a topic](#step-4-produce-messages-to-a-topic)
 - [Step 5: Consume messages from a topic](#step-5-consume-messages-from-a-topic)
+- [Step 6: Consume messages from a topic - Different Container](#step-5-consume-messages-from-a-topic)
 - [Troubleshooting quick tips](#troubleshooting-quick-tips)
 
 ---
@@ -72,7 +73,7 @@ kcat -b 198.18.5.101:9092 -L | grep -i topic
 Send a single test message from the container to Kafka:
 
 ```bash
-echo "hello-from-cat8kv" | kcat -b 198.18.5.101:9092 -t netops-test -P
+echo "hello-from-cat8kv-task-1" | kcat -b 198.18.5.101:9092 -t netops-test -P
 ```
 
 What this demonstrates:
@@ -81,7 +82,7 @@ What this demonstrates:
 
 ---
 
-## Step 5: Consume messages from a topic
+## Step 5: Consume messages from a topic 
 
 Start a consumer to verify that messages are arriving.
 
@@ -94,6 +95,23 @@ Notes:
 - Press **Ctrl+C** to stop the consumer.
 
 ---
+
+## Step 6: Consume messages from a topic - Different container
+
+SSH `cat8Kv-task-2`(198.18.1.12)
+
+```bash
+app-hosting connect appid swiss_knife session /bin/bash
+```
+Start a consumer to verify that messages are arriving.
+
+```bash
+kcat -b 198.18.5.101:9092 -t netops-test -C
+```
+
+Send a single test message agian (Step 4)
+
+
 
 ## Troubleshooting quick tips
 

@@ -276,7 +276,7 @@ curl -v https://1.1.1.1 --resolve example.com:443:1.1.1.1
 ### 10.1 Basic download
 
 ```bash
-wget wget https://releases.ubuntu.com/22.04/ubuntu-22.04.5-live-server-amd64.iso
+wget --no-check-certificate https://hel1-speed.hetzner.com/100MB.bin
 ```
 
 What to look for:

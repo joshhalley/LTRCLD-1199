@@ -33,7 +33,7 @@ This task focuses on **real troubleshooting workflows**, not command syntax memo
 Connect to **Cat8Kv-Task-1** and access the Swiss-Knife container:
 
 ```bash
-ssh admin@198.18.1.11
+ssh 198.18.1.11
 app-hosting connect appid swiss_knife session /bin/bash
 ```
 
@@ -48,6 +48,17 @@ mtr -r -n -c 20 8.8.8.8
 * Establishes basic reachability
 * Shows hop-by-hop latency
 * Acts as a baseline before deeper analysis
+
+### MTR – Commonly Used Options
+
+| Option | Meaning | Why it’s used |
+|------|--------|--------------|
+| `-n` | Numeric output (no DNS lookup) | Faster results, avoids DNS delays |
+| `-r` | Report mode (no interactive UI) | Script-friendly, clean output |
+| `-c <count>` | Number of probes to send | Control test duration |
+| `-w` | Wide report format | Prevents column wrapping, improves readability |
+| `-T` | Use TCP probes | Test application-like paths |
+| `-u` | Use UDP probes | Test non-ICMP traffic behavior |
 
 ---
 
@@ -64,7 +75,7 @@ mtr -r -n -u -P 53 8.8.8.8
 ### Voice / video / SLA-style traffic
 
 ```bash
-mtr -r -n -u -P 16384 1.1.1.1
+mtr -r -n -u -P 16384 8.8.4.4
 ```
 
 **When to use UDP MTR**
@@ -85,13 +96,13 @@ TCP MTR is the **most reliable** method in enterprise and cloud networks.
 ### HTTPS path test
 
 ```bash
-mtr -r -n -T -P 443 8.8.8.8
+mtr -r -n -T -P 3000 198.18.5.101
 ```
 
 ### Alternate public target
 
 ```bash
-mtr -r -n -T -P 443 1.1.1.1
+mtr -r -n -T -P 443 208.67.220.220
 ```
 
 **Why TCP MTR is preferred**
@@ -107,7 +118,7 @@ mtr -r -n -T -P 443 1.1.1.1
 You can also run MTR directly to hostnames:
 
 ```bash
-mtr -r -T -P 443 www.google.com
+mtr -r -T -P 443 www.cisco.com
 ```
 
 **What happens**

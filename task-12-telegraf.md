@@ -6,29 +6,42 @@
 
 ## Objective
 
-In this task, you deploy and configure a **Telegraf monitoring container** that acts as a lightweight **monitoring probe**, capable of:
+In this task, you deploy and extend a **Telegraf-based monitoring probe** running inside a container to demonstrate how **modern telemetry pipelines** can be built on edge devices.
 
-- Collecting container self-metrics (CPU, memory, disk, network)
-- Performing ICMP reachability checks
-- Performing HTTP / HTTPS availability checks
-- Exposing all metrics via a **Prometheus `/metrics` endpoint**
+You will:
 
-> Visualization is handled centrally using **Prometheus and Grafana** on the management node.
+* Collect **container self-metrics** (CPU, memory, disk, network)
+* Perform **ICMP reachability** and **HTTP/HTTPS availability** checks
+* Expose metrics via a **Prometheus `/metrics` endpoint**
+* Extend the same probe to collect **router metrics using SNMP**
+* Visualize **both container and router metrics** centrally using **Prometheus and Grafana**
+
+This task is divided into **two continuous parts** using the **same Telegraf container**.
 
 ---
 
 ## Page Index
 
-- [Lab Architecture](#lab-architecture)
-- [Step 1: Prepare Telegraf Configuration Directory](#step-1-prepare-telegraf-configuration-directory)
-- [Step 2: Create Base Telegraf Agent Configuration](#step-2-create-base-telegraf-agent-configuration)
-- [Step 3: Create Lab Configuration](#step-3-create-lab-configuration)
-- [Step 4: Validate Telegraf Configuration](#step-4-validate-telegraf-configuration)
-- [Step 5: Start Telegraf](#step-5-start-telegraf)
-- [Step 6: Verify Metrics from Mgmt Node](#step-6-verify-metrics-from-mgmt-node)
-- [Step 7: Visualize Metrics in Grafana](#step-7-visualize-metrics-in-grafana)
-- [Placeholder: SNMP Monitoring](#placeholder-snmp-monitoring)
-- [Summary](#summary)
+### Part 1 – Container & Service Monitoring
+
+* [Lab Architecture](#lab-architecture)
+* [Step 1: Prepare Telegraf Configuration Directory](#step-1-prepare-telegraf-configuration-directory)
+* [Step 2: Create Base Telegraf Agent Configuration](#step-2-create-base-telegraf-agent-configuration)
+* [Step 3: Create Lab Configuration (Container, Ping, HTTP)](#step-3-create-lab-configuration-container-ping-http)
+* [Step 4: Validate Telegraf Configuration](#step-4-validate-telegraf-configuration)
+* [Step 5: Start Telegraf](#step-5-start-telegraf)
+* [Step 6: Verify Metrics from Management Node](#step-6-verify-metrics-from-management-node)
+* [Step 7: Visualize Container Metrics in Grafana](#step-7-visualize-container-metrics-in-grafana)
+
+### Part 2 – Router Monitoring via SNMP
+
+* [Step 8: Extend Telegraf with SNMP Monitoring](#step-8-extend-telegraf-with-snmp-monitoring)
+* [Step 9: Validate SNMP Configuration](#step-9-validate-snmp-configuration)
+* [Step 10: Verify SNMP Metrics Export](#step-10-verify-snmp-metrics-export)
+* [Step 11: Visualize Router Metrics in Grafana](#step-11-visualize-router-metrics-in-grafana)
+* [Lab Completion Criteria](#lab-completion-criteria)
+* [Key Takeaway](#key-takeaway)
+* [Summary](#summary)
 
 ---
 
@@ -36,21 +49,36 @@ In this task, you deploy and configure a **Telegraf monitoring container** that 
 
 ### Logical Components
 
-- **Telegraf Container**
-  - Collects metrics
-  - Exposes `/metrics` on port `9273`
-- **Management Node**
-  - Prometheus (scrapes metrics)
-  - Grafana (visualization)
-- **External Targets**
-  - Public IPs (ICMP)
-  - Public / internal HTTP services
+* **Telegraf Container (Swiss-Knife)**
+
+  * Collects container metrics
+  * Executes ICMP and HTTP probes
+  * Polls routers using SNMP
+  * Exposes `/metrics` on port `9273`
+* **Management Node**
+
+  * Prometheus (scrapes metrics)
+  * Grafana (visualization)
+* **External Targets**
+
+  * Public IPs (ICMP)
+  * Public / internal HTTP services
+  * IOS-XE routers (SNMP)
 
 ---
 
+# Part 1 – Container & Service Monitoring
+
 ## Step 1: Prepare Telegraf Configuration Directory
 
-Connect to the **Telegraf container** and create the configuration directory:
+Connect to the **Swiss-Knife container hosted on Cat8Kv-Task-1**:
+
+```bash
+ssh 198.18.1.11
+app-hosting connect appid swiss_knife session /bin/bash
+```
+
+Create the Telegraf configuration directory:
 
 ```bash
 mkdir -p /etc/telegraf/telegraf.d
@@ -60,7 +88,7 @@ mkdir -p /etc/telegraf/telegraf.d
 
 ## Step 2: Create Base Telegraf Agent Configuration
 
-Create the main Telegraf configuration file:
+Create the global Telegraf agent configuration:
 
 ```bash
 cat > /etc/telegraf/telegraf.conf <<'EOF'
@@ -73,12 +101,12 @@ cat > /etc/telegraf/telegraf.conf <<'EOF'
 EOF
 ```
 
-This file defines **global agent behavior**.
+This file defines **global agent behavior** only.
 All inputs and outputs are defined under `telegraf.d`.
 
 ---
 
-## Step 3: Create Lab Configuration
+## Step 3: Create Lab Configuration (Container, Ping, HTTP)
 
 Edit the lab configuration file:
 
@@ -86,7 +114,7 @@ Edit the lab configuration file:
 vi /etc/telegraf/telegraf.d/lab.conf
 ```
 
-### Lab Configuration (`lab.conf`)
+### `lab.conf`
 
 ```toml
 [agent]
@@ -97,7 +125,7 @@ vi /etc/telegraf/telegraf.d/lab.conf
   omit_hostname = false
 
 ###############################################################################
-# A) Container self-monitoring
+# A) Container Self-Monitoring
 ###############################################################################
 
 [[inputs.cpu]]
@@ -112,7 +140,7 @@ vi /etc/telegraf/telegraf.d/lab.conf
   ignore_fs = ["tmpfs", "devtmpfs", "overlay"]
 
 ###############################################################################
-# B) Network reachability (ICMP)
+# B) Network Reachability (ICMP)
 ###############################################################################
 
 [[inputs.ping]]
@@ -126,7 +154,7 @@ vi /etc/telegraf/telegraf.d/lab.conf
   method = "native"
 
 ###############################################################################
-# C) HTTP / HTTPS availability
+# C) HTTP / HTTPS Availability
 ###############################################################################
 
 [[inputs.http_response]]
@@ -139,7 +167,7 @@ vi /etc/telegraf/telegraf.d/lab.conf
   follow_redirects = true
 
 ###############################################################################
-# D) Output: Prometheus exporter
+# D) Output – Prometheus Exporter
 ###############################################################################
 
 [[outputs.prometheus_client]]
@@ -163,22 +191,13 @@ telegraf \
 ### Expected Result
 
 * No errors
-* Inputs for CPU, memory, ping, and HTTP are loaded
-* Metrics are generated successfully
+* Both config files are loaded
+* Inputs loaded: `cpu disk http_response mem net ping`
+* Sample metrics are generated
 
-* Both configs are loaded:
+> **Note:**
+> `W! Outputs are not used in testing mode!` is expected.
 
-  * `/etc/telegraf/telegraf.conf`
-  * `/etc/telegraf/telegraf.d/lab.conf`
-* Required plugins are loaded:
-
-  * `Loaded inputs: cpu disk http_response mem net ping`
-* Sample metrics appear (cpu/mem/net/disk/http_response)
-
-**Note:**
-`W! Outputs are not used in testing mode!` is expected when using `--test`.
-
-```
 ---
 
 ## Step 5: Start Telegraf
@@ -191,20 +210,20 @@ telegraf \
   --config-directory /etc/telegraf/telegraf.d
 ```
 
-Telegraf now exposes metrics at:
+Metrics are now exposed at:
 
 ```text
-http://<container-ip>:9273/metrics
+http://198.18.100.5:9273/metrics
 ```
 
 ---
 
-## Step 6: Verify Metrics from Mgmt Node
+## Step 6: Verify Metrics from LAB Ubuntu Node
 
-From the **lab ubuntu node**, verify Prometheus can scrape the container:
+From the **LAB Ubuntu node**:
 
 ```bash
-curl http://198.18.102.7:9273/metrics | head
+curl http://198.18.100.5:9273/metrics | head
 ```
 
 Verify Prometheus targets:
@@ -215,22 +234,22 @@ curl http://198.18.5.101:9090/api/v1/targets
 
 ---
 
-## Step 7: Visualize Metrics in Grafana
+## Step 7: Visualize Container Metrics in Grafana
 
 1. Open Grafana:
 
-It can be opened directly from the PC
+```text
+http://198.18.1.101:3000
+```
+The above link can be opned directly from the LAB PC
 
-   ```text
-   http://198.18.1.101:3000
-   ```
-Loging with admin / C1sco12345
+Login: `admin / C1sco12345`
 
 2. Navigate to:
 
-   ```text
-   Dashboards → Swiss-Knife Telegraf Lab
-   ```
+```text
+Dashboards → Swiss-Knife Telegraf Lab
+```
 
 ### Expected Observations
 
@@ -238,71 +257,19 @@ Loging with admin / C1sco12345
 * Network RX/TX traffic is visible
 * Ping and HTTP checks reflect reachability and availability
 
-No manual queries are required.
-
 ---
 
-Perfect. Below is the **exact, end-to-end lab flow** you can put straight into your lab guide.
-It assumes:
+# Part 2 – Router Monitoring via SNMP
 
-* **Mgmt node** already has **Prometheus + Grafana (golden config)**
-* **Participants** deploy and configure **Telegraf container**
-* **Dashboard JSON** is exported from Grafana and re-used
+## Step 8: Extend Telegraf with SNMP Monitoring
 
-No theory, no branching paths.
-
----
-
-# Lab: Router SNMP Monitoring with Telegraf, Prometheus & Grafana
-
----
-
-## Lab Objective
-
-In this lab, you will:
-
-* Extend an existing **Telegraf monitoring container** to poll router metrics using SNMP
-* Export router metrics via a **Prometheus-compatible endpoint**
-* Visualize router interface, CPU, and memory metrics in **Grafana**
-* Reuse **MRTG-proven SNMP OIDs** for predictable results
-
----
-
-## Prerequisites
-
-* Telegraf container deployed and reachable
-* Prometheus scraping the Telegraf container (`:9273/metrics`)
-* Grafana running with Prometheus datasource configured
-* SNMP v2c enabled on routers
-
----
-
-## Step 1: Access the Telegraf Container
-
-SSH to the router hosting the container and connect:
-
-```bash
-app-hosting connect appid telegraf session /bin/bash
-```
-
----
-
-## Step 2: Edit Telegraf Lab Configuration
-
-Edit the lab configuration file:
+Edit the existing lab configuration:
 
 ```bash
 nano /etc/telegraf/telegraf.d/lab.conf
 ```
 
----
-
-## Step 3: Add SNMP Input (Router Monitoring)
-
-Append the following SNMP configuration **at the end** of `lab.conf`.
-
-> This example uses **Cat8Kv-Task-1**.
-> Other routers use the same block with only the IP changed.
+Append the SNMP configuration **at the end of the file** (Cat8Kv-Task-1 / Task-2 / Task-3).
 
 ```toml
 ###############################################################################
@@ -351,13 +318,106 @@ Append the following SNMP configuration **at the end** of `lab.conf`.
   [[inputs.snmp.field]]
     name = "mem_pool1_free"
     oid  = "1.3.6.1.4.1.9.9.48.1.1.1.6.1"
-```
 
+###############################################################################
+# SNMP Monitoring – Cat8Kv-Task-2
+###############################################################################
+
+[[inputs.snmp]]
+  agents = [ "udp://198.18.102.1:161" ]
+  version = 2
+  community = "public"
+  interval = "30s"
+  timeout = "5s"
+  retries = 2
+
+  name = "snmp"
+  agent_host_tag = "agent_host"
+
+  # GigabitEthernet5 (ifIndex 2)
+  [[inputs.snmp.field]]
+    name = "ifInOctets_gi5"
+    oid  = "1.3.6.1.2.1.2.2.1.10.2"
+
+  [[inputs.snmp.field]]
+    name = "ifOutOctets_gi5"
+    oid  = "1.3.6.1.2.1.2.2.1.16.2"
+
+  # GigabitEthernet6 (ifIndex 3)
+  [[inputs.snmp.field]]
+    name = "ifInOctets_gi6"
+    oid  = "1.3.6.1.2.1.2.2.1.10.3"
+
+  [[inputs.snmp.field]]
+    name = "ifOutOctets_gi6"
+    oid  = "1.3.6.1.2.1.2.2.1.16.3"
+
+  # CPU – 5 minute average
+  [[inputs.snmp.field]]
+    name = "cpu_5min"
+    oid  = "1.3.6.1.4.1.9.2.1.58.0"
+
+  # Memory Pool 1
+  [[inputs.snmp.field]]
+    name = "mem_pool1_used"
+    oid  = "1.3.6.1.4.1.9.9.48.1.1.1.5.1"
+
+  [[inputs.snmp.field]]
+    name = "mem_pool1_free"
+    oid  = "1.3.6.1.4.1.9.9.48.1.1.1.6.1"
+
+###############################################################################
+# SNMP Monitoring – Cat8Kv-Task-3
+###############################################################################
+
+[[inputs.snmp]]
+  agents = [ "udp://198.18.7.12:161" ]
+  version = 2
+  community = "public"
+  interval = "30s"
+  timeout = "5s"
+  retries = 2
+
+  name = "snmp"
+  agent_host_tag = "agent_host"
+
+  # GigabitEthernet5 (ifIndex 2)
+  [[inputs.snmp.field]]
+    name = "ifInOctets_gi5"
+    oid  = "1.3.6.1.2.1.2.2.1.10.2"
+
+  [[inputs.snmp.field]]
+    name = "ifOutOctets_gi5"
+    oid  = "1.3.6.1.2.1.2.2.1.16.2"
+
+  # GigabitEthernet6 (ifIndex 3)
+  [[inputs.snmp.field]]
+    name = "ifInOctets_gi6"
+    oid  = "1.3.6.1.2.1.2.2.1.10.3"
+
+  [[inputs.snmp.field]]
+    name = "ifOutOctets_gi6"
+    oid  = "1.3.6.1.2.1.2.2.1.16.3"
+
+  # CPU – 5 minute average
+  [[inputs.snmp.field]]
+    name = "cpu_5min"
+    oid  = "1.3.6.1.4.1.9.2.1.58.0"
+
+  # Memory Pool 1
+  [[inputs.snmp.field]]
+    name = "mem_pool1_used"
+    oid  = "1.3.6.1.4.1.9.9.48.1.1.1.5.1"
+
+  [[inputs.snmp.field]]
+    name = "mem_pool1_free"
+    oid  = "1.3.6.1.4.1.9.9.48.1.1.1.6.1"
+```
 ---
 
-## Step 4: Validate SNMP Configuration (Test Mode)
+## Step 9: Validate SNMP Configuration
 
-Before running Telegraf continuously, validate the configuration:
+Test SNMP polling:
 
 ```bash
 telegraf \
@@ -368,100 +428,47 @@ telegraf \
 
 ### Expected Output
 
-You should see lines such as:
+Metrics such as:
 
 * `snmp_ifInOctets_gi5`
 * `snmp_ifOutOctets_gi6`
 * `snmp_cpu_5min`
 * `snmp_mem_pool1_used`
 
-This confirms SNMP polling is working.
-
 ---
 
-## Step 5: Start Telegraf (Runtime Mode)
+## Step 10: Verify SNMP Metrics Export
 
-Start Telegraf normally:
+From the LAB Ubuntu node:
 
 ```bash
-telegraf \
-  --config /etc/telegraf/telegraf.conf \
-  --config-directory /etc/telegraf/telegraf.d
+curl http://198.18.100.5:9273/metrics | grep snmp | head
+```
+
+Verify Prometheus ingestion:
+
+```bash
+curl http://198.18.5.101:9090/api/v1/series -d 'match[]=snmp_cpu_5min'
 ```
 
 ---
 
-## Step 6: Verify Metrics Export
+## Step 11: Visualize Router Metrics in Grafana
 
-From the management node (or any reachable host):
+1. Open Grafana
+2. Navigate to:
 
-```bash
-curl http://<telegraf-container-ip>:9273/metrics | grep snmp | head
+```text
+Dashboards → Cat8Kv SNMP via Telegraf
 ```
 
-You should see `snmp_*` metrics exposed.
-
----
-
-## Step 7: Verify Prometheus Ingestion
-
-On the management node:
-
-```bash
-curl http://localhost:9090/api/v1/series -d 'match[]=snmp_cpu_5min'
-```
-
-Expected: SNMP metrics with labels including:
-
-* `agent_host`
-* `instance`
-* `job=telegraf_containers`
-
----
-
-## Step 8: Import Router Dashboard in Grafana
-
-1. Open Grafana:
-
-   ```
-   http://<mgmt-ip>:3000
-   ```
-
-2. Import dashboard:
-
-   * **Dashboards → New → Import**
-   * Upload the **updated JSON exported from Grafana**
-   * Select datasource: **Prometheus**
-
-3. Open the dashboard.
-
----
-
-## Step 9: Select Router and View Metrics
-
-At the top of the dashboard:
-
-* Select router from the **router dropdown** (e.g. `198.18.100.1`)
+3. Select router from the **router dropdown** (e.g. `198.18.100.1`)
 
 ### Expected Results
 
-* **Gi5 / Gi6 throughput** graphs populate
-* **CPU (5-minute)** graph updates
-* **Memory used/free** graphs update
-
-Graphs update in near real time.
-
----
-
-## Step 10: (Optional) Add Additional Routers
-
-To monitor additional routers:
-
-* Duplicate the `[[inputs.snmp]]` block
-* Change only the router IP address
-* Restart Telegraf
-
-No Grafana changes are required.
+* Gi5 / Gi6 throughput graphs populate
+* CPU (5-minute average) updates
+* Memory used/free graphs update
 
 ---
 
@@ -469,36 +476,37 @@ No Grafana changes are required.
 
 You have successfully completed this lab when:
 
-* Telegraf exports SNMP metrics
-* Prometheus ingests router metrics
-* Grafana displays interface, CPU, and memory data
-* Router metrics correlate with existing MRTG trends
+* Telegraf exports container and SNMP metrics
+* Prometheus ingests all metrics
+* Grafana visualizes container and router telemetry
+* Router metrics correlate with legacy MRTG behavior
 
 ---
 
 ## Key Takeaway
 
-This lab demonstrates how **traditional SNMP data (MRTG)** can be:
+This task demonstrates how **traditional monitoring (SNMP/MRTG)** and **modern telemetry** can coexist by:
 
-* Collected by a containerized probe
-* Exported using a modern metrics pipeline
-* Visualized dynamically and correlated with container and service health
+* Using a containerized probe at the edge
+* Exporting metrics via Prometheus
+* Visualizing correlated infrastructure and application health
 
 ---
 
 ## Summary
 
-In this task, you deployed a **Telegraf monitoring container** configured to:
+In this task, you deployed and extended a **Telegraf monitoring container** to:
 
-* Monitor container health
-* Test network reachability
-* Validate application availability
-* Expose metrics using a **Prometheus-native model**
+* Monitor container health and services
+* Perform network reachability and availability checks
+* Collect router metrics using SNMP
+* Export all telemetry using a **Prometheus-native model**
+
+This forms the foundation for scalable, vendor-neutral observability on edge platforms.
 
 ---
 
 [⬅ Return to Main Menu](README.md)
 
-````
-
 ---
+
