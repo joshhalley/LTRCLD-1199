@@ -15,6 +15,7 @@ Welcome to **LTRCLD-1199**, a hands-on lab for deploying and operating container
 - [Prerequisites](#prerequisites)
 - [Lab Topology](#lab-topology)
 - [Device Access (SSH + RDP)](#device-access-ssh--rdp)
+- [Container Details](containers.md)
 
 ### Lab Tasks
 - **Task 1**: [App-Hosting Deployment on IOS-XE (Manual)](task-1.md)
