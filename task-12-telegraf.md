@@ -257,6 +257,7 @@ Dashboards → Swiss-Knife Telegraf Lab
 * Network RX/TX traffic is visible
 * Ping and HTTP checks reflect reachability and availability
 
+![Example](images/self-telegraf.jpg)
 ---
 
 # Part 2 – Router Monitoring via SNMP
@@ -469,6 +470,8 @@ Dashboards → Cat8Kv SNMP via Telegraf
 * Gi5 / Gi6 throughput graphs populate
 * CPU (5-minute average) updates
 * Memory used/free graphs update
+
+![Example](images/snmp-telegraf.jpg)
 
 ---
 
