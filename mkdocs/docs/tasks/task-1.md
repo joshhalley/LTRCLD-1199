@@ -37,9 +37,9 @@ The process includes:
 ```bash
 curl -s http://198.18.5.101:5000/v2/_catalog
 ```
-Sample output
+Sample output\
 root@ubuntu-lab:~# curl -s http://198.18.5.101:5000/v2/_catalog
-{"repositories":["mrtg","swiss-knife-alpine","telegraf-alpine","wireshark"]}
+{"repositories":["mrtg","swiss-knife-alpine","wireshark"]}
 
 
 ```bash
@@ -51,11 +51,12 @@ Verify the image was downloaded:
 ```bash
 docker images
 ```
+```bash
 root@ubuntu-lab:~# docker images
 REPOSITORY                             TAG       IMAGE ID       CREATED      SIZE
 198.18.5.101:5000/swiss-knife-alpine   latest    ef61409cede7   2 days ago   270MB
 root@ubuntu-lab:~# 
-
+```
 ---
 
 ## Step 2: Create TAR Image from Docker

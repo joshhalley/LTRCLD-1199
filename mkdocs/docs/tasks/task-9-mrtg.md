@@ -88,7 +88,7 @@ app-hosting appid mrtg
 Install and start:
 
 ```text
-app-hosting install appid mrtg package bootflash:monitoring.tar
+app-hosting install appid mrtg package bootflash:mrtg.tar
 app-hosting activate appid mrtg
 app-hosting start appid mrtg
 ```

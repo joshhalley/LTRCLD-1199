@@ -174,7 +174,7 @@ nmap -sn 8.8.8.8
 ## 2. Scan specific TCP ports
 
 ```bash
-nmap -p 22,80,443 198.18.102.5
+nmap -p 22,80,443 198.18.101.5
 ```
 
 **What this tells you**
@@ -191,7 +191,7 @@ nmap -p 22,80,443 198.18.102.5
 ## 3. Fast scan of common ports
 
 ```bash
-nmap -F 198.18.102.5
+nmap -F 198.18.101.6
 ```
 
 **What this does**

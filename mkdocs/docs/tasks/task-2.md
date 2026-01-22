@@ -52,6 +52,9 @@ restconf
 !
 iox
  app-hosting signed-verification 
+ !
+ !
+ !
  no app-hosting signed-verification 
 !
 end
@@ -81,7 +84,7 @@ Expected response:
 }
 ```
 
-Once these checks succeed, proceed to **Task-2: Deploy App-Hosting Using Terraform**.
+Once these checks succeed, proceed to deployning the APP via Terraform.
 
 ---
 
@@ -400,8 +403,12 @@ app-hosting connect appid swiss_knife session /bin/bash
 
 ## Step 13: Install Wireshark container
 
-Update and Review `main.tf` 
+Update and Review `main.tf` \
 Paste the following configuration **as provided** at the end of main.tf created above (modify IP addresses only if instructed):
+
+```bash
+nano main.tf
+```
 
 ```hcl
 

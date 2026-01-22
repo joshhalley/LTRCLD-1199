@@ -140,7 +140,7 @@ curl -v https://8.8.8.8 --resolve www.google.com:443:8.8.8.8
 ### 5.1 Internal service example (Non 80 or 443 port)
 
 ```bash
-curl -v http://198.18.102.5:8080
+curl -v http://198.18.101.6:3000
 ```
 
 This is a perfect lab example of:
@@ -396,7 +396,7 @@ http --verify=no --verbose https://httpbin.org/get
 ### 11.4 POST JSON 
 
 ```bash
-http --verify=no POST https://httpbin.org/post user=test pass=test
+http --verify=no POST https://httpbin.org/post user=test pass=test123
 ```
 
 **Verification**

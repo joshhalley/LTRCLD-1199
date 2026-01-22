@@ -96,7 +96,7 @@ Notes:
 
 ---
 
-## Step 6: Consume messages from a topic - Different container
+## Step 6: Consume messages on Cat8Kv-task-2 / Produce message from Cat8Kv-task-1
 
 SSH `cat8Kv-task-2`(198.18.1.12)
 
@@ -109,8 +109,11 @@ Start a consumer to verify that messages are arriving.
 kcat -b 198.18.5.101:9092 -t netops-test -C
 ```
 
-Send a single test message agian (Step 4)
+Send a single test message from the container to Kafka:
 
+```bash
+echo "hello-from-cat8kv-task-1" | kcat -b 198.18.5.101:9092 -t netops-test -P
+```
 
 
 ## Troubleshooting quick tips

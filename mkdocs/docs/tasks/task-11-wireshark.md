@@ -192,6 +192,8 @@ On the Wireshark GUI (RDP session):
 * Packets will appear **GRE-encapsulated** (ERSPAN)
 * Inner packets will show **TCP port 22 (SSH)** traffic
 
+![Image](images/wireshark.jpg)
+
 This confirms successful **remote live packet capture** using ERSPAN.
 
 ---

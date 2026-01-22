@@ -109,7 +109,7 @@ Give router's password
 
 ### Expected Result
 
-Traffic received on port `9000` is forwarded to the destination router, while `socat` logs connection lifecycle and payloads.
+Traffic received on port `9000` on the swiss_knife is forwarded to the cat8Kv-task-1 router on port 22, while `socat` logs connection lifecycle and payloads.
 
 ---
 

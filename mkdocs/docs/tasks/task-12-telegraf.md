@@ -71,10 +71,10 @@ This task is divided into **two continuous parts** using the **same Telegraf con
 
 ## Step 1: Prepare Telegraf Configuration Directory
 
-Connect to the **Swiss-Knife container hosted on Cat8Kv-Task-1**:
+Connect to the **Swiss-Knife container hosted on Cat8Kv-Task-2**:
 
 ```bash
-ssh 198.18.1.11
+ssh 198.18.1.12
 app-hosting connect appid swiss_knife session /bin/bash
 ```
 
@@ -211,10 +211,8 @@ telegraf \
 ```
 
 Metrics are now exposed at:
+http://198.18.101.5:9273/metrics
 
-```text
-http://198.18.100.5:9273/metrics
-```
 
 ---
 
@@ -223,7 +221,7 @@ http://198.18.100.5:9273/metrics
 From the **LAB Ubuntu node**:
 
 ```bash
-curl http://198.18.100.5:9273/metrics | head
+curl http://198.18.101.5:9273/metrics | head
 ```
 
 Verify Prometheus targets:
@@ -278,7 +276,7 @@ Append the SNMP configuration **at the end of the file** (Cat8Kv-Task-1 / Task-2
 ###############################################################################
 
 [[inputs.snmp]]
-  agents = [ "udp://198.18.100.1:161" ]
+  agents = [ "udp://198.18.6.11:161" ]
   version = 2
   community = "public"
   interval = "30s"
@@ -325,7 +323,7 @@ Append the SNMP configuration **at the end of the file** (Cat8Kv-Task-1 / Task-2
 ###############################################################################
 
 [[inputs.snmp]]
-  agents = [ "udp://198.18.102.1:161" ]
+  agents = [ "udp://198.18.7.12:161" ]
   version = 2
   community = "public"
   interval = "30s"
@@ -372,7 +370,7 @@ Append the SNMP configuration **at the end of the file** (Cat8Kv-Task-1 / Task-2
 ###############################################################################
 
 [[inputs.snmp]]
-  agents = [ "udp://198.18.7.12:161" ]
+  agents = [ "udp://198.18.8.13:161" ]
   version = 2
   community = "public"
   interval = "30s"
@@ -427,6 +425,14 @@ telegraf \
   --test | grep snmp
 ```
 
+Start Telegraf in continuous mode:
+
+```bash
+telegraf \
+  --config /etc/telegraf/telegraf.conf \
+  --config-directory /etc/telegraf/telegraf.d
+```
+
 ### Expected Output
 
 Metrics such as:
@@ -443,7 +449,7 @@ Metrics such as:
 From the LAB Ubuntu node:
 
 ```bash
-curl http://198.18.100.5:9273/metrics | grep snmp | head
+curl http://198.18.101.5:9273/metrics | grep snmp | head
 ```
 
 Verify Prometheus ingestion:
@@ -463,7 +469,7 @@ curl http://198.18.5.101:9090/api/v1/series -d 'match[]=snmp_cpu_5min'
 Dashboards → Cat8Kv SNMP via Telegraf
 ```
 
-3. Select router from the **router dropdown** (e.g. `198.18.100.1`)
+3. Select router from the **router dropdown** (e.g. `198.18.7.11`)
 
 ### Expected Results
 
