@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Cisco Live Lab" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Task 2 – App-Hosting Automation with Terraform - LTRCLD-1199 – Containers on IOS-XE</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Task 2 \u2013 App-Hosting Automation with Terraform";
+        var mkdocs_page_input_path = "tasks/task-2.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> LTRCLD-1199 – Containers on IOS-XE
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Overview</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../containers/">Container Details</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Tasks</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../task-1/">Task 1 – App-Hosting Deployment (Manual)</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Task 2 – App-Hosting Automation with Terraform</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites-router-preparation">Prerequisites: Router Preparation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-1-check-container-registry-and-retrieve-image">Step 1: Check Container Registry and retrieve image</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-2-create-tar-image-from-docker">Step 2: Create TAR Image from Docker</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-3-scp-file-to-router">Step 3: SCP File to Router</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-4-verify-md5-hash">Step 4: Verify MD5 Hash</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-5-verify-tool-versions">Step 5: Verify Tool Versions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#verify-terraform-version">Verify Terraform Version</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#verify-go-version">Verify Go Version</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-6-clone-the-app-hosting-terraform-provider">Step 6: Clone the App-Hosting Terraform Provider</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-7-configure-terraform-to-use-the-local-provider">Step 7: Configure Terraform to Use the Local Provider</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-8-create-the-terraform-working-directory">Step 8: Create the Terraform Working Directory</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-9-paste-and-review-maintf-to-install-the-swiss-knife-container">Step 9: Paste and Review main.tf to install the swiss-knife container</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-10-terraform-init">Step 10: Terraform Init</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-11-terraform-plan-and-apply">Step 11: Terraform Plan and Apply</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-12-verify-deployment-on-the-router">Step 12: Verify Deployment on the Router</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-13-install-wireshark-container">Step 13: Install Wireshark container</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-14-terraform-init">Step 14: Terraform Init</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-15-terraform-plan-and-apply">Step 15: Terraform Plan and Apply</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-16-verify-deployment-on-the-router">Step 16: Verify Deployment on the Router</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-3/">Task 3 – Kubernetes Orchestration (Placeholder)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-4-basic/">Task 4 – Basic Network Validation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-5-mtr/">Task 5 – MTR Path Analysis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-6-web-ts/">Task 6 – Web Testing & Troubleshooting</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-7-socat/">Task 7 – socat Practical Use Cases</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-8-kcat/">Task 8 – kcat (Kafka CAT)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-9-mrtg/">Task 9 – MRTG Interface Monitoring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-10-iperf3/">Task 10 – iPerf3 Performance Testing</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-11-wireshark/">Task 11 – Wireshark Live Packet Capture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-12-telegraf/">Task 12 – Telegraf Monitoring</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">LTRCLD-1199 – Containers on IOS-XE</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Lab Tasks</li>
+      <li class="breadcrumb-item active">Task 2 – App-Hosting Automation with Terraform</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="task-2-app-hosting-automation-with-terraform">Task 2: App-Hosting Automation with Terraform<a class="headerlink" href="#task-2-app-hosting-automation-with-terraform" title="Permanent link">&para;</a></h1>
+<p><a href="../../">⬅️ Back to Main Menu</a></p>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#prerequisites-router-preparation">Prerequisites: Router Preparation</a></li>
+<li><a href="#step-1-check-container-registry-and-retrieve-image">Step 1: Check Container Registry and retrieve image</a></li>
+<li><a href="#step-2-create-tar-image-from-docker">Step 2: Create TAR Image from Docker</a></li>
+<li><a href="#step-3-scp-file-to-router">Step 3: SCP File to Router</a></li>
+<li><a href="#step-4-verify-md5-hash">Step 4: Verify MD5 Hash</a></li>
+<li><a href="#step-5-verify-tool-versions">Step 5: Verify Tool Versions</a></li>
+<li><a href="#step-6-clone-the-app-hosting-terraform-provider">Step 6: Clone the App-Hosting Terraform Provider</a></li>
+<li><a href="#step-7-configure-terraform-to-use-the-local-provider">Step 7: Configure Terraform to Use the Local Provider</a></li>
+<li><a href="#step-8-create-the-terraform-working-directory">Step 8: Create the Terraform Working Directory</a></li>
+<li><a href="#step-9-paste-and-review-maintf-to-install-the-swiss-knife-container">Step 9: Paste and Review <code>main.tf</code> to install the swiss-knife container</a></li>
+<li><a href="#step-10-terraform-init">Step 10: Terraform Init</a></li>
+<li><a href="#step-11-terraform-plan-and-apply">Step 11: Terraform Plan and Apply</a></li>
+<li><a href="#step-12-verify-deployment-on-the-router">Step 12: Verify Deployment on the Router</a></li>
+<li><a href="#step-13-install-wireshark-container">Step 13: Install Wireshark container</a></li>
+<li><a href="#step-14-terraform-init">Step 14: Terraform Init</a></li>
+<li><a href="#step-15-terraform-plan-and-apply">Step 15: Terraform Plan and Apply</a></li>
+<li><a href="#step-16-verify-deployment-on-the-router">Step 16: Verify Deployment on the Router</a></li>
+</ul>
+<hr />
+<p>This task focuses on deploying and managing a containerized application on a <strong>Cisco IOS XE Router</strong> router using <strong>Terraform (Infrastructure as Code)</strong>.</p>
+<p>You will:</p>
+<ul>
+<li>Retrieve the container image from a registry</li>
+<li>Convert it to a TAR package</li>
+<li>Transfer it to the router using SCP</li>
+<li>Review and use an existing Terraform project</li>
+<li>Deploy the app-hosting configuration via Terraform</li>
+<li>Verify the container is running on the C8Kv</li>
+<li>Test the installed tools</li>
+</ul>
+<hr />
+<h2 id="prerequisites-router-preparation">Prerequisites: Router Preparation<a class="headerlink" href="#prerequisites-router-preparation" title="Permanent link">&para;</a></h2>
+<p>Before starting <strong>Task-2</strong>, the C8000v router must be prepared for <strong>RESTCONF</strong> access and <strong>IOX App-Hosting</strong>.
+Terraform uses RESTCONF APIs to manage App-Hosting resources, and the lab container images are <strong>unsigned</strong>, so signature verification must be disabled.</p>
+<p>Run the following commands on the <strong>cat8Kv-task-2</strong> SSH 198.18.1.12:</p>
+<pre><code class="language-ios">conf t
+!
+ip http secure-server
+restconf
+!
+iox
+ app-hosting signed-verification 
+ !
+ !
+ !
+ no app-hosting signed-verification 
+!
+end
+wr mem
+</code></pre>
+<p>After completing the configuration, verify:</p>
+<pre><code class="language-ios">show ip http server status
+show iox-service
+show app-hosting infra
+</code></pre>
+<p>From the <strong>Lab Ubuntu VM</strong>, verify RESTCONF connectivity before running Terraform:</p>
+<pre><code class="language-bash">curl -k -u admin:C1sco12345 -H &quot;Accept: application/yang-data+json&quot; \
+https://198.18.9.12/restconf/data/Cisco-IOS-XE-native:native/iox
+</code></pre>
+<p>Expected response:</p>
+<pre><code class="language-json">{
+  &quot;Cisco-IOS-XE-native:iox&quot;: {}
+}
+</code></pre>
+<p>Once these checks succeed, proceed to deployning the APP via Terraform.</p>
+<hr />
+<h2 id="step-1-check-container-registry-and-retrieve-image">Step 1: Check Container Registry and retrieve image<a class="headerlink" href="#step-1-check-container-registry-and-retrieve-image" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Login to the Lab Ubuntu (ssh 198.18.1.100)</li>
+<li>Check the docker registry </li>
+<li>Pull the required image from a container registry</li>
+<li>This image will be used to create a TAR file for router deployment</li>
+<li>In this task we will deploy 2 containers in cat8Kv-task-2, wireshark and swiss_knife (pulled in task 1)</li>
+</ul>
+<pre><code class="language-bash">curl -s http://198.18.5.101:5000/v2/_catalog
+</code></pre>
+<p _repositories_:_mrtg_swiss-knife-alpine_telegraf-alpine_wireshark_="&quot;repositories&quot;:[&quot;mrtg&quot;,&quot;swiss-knife-alpine&quot;,&quot;telegraf-alpine&quot;,&quot;wireshark&quot;]">Sample Ouptut</p>
+<pre><code class="language-bash">docker pull 198.18.5.101:5000/wireshark:latest
+</code></pre>
+<p>Validate the download:</p>
+<pre><code class="language-bash">docker images
+</code></pre>
+<hr />
+<h2 id="step-2-create-tar-image-from-docker">Step 2: Create TAR Image from Docker<a class="headerlink" href="#step-2-create-tar-image-from-docker" title="Permanent link">&para;</a></h2>
+<p>• Convert the Docker image to a TAR package
+• This is the image format required for IOS-XE app hosting</p>
+<pre><code class="language-bash">docker save 198.18.5.101:5000/wireshark:latest -o wireshark.tar
+</code></pre>
+<p>Verify the TAR file exists:</p>
+<pre><code class="language-bash">ls -lh wireshark.tar
+</code></pre>
+<hr />
+<h2 id="step-3-scp-file-to-router">Step 3: SCP File to Router<a class="headerlink" href="#step-3-scp-file-to-router" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Copy the wireshark and swiss_knife TAR images from your machine to the router</li>
+<li>The file will be stored in bootflash</li>
+<li>Initiate the copy from the router cat8Kv-task-2</li>
+<li>Login to cat8Kv-task-3 using 198.18.1.12</li>
+</ul>
+<p>Copy swiss knife container</p>
+<pre><code class="language-bash">cat8Kv-task-2#copy scp: bootflash:
+Address or name of remote host []? 198.18.9.100
+Source username [admin]? root
+Source filename []? swiss-knife-alpine.tar
+Destination filename [swiss-knife-alpine.tar]? 
+</code></pre>
+<p>Copy wireshark container</p>
+<pre><code class="language-bash">cat8Kv-task-2#copy scp: bootflash:
+Address or name of remote host []? 198.18.9.100
+Source username [admin]? root
+Source filename []? wireshark.tar
+Destination filename [wireshark.tar]? 
+</code></pre>
+<p>Verify the file on the router:</p>
+<pre><code class="language-bash">dir bootflash: | include tar
+</code></pre>
+<hr />
+<h2 id="step-4-verify-md5-hash">Step 4: Verify MD5 Hash<a class="headerlink" href="#step-4-verify-md5-hash" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Confirm file integrity on the router</li>
+<li>Ensures no corruption occurred during transfer</li>
+</ul>
+<pre><code class="language-bash">verify /md5 bootflash:wireshark.tar
+</code></pre>
+<p>Compare with local checksum:</p>
+<pre><code class="language-bash">md5sum wireshark.tar
+</code></pre>
+<h2 id="step-5-verify-tool-versions">Step 5: Verify Tool Versions<a class="headerlink" href="#step-5-verify-tool-versions" title="Permanent link">&para;</a></h2>
+<p>Terraform and Go are already installed on the Lab Ubuntu (SSH 198.18.1.100)
+Verify the versions before proceeding.</p>
+<h3 id="verify-terraform-version">Verify Terraform Version<a class="headerlink" href="#verify-terraform-version" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">terraform version
+</code></pre>
+<p>Expected output (ignore the out of date message):</p>
+<pre><code class="language-text">Terraform v1.6.6
+</code></pre>
+<blockquote>
+<p>ℹ️ Terraform 1.6.6 is supported for this lab.</p>
+</blockquote>
+<hr />
+<h3 id="verify-go-version">Verify Go Version<a class="headerlink" href="#verify-go-version" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">go version
+</code></pre>
+<p>Expected output:</p>
+<pre><code class="language-text">go version go1.18.1 linux/amd64
+</code></pre>
+<hr />
+<h2 id="step-6-clone-the-app-hosting-terraform-provider">Step 6: Clone the App-Hosting Terraform Provider<a class="headerlink" href="#step-6-clone-the-app-hosting-terraform-provider" title="Permanent link">&para;</a></h2>
+<p>Clone the Terraform provider repository from the <strong>instructor VM</strong>:</p>
+<pre><code class="language-bash">git clone ssh://lab@198.18.5.101/home/lab/terraform-provider-ciscoapphosting
+</code></pre>
+<p>Enter the <strong>lab user password</strong> when prompted. password is "lab"</p>
+<p>Build the provider binary:</p>
+<pre><code class="language-bash">cd terraform-provider-ciscoapphosting
+go build -o terraform-provider-ciscoapphosting
+
+</code></pre>
+<hr />
+<h2 id="step-7-configure-terraform-to-use-the-local-provider">Step 7: Configure Terraform to Use the Local Provider<a class="headerlink" href="#step-7-configure-terraform-to-use-the-local-provider" title="Permanent link">&para;</a></h2>
+<p>Terraform must be instructed to use the <strong>local provider</strong> instead of the public registry.</p>
+<p>Create the Terraform CLI configuration file:</p>
+<pre><code class="language-bash">nano ~/.terraformrc
+</code></pre>
+<p>Paste the following content:</p>
+<pre><code class="language-hcl">provider_installation {
+  dev_overrides {
+    &quot;local/ciscoapphosting&quot; = &quot;/root/terraform-provider-ciscoapphosting&quot;
+  }
+  direct {}
+}
+</code></pre>
+<p>Save and exit.</p>
+<blockquote>
+<p>⚠️ A warning about <em>provider development overrides</em> is expected and normal.</p>
+</blockquote>
+<hr />
+<h2 id="step-8-create-the-terraform-working-directory">Step 8: Create the Terraform Working Directory<a class="headerlink" href="#step-8-create-the-terraform-working-directory" title="Permanent link">&para;</a></h2>
+<p>Create a directory for the App-Hosting deployment:</p>
+<pre><code class="language-bash">mkdir ~/terraform-c8kv-apphosting
+cd ~/terraform-c8kv-apphosting
+</code></pre>
+<p>Create a single Terraform file:</p>
+<pre><code class="language-bash">nano main.tf
+</code></pre>
+<hr />
+<h2 id="step-9-paste-and-review-maintf-to-install-the-swiss-knife-container">Step 9: Paste and Review <code>main.tf</code> to install the swiss-knife container<a class="headerlink" href="#step-9-paste-and-review-maintf-to-install-the-swiss-knife-container" title="Permanent link">&para;</a></h2>
+<p>Paste the following configuration <strong>as provided</strong> (modify IP addresses only if instructed):</p>
+<pre><code class="language-hcl">terraform {
+  required_providers {
+    ciscoapphosting = {
+      source  = &quot;local/ciscoapphosting&quot;
+      version = &quot;0.1.0&quot;
+    }
+  }
+}
+
+provider &quot;ciscoapphosting&quot; {
+  username = &quot;admin&quot;
+  password = &quot;C1sco12345&quot;
+  debug    = true
+}
+
+resource &quot;ciscoapphosting_app&quot; &quot;swiss_knife&quot; {
+  host     = &quot;198.18.9.12&quot;
+  name     = &quot;swiss_knife&quot;
+  platform = &quot;c8000v&quot;
+
+  image    = &quot;bootflash:swiss-knife-alpine.tar&quot;
+
+  vpg_id   = 0
+  vpg_ip   = &quot;198.18.101.1&quot;
+  vpg_mask = &quot;255.255.255.0&quot;
+
+  guest_ip      = &quot;198.18.101.5&quot;
+  guest_netmask = &quot;255.255.255.0&quot;
+  guest_gateway = &quot;198.18.101.1&quot;
+  nameserver0   = &quot;8.8.8.8&quot;
+
+  docker = true
+}
+</code></pre>
+<p>Review the file:</p>
+<pre><code class="language-bash">cat main.tf
+</code></pre>
+<p>Confirm:</p>
+<ul>
+<li>Correct router IP</li>
+<li>Correct image name on <code>bootflash</code></li>
+<li><code>vpg_id = 0</code></li>
+</ul>
+<hr />
+<h2 id="step-10-terraform-init">Step 10: Terraform Init<a class="headerlink" href="#step-10-terraform-init" title="Permanent link">&para;</a></h2>
+<p>Initialize the Terraform project:</p>
+<pre><code class="language-bash">terraform init
+</code></pre>
+<p>Expected output includes:</p>
+<pre><code class="language-text">Warning: Provider development overrides are in effect
+</code></pre>
+<p>✅ This is expected
+❌ Do not attempt to remove this warning</p>
+<hr />
+<h2 id="step-11-terraform-plan-and-apply">Step 11: Terraform Plan and Apply<a class="headerlink" href="#step-11-terraform-plan-and-apply" title="Permanent link">&para;</a></h2>
+<p>Review the execution plan:</p>
+<pre><code class="language-bash">terraform plan
+</code></pre>
+<p>Enable <code>terminal monitor</code> on cat8kv-task-2 to observe the app hosting logs</p>
+<p>Apply the configuration:</p>
+<pre><code class="language-bash">terraform apply
+</code></pre>
+<p>When prompted, type:</p>
+<pre><code class="language-text">yes
+</code></pre>
+<p>Expected output:</p>
+<pre><code class="language-text">Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+</code></pre>
+<hr />
+<h2 id="step-12-verify-deployment-on-the-router">Step 12: Verify Deployment on the Router<a class="headerlink" href="#step-12-verify-deployment-on-the-router" title="Permanent link">&para;</a></h2>
+<p>On the cat8Kv-task-2 router, verify the application and networking:</p>
+<pre><code class="language-bash">show app-hosting list
+show run interface VirtualPortGroup0
+show run | section ospf
+</code></pre>
+<p>You should see:</p>
+<ul>
+<li>App state: <strong>RUNNING</strong></li>
+<li><code>VirtualPortGroup0</code> configured with IP address</li>
+<li><code>router ospf 1</code> with a network statement for the VPG IP</li>
+</ul>
+<p>Connect to the container and explore</p>
+<pre><code class="language-bash">app-hosting connect appid swiss_knife session /bin/bash
+</code></pre>
+<h2 id="step-13-install-wireshark-container">Step 13: Install Wireshark container<a class="headerlink" href="#step-13-install-wireshark-container" title="Permanent link">&para;</a></h2>
+<p>Update and Review <code>main.tf</code> \
+Paste the following configuration <strong>as provided</strong> at the end of main.tf created above (modify IP addresses only if instructed):</p>
+<pre><code class="language-bash">nano main.tf
+</code></pre>
+<pre><code class="language-hcl">
+resource &quot;ciscoapphosting_app&quot; &quot;wireshark&quot; {
+  host     = &quot;198.18.9.12&quot;
+  name     = &quot;wireshark&quot;
+  platform = &quot;c8000v&quot;
+
+  image    = &quot;bootflash:wireshark.tar&quot;
+
+  vpg_id   = 0
+  vpg_ip   = &quot;198.18.101.1&quot;
+  vpg_mask = &quot;255.255.255.0&quot;
+
+  guest_ip      = &quot;198.18.101.6&quot;
+  guest_netmask = &quot;255.255.255.0&quot;
+  guest_gateway = &quot;198.18.101.1&quot;
+  nameserver0   = &quot;8.8.8.8&quot;
+
+  docker = true
+}
+</code></pre>
+<p>Review the file:</p>
+<pre><code class="language-bash">cat main.tf
+</code></pre>
+<p>Confirm:</p>
+<ul>
+<li>Correct router IP</li>
+<li>Correct image name on <code>bootflash</code></li>
+<li><code>vpg_id = 0</code></li>
+</ul>
+<hr />
+<h2 id="step-14-terraform-init">Step 14: Terraform Init<a class="headerlink" href="#step-14-terraform-init" title="Permanent link">&para;</a></h2>
+<p>Initialize the Terraform project:</p>
+<pre><code class="language-bash">terraform init
+</code></pre>
+<p>Expected output includes:</p>
+<pre><code class="language-text">Warning: Provider development overrides are in effect
+</code></pre>
+<p>✅ This is expected
+❌ Do not attempt to remove this warning</p>
+<hr />
+<h2 id="step-15-terraform-plan-and-apply">Step 15: Terraform Plan and Apply<a class="headerlink" href="#step-15-terraform-plan-and-apply" title="Permanent link">&para;</a></h2>
+<p>Review the execution plan:</p>
+<pre><code class="language-bash">terraform plan
+</code></pre>
+<p>Apply the configuration:</p>
+<pre><code class="language-bash">terraform apply
+</code></pre>
+<p>When prompted, type:</p>
+<pre><code class="language-text">yes
+</code></pre>
+<p>Expected output:</p>
+<pre><code class="language-text">Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+</code></pre>
+<hr />
+<h2 id="step-16-verify-deployment-on-the-router">Step 16: Verify Deployment on the Router<a class="headerlink" href="#step-16-verify-deployment-on-the-router" title="Permanent link">&para;</a></h2>
+<p>On the cat8Kv-task-2 router, verify the application and networking:</p>
+<pre><code class="language-bash">show app-hosting list
+</code></pre>
+<p>You should see:</p>
+<ul>
+<li>App state: <strong>RUNNING</strong></li>
+<li>Now we have 2 containers running</li>
+</ul>
+<p>Connect to the container and explore</p>
+<pre><code class="language-bash">app-hosting connect appid wireshark session /bin/bash
+</code></pre>
+<hr />
+<p><a href="../../">⬅️ Return to Main Menu</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../task-1/" class="btn btn-neutral float-left" title="Task 1 – App-Hosting Deployment (Manual)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../task-3/" class="btn btn-neutral float-right" title="Task 3 – Kubernetes Orchestration (Placeholder)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../task-1/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../task-3/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

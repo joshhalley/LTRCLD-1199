@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Cisco Live Lab" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Task 12 – Telegraf Monitoring - LTRCLD-1199 – Containers on IOS-XE</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Task 12 \u2013 Telegraf Monitoring";
+        var mkdocs_page_input_path = "tasks/task-12-telegraf.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> LTRCLD-1199 – Containers on IOS-XE
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Overview</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../containers/">Container Details</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Tasks</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../task-1/">Task 1 – App-Hosting Deployment (Manual)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-2/">Task 2 – App-Hosting Automation with Terraform</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-3/">Task 3 – Kubernetes Orchestration (Placeholder)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-4-basic/">Task 4 – Basic Network Validation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-5-mtr/">Task 5 – MTR Path Analysis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-6-web-ts/">Task 6 – Web Testing & Troubleshooting</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-7-socat/">Task 7 – socat Practical Use Cases</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-8-kcat/">Task 8 – kcat (Kafka CAT)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-9-mrtg/">Task 9 – MRTG Interface Monitoring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-10-iperf3/">Task 10 – iPerf3 Performance Testing</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-11-wireshark/">Task 11 – Wireshark Live Packet Capture</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Task 12 – Telegraf Monitoring</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#objective">Objective</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#page-index">Page Index</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#part-1-container-service-monitoring">Part 1 – Container &amp; Service Monitoring</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#part-2-router-monitoring-via-snmp">Part 2 – Router Monitoring via SNMP</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#lab-architecture">Lab Architecture</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#logical-components">Logical Components</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">LTRCLD-1199 – Containers on IOS-XE</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Lab Tasks</li>
+      <li class="breadcrumb-item active">Task 12 – Telegraf Monitoring</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="task-12-telegraf-monitoring-with-prometheus-exporter">Task 12: Telegraf Monitoring with Prometheus Exporter<a class="headerlink" href="#task-12-telegraf-monitoring-with-prometheus-exporter" title="Permanent link">&para;</a></h1>
+<p><a href="../../">⬅ Back to Main Menu</a></p>
+<hr />
+<h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h2>
+<p>In this task, you deploy and extend a <strong>Telegraf-based monitoring probe</strong> running inside a container to demonstrate how <strong>modern telemetry pipelines</strong> can be built on edge devices.</p>
+<p>You will:</p>
+<ul>
+<li>Collect <strong>container self-metrics</strong> (CPU, memory, disk, network)</li>
+<li>Perform <strong>ICMP reachability</strong> and <strong>HTTP/HTTPS availability</strong> checks</li>
+<li>Expose metrics via a <strong>Prometheus <code>/metrics</code> endpoint</strong></li>
+<li>Extend the same probe to collect <strong>router metrics using SNMP</strong></li>
+<li>Visualize <strong>both container and router metrics</strong> centrally using <strong>Prometheus and Grafana</strong></li>
+</ul>
+<p>This task is divided into <strong>two continuous parts</strong> using the <strong>same Telegraf container</strong>.</p>
+<hr />
+<h2 id="page-index">Page Index<a class="headerlink" href="#page-index" title="Permanent link">&para;</a></h2>
+<h3 id="part-1-container-service-monitoring">Part 1 – Container &amp; Service Monitoring<a class="headerlink" href="#part-1-container-service-monitoring" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="#lab-architecture">Lab Architecture</a></li>
+<li><a href="#step-1-prepare-telegraf-configuration-directory">Step 1: Prepare Telegraf Configuration Directory</a></li>
+<li><a href="#step-2-create-base-telegraf-agent-configuration">Step 2: Create Base Telegraf Agent Configuration</a></li>
+<li><a href="#step-3-create-lab-configuration-container-ping-http">Step 3: Create Lab Configuration (Container, Ping, HTTP)</a></li>
+<li><a href="#step-4-validate-telegraf-configuration">Step 4: Validate Telegraf Configuration</a></li>
+<li><a href="#step-5-start-telegraf">Step 5: Start Telegraf</a></li>
+<li><a href="#step-6-verify-metrics-from-management-node">Step 6: Verify Metrics from Management Node</a></li>
+<li><a href="#step-7-visualize-container-metrics-in-grafana">Step 7: Visualize Container Metrics in Grafana</a></li>
+</ul>
+<h3 id="part-2-router-monitoring-via-snmp">Part 2 – Router Monitoring via SNMP<a class="headerlink" href="#part-2-router-monitoring-via-snmp" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="#step-8-extend-telegraf-with-snmp-monitoring">Step 8: Extend Telegraf with SNMP Monitoring</a></li>
+<li><a href="#step-9-validate-snmp-configuration">Step 9: Validate SNMP Configuration</a></li>
+<li><a href="#step-10-verify-snmp-metrics-export">Step 10: Verify SNMP Metrics Export</a></li>
+<li><a href="#step-11-visualize-router-metrics-in-grafana">Step 11: Visualize Router Metrics in Grafana</a></li>
+<li><a href="#lab-completion-criteria">Lab Completion Criteria</a></li>
+<li><a href="#key-takeaway">Key Takeaway</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+<hr />
+<h2 id="lab-architecture">Lab Architecture<a class="headerlink" href="#lab-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="logical-components">Logical Components<a class="headerlink" href="#logical-components" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Telegraf Container (Swiss-Knife)</strong></p>
+</li>
+<li>
+<p>Collects container metrics</p>
+</li>
+<li>Executes ICMP and HTTP probes</li>
+<li>Polls routers using SNMP</li>
+<li>Exposes <code>/metrics</code> on port <code>9273</code></li>
+<li>
+<p><strong>Management Node</strong></p>
+</li>
+<li>
+<p>Prometheus (scrapes metrics)</p>
+</li>
+<li>Grafana (visualization)</li>
+<li>
+<p><strong>External Targets</strong></p>
+</li>
+<li>
+<p>Public IPs (ICMP)</p>
+</li>
+<li>Public / internal HTTP services</li>
+<li>IOS-XE routers (SNMP)</li>
+</ul>
+<hr />
+<h1 id="part-1-container-service-monitoring_1">Part 1 – Container &amp; Service Monitoring<a class="headerlink" href="#part-1-container-service-monitoring_1" title="Permanent link">&para;</a></h1>
+<h2 id="step-1-prepare-telegraf-configuration-directory">Step 1: Prepare Telegraf Configuration Directory<a class="headerlink" href="#step-1-prepare-telegraf-configuration-directory" title="Permanent link">&para;</a></h2>
+<p>Connect to the <strong>Swiss-Knife container hosted on Cat8Kv-Task-2</strong>:</p>
+<pre><code class="language-bash">ssh 198.18.1.12
+app-hosting connect appid swiss_knife session /bin/bash
+</code></pre>
+<p>Create the Telegraf configuration directory:</p>
+<pre><code class="language-bash">mkdir -p /etc/telegraf/telegraf.d
+</code></pre>
+<hr />
+<h2 id="step-2-create-base-telegraf-agent-configuration">Step 2: Create Base Telegraf Agent Configuration<a class="headerlink" href="#step-2-create-base-telegraf-agent-configuration" title="Permanent link">&para;</a></h2>
+<p>Create the global Telegraf agent configuration:</p>
+<pre><code class="language-bash">cat &gt; /etc/telegraf/telegraf.conf &lt;&lt;'EOF'
+[agent]
+  interval = &quot;10s&quot;
+  round_interval = true
+  metric_batch_size = 1000
+  metric_buffer_limit = 10000
+  flush_interval = &quot;10s&quot;
+EOF
+</code></pre>
+<p>This file defines <strong>global agent behavior</strong> only.
+All inputs and outputs are defined under <code>telegraf.d</code>.</p>
+<hr />
+<h2 id="step-3-create-lab-configuration-container-ping-http">Step 3: Create Lab Configuration (Container, Ping, HTTP)<a class="headerlink" href="#step-3-create-lab-configuration-container-ping-http" title="Permanent link">&para;</a></h2>
+<p>Edit the lab configuration file:</p>
+<pre><code class="language-bash">vi /etc/telegraf/telegraf.d/lab.conf
+</code></pre>
+<h3 id="labconf"><code>lab.conf</code><a class="headerlink" href="#labconf" title="Permanent link">&para;</a></h3>
+<pre><code class="language-toml">[agent]
+  interval = &quot;10s&quot;
+  round_interval = true
+  flush_interval = &quot;10s&quot;
+  hostname = &quot;swiss-knife-monitor&quot;
+  omit_hostname = false
+
+###############################################################################
+# A) Container Self-Monitoring
+###############################################################################
+
+[[inputs.cpu]]
+  percpu = true
+  totalcpu = true
+
+[[inputs.mem]]
+
+[[inputs.net]]
+
+[[inputs.disk]]
+  ignore_fs = [&quot;tmpfs&quot;, &quot;devtmpfs&quot;, &quot;overlay&quot;]
+
+###############################################################################
+# B) Network Reachability (ICMP)
+###############################################################################
+
+[[inputs.ping]]
+  urls = [
+    &quot;8.8.8.8&quot;,
+    &quot;1.1.1.1&quot;,
+    &quot;198.18.5.101&quot;
+  ]
+  count = 3
+  timeout = 2.0
+  method = &quot;native&quot;
+
+###############################################################################
+# C) HTTP / HTTPS Availability
+###############################################################################
+
+[[inputs.http_response]]
+  urls = [
+    &quot;https://www.google.com&quot;,
+    &quot;https://www.cloudflare.com&quot;,
+    &quot;http://198.18.5.101:3000&quot;
+  ]
+  response_timeout = &quot;5s&quot;
+  follow_redirects = true
+
+###############################################################################
+# D) Output – Prometheus Exporter
+###############################################################################
+
+[[outputs.prometheus_client]]
+  listen = &quot;:9273&quot;
+  path = &quot;/metrics&quot;
+</code></pre>
+<hr />
+<h2 id="step-4-validate-telegraf-configuration">Step 4: Validate Telegraf Configuration<a class="headerlink" href="#step-4-validate-telegraf-configuration" title="Permanent link">&para;</a></h2>
+<p>Validate the configuration before running Telegraf:</p>
+<pre><code class="language-bash">telegraf \
+  --config /etc/telegraf/telegraf.conf \
+  --config-directory /etc/telegraf/telegraf.d \
+  --test | head
+</code></pre>
+<h3 id="expected-result">Expected Result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h3>
+<ul>
+<li>No errors</li>
+<li>Both config files are loaded</li>
+<li>Inputs loaded: <code>cpu disk http_response mem net ping</code></li>
+<li>Sample metrics are generated</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong>
+<code>W! Outputs are not used in testing mode!</code> is expected.</p>
+</blockquote>
+<hr />
+<h2 id="step-5-start-telegraf">Step 5: Start Telegraf<a class="headerlink" href="#step-5-start-telegraf" title="Permanent link">&para;</a></h2>
+<p>Start Telegraf in continuous mode:</p>
+<pre><code class="language-bash">telegraf \
+  --config /etc/telegraf/telegraf.conf \
+  --config-directory /etc/telegraf/telegraf.d
+</code></pre>
+<p>Metrics are now exposed at:
+http://198.18.101.5:9273/metrics</p>
+<hr />
+<h2 id="step-6-verify-metrics-from-lab-ubuntu-node">Step 6: Verify Metrics from LAB Ubuntu Node<a class="headerlink" href="#step-6-verify-metrics-from-lab-ubuntu-node" title="Permanent link">&para;</a></h2>
+<p>From the <strong>LAB Ubuntu node</strong>:</p>
+<pre><code class="language-bash">curl http://198.18.101.5:9273/metrics | head
+</code></pre>
+<p>Verify Prometheus targets:</p>
+<pre><code class="language-bash">curl http://198.18.5.101:9090/api/v1/targets
+</code></pre>
+<hr />
+<h2 id="step-7-visualize-container-metrics-in-grafana">Step 7: Visualize Container Metrics in Grafana<a class="headerlink" href="#step-7-visualize-container-metrics-in-grafana" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Open Grafana:</li>
+</ol>
+<pre><code class="language-text">http://198.18.1.101:3000
+</code></pre>
+<p>The above link can be opned directly from the LAB PC</p>
+<p>Login: <code>admin / C1sco12345</code></p>
+<ol>
+<li>Navigate to:</li>
+</ol>
+<pre><code class="language-text">Dashboards → Swiss-Knife Telegraf Lab
+</code></pre>
+<h3 id="expected-observations">Expected Observations<a class="headerlink" href="#expected-observations" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Container CPU and memory graphs update in real time</li>
+<li>Network RX/TX traffic is visible</li>
+<li>Ping and HTTP checks reflect reachability and availability</li>
+</ul>
+<h2 id="_1"><img alt="Example" src="../../images/self-telegraf.jpg" /><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h1 id="part-2-router-monitoring-via-snmp_1">Part 2 – Router Monitoring via SNMP<a class="headerlink" href="#part-2-router-monitoring-via-snmp_1" title="Permanent link">&para;</a></h1>
+<h2 id="step-8-extend-telegraf-with-snmp-monitoring">Step 8: Extend Telegraf with SNMP Monitoring<a class="headerlink" href="#step-8-extend-telegraf-with-snmp-monitoring" title="Permanent link">&para;</a></h2>
+<p>Edit the existing lab configuration:</p>
+<pre><code class="language-bash">nano /etc/telegraf/telegraf.d/lab.conf
+</code></pre>
+<p>Append the SNMP configuration <strong>at the end of the file</strong> (Cat8Kv-Task-1 / Task-2 / Task-3).</p>
+<pre><code class="language-toml">###############################################################################
+# SNMP Monitoring – Cat8Kv-Task-1
+###############################################################################
+
+[[inputs.snmp]]
+  agents = [ &quot;udp://198.18.6.11:161&quot; ]
+  version = 2
+  community = &quot;public&quot;
+  interval = &quot;30s&quot;
+  timeout = &quot;5s&quot;
+  retries = 2
+
+  name = &quot;snmp&quot;
+  agent_host_tag = &quot;agent_host&quot;
+
+  # GigabitEthernet5 (ifIndex 2)
+  [[inputs.snmp.field]]
+    name = &quot;ifInOctets_gi5&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.10.2&quot;
+
+  [[inputs.snmp.field]]
+    name = &quot;ifOutOctets_gi5&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.16.2&quot;
+
+  # GigabitEthernet6 (ifIndex 3)
+  [[inputs.snmp.field]]
+    name = &quot;ifInOctets_gi6&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.10.3&quot;
+
+  [[inputs.snmp.field]]
+    name = &quot;ifOutOctets_gi6&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.16.3&quot;
+
+  # CPU – 5 minute average
+  [[inputs.snmp.field]]
+    name = &quot;cpu_5min&quot;
+    oid  = &quot;1.3.6.1.4.1.9.2.1.58.0&quot;
+
+  # Memory Pool 1
+  [[inputs.snmp.field]]
+    name = &quot;mem_pool1_used&quot;
+    oid  = &quot;1.3.6.1.4.1.9.9.48.1.1.1.5.1&quot;
+
+  [[inputs.snmp.field]]
+    name = &quot;mem_pool1_free&quot;
+    oid  = &quot;1.3.6.1.4.1.9.9.48.1.1.1.6.1&quot;
+
+###############################################################################
+# SNMP Monitoring – Cat8Kv-Task-2
+###############################################################################
+
+[[inputs.snmp]]
+  agents = [ &quot;udp://198.18.7.12:161&quot; ]
+  version = 2
+  community = &quot;public&quot;
+  interval = &quot;30s&quot;
+  timeout = &quot;5s&quot;
+  retries = 2
+
+  name = &quot;snmp&quot;
+  agent_host_tag = &quot;agent_host&quot;
+
+  # GigabitEthernet5 (ifIndex 2)
+  [[inputs.snmp.field]]
+    name = &quot;ifInOctets_gi5&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.10.2&quot;
+
+  [[inputs.snmp.field]]
+    name = &quot;ifOutOctets_gi5&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.16.2&quot;
+
+  # GigabitEthernet6 (ifIndex 3)
+  [[inputs.snmp.field]]
+    name = &quot;ifInOctets_gi6&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.10.3&quot;
+
+  [[inputs.snmp.field]]
+    name = &quot;ifOutOctets_gi6&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.16.3&quot;
+
+  # CPU – 5 minute average
+  [[inputs.snmp.field]]
+    name = &quot;cpu_5min&quot;
+    oid  = &quot;1.3.6.1.4.1.9.2.1.58.0&quot;
+
+  # Memory Pool 1
+  [[inputs.snmp.field]]
+    name = &quot;mem_pool1_used&quot;
+    oid  = &quot;1.3.6.1.4.1.9.9.48.1.1.1.5.1&quot;
+
+  [[inputs.snmp.field]]
+    name = &quot;mem_pool1_free&quot;
+    oid  = &quot;1.3.6.1.4.1.9.9.48.1.1.1.6.1&quot;
+
+###############################################################################
+# SNMP Monitoring – Cat8Kv-Task-3
+###############################################################################
+
+[[inputs.snmp]]
+  agents = [ &quot;udp://198.18.8.13:161&quot; ]
+  version = 2
+  community = &quot;public&quot;
+  interval = &quot;30s&quot;
+  timeout = &quot;5s&quot;
+  retries = 2
+
+  name = &quot;snmp&quot;
+  agent_host_tag = &quot;agent_host&quot;
+
+  # GigabitEthernet5 (ifIndex 2)
+  [[inputs.snmp.field]]
+    name = &quot;ifInOctets_gi5&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.10.2&quot;
+
+  [[inputs.snmp.field]]
+    name = &quot;ifOutOctets_gi5&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.16.2&quot;
+
+  # GigabitEthernet6 (ifIndex 3)
+  [[inputs.snmp.field]]
+    name = &quot;ifInOctets_gi6&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.10.3&quot;
+
+  [[inputs.snmp.field]]
+    name = &quot;ifOutOctets_gi6&quot;
+    oid  = &quot;1.3.6.1.2.1.2.2.1.16.3&quot;
+
+  # CPU – 5 minute average
+  [[inputs.snmp.field]]
+    name = &quot;cpu_5min&quot;
+    oid  = &quot;1.3.6.1.4.1.9.2.1.58.0&quot;
+
+  # Memory Pool 1
+  [[inputs.snmp.field]]
+    name = &quot;mem_pool1_used&quot;
+    oid  = &quot;1.3.6.1.4.1.9.9.48.1.1.1.5.1&quot;
+
+  [[inputs.snmp.field]]
+    name = &quot;mem_pool1_free&quot;
+    oid  = &quot;1.3.6.1.4.1.9.9.48.1.1.1.6.1&quot;
+</code></pre>
+<hr />
+<h2 id="step-9-validate-snmp-configuration">Step 9: Validate SNMP Configuration<a class="headerlink" href="#step-9-validate-snmp-configuration" title="Permanent link">&para;</a></h2>
+<p>Test SNMP polling:</p>
+<pre><code class="language-bash">telegraf \
+  --config /etc/telegraf/telegraf.conf \
+  --config-directory /etc/telegraf/telegraf.d \
+  --test | grep snmp
+</code></pre>
+<p>Start Telegraf in continuous mode:</p>
+<pre><code class="language-bash">telegraf \
+  --config /etc/telegraf/telegraf.conf \
+  --config-directory /etc/telegraf/telegraf.d
+</code></pre>
+<h3 id="expected-output">Expected Output<a class="headerlink" href="#expected-output" title="Permanent link">&para;</a></h3>
+<p>Metrics such as:</p>
+<ul>
+<li><code>snmp_ifInOctets_gi5</code></li>
+<li><code>snmp_ifOutOctets_gi6</code></li>
+<li><code>snmp_cpu_5min</code></li>
+<li><code>snmp_mem_pool1_used</code></li>
+</ul>
+<hr />
+<h2 id="step-10-verify-snmp-metrics-export">Step 10: Verify SNMP Metrics Export<a class="headerlink" href="#step-10-verify-snmp-metrics-export" title="Permanent link">&para;</a></h2>
+<p>From the LAB Ubuntu node:</p>
+<pre><code class="language-bash">curl http://198.18.101.5:9273/metrics | grep snmp | head
+</code></pre>
+<p>Verify Prometheus ingestion:</p>
+<pre><code class="language-bash">curl http://198.18.5.101:9090/api/v1/series -d 'match[]=snmp_cpu_5min'
+</code></pre>
+<hr />
+<h2 id="step-11-visualize-router-metrics-in-grafana">Step 11: Visualize Router Metrics in Grafana<a class="headerlink" href="#step-11-visualize-router-metrics-in-grafana" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Open Grafana</li>
+<li>Navigate to:</li>
+</ol>
+<pre><code class="language-text">Dashboards → Cat8Kv SNMP via Telegraf
+</code></pre>
+<ol>
+<li>Select router from the <strong>router dropdown</strong> (e.g. <code>198.18.7.11</code>)</li>
+</ol>
+<h3 id="expected-results">Expected Results<a class="headerlink" href="#expected-results" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Gi5 / Gi6 throughput graphs populate</li>
+<li>CPU (5-minute average) updates</li>
+<li>Memory used/free graphs update</li>
+</ul>
+<p><img alt="Example" src="../../images/snmp-telegraf.jpg" /></p>
+<hr />
+<h2 id="lab-completion-criteria">Lab Completion Criteria<a class="headerlink" href="#lab-completion-criteria" title="Permanent link">&para;</a></h2>
+<p>You have successfully completed this lab when:</p>
+<ul>
+<li>Telegraf exports container and SNMP metrics</li>
+<li>Prometheus ingests all metrics</li>
+<li>Grafana visualizes container and router telemetry</li>
+<li>Router metrics correlate with legacy MRTG behavior</li>
+</ul>
+<hr />
+<h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">&para;</a></h2>
+<p>This task demonstrates how <strong>traditional monitoring (SNMP/MRTG)</strong> and <strong>modern telemetry</strong> can coexist by:</p>
+<ul>
+<li>Using a containerized probe at the edge</li>
+<li>Exporting metrics via Prometheus</li>
+<li>Visualizing correlated infrastructure and application health</li>
+</ul>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>In this task, you deployed and extended a <strong>Telegraf monitoring container</strong> to:</p>
+<ul>
+<li>Monitor container health and services</li>
+<li>Perform network reachability and availability checks</li>
+<li>Collect router metrics using SNMP</li>
+<li>Export all telemetry using a <strong>Prometheus-native model</strong></li>
+</ul>
+<p>This forms the foundation for scalable, vendor-neutral observability on edge platforms.</p>
+<hr />
+<p><a href="../../">⬅ Return to Main Menu</a></p>
+<hr />
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../task-11-wireshark/" class="btn btn-neutral float-left" title="Task 11 – Wireshark Live Packet Capture"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../task-11-wireshark/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

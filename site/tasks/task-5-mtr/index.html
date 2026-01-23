@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Cisco Live Lab" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Task 5 – MTR Path Analysis - LTRCLD-1199 – Containers on IOS-XE</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Task 5 \u2013 MTR Path Analysis";
+        var mkdocs_page_input_path = "tasks/task-5-mtr.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> LTRCLD-1199 – Containers on IOS-XE
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Overview</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../containers/">Container Details</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Tasks</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../task-1/">Task 1 – App-Hosting Deployment (Manual)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-2/">Task 2 – App-Hosting Automation with Terraform</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-3/">Task 3 – Kubernetes Orchestration (Placeholder)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-4-basic/">Task 4 – Basic Network Validation</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Task 5 – MTR Path Analysis</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#objective">Objective</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#page-index">Page Index</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-1-baseline-path-test-icmp">Step 1: Baseline Path Test (ICMP)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#mtr-commonly-used-options">MTR – Commonly Used Options</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-2-udp-based-path-test">Step 2: UDP-Based Path Test</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#dns-like-traffic-example">DNS-like traffic example</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#voice-video-sla-style-traffic">Voice / video / SLA-style traffic</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-3-tcp-based-path-test-most-realistic">Step 3: TCP-Based Path Test (Most Realistic)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#https-path-test">HTTPS path test</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#alternate-public-target">Alternate public target</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-4-mtr-using-hostnames">Step 4: MTR Using Hostnames</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#how-to-interpret-mtr-output">How to Interpret MTR Output</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#sample-output-reference">Sample Output (Reference)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#key-interpretation-rules">Key interpretation rules</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#loss-interpretation-cheat-sheet">Loss Interpretation Cheat Sheet</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#key-takeaways">Key Takeaways</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-6-web-ts/">Task 6 – Web Testing & Troubleshooting</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-7-socat/">Task 7 – socat Practical Use Cases</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-8-kcat/">Task 8 – kcat (Kafka CAT)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-9-mrtg/">Task 9 – MRTG Interface Monitoring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-10-iperf3/">Task 10 – iPerf3 Performance Testing</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-11-wireshark/">Task 11 – Wireshark Live Packet Capture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-12-telegraf/">Task 12 – Telegraf Monitoring</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">LTRCLD-1199 – Containers on IOS-XE</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Lab Tasks</li>
+      <li class="breadcrumb-item active">Task 5 – MTR Path Analysis</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="task-5-mtr-path-analysis-my-traceroute">Task 5: MTR Path Analysis (My Traceroute)<a class="headerlink" href="#task-5-mtr-path-analysis-my-traceroute" title="Permanent link">&para;</a></h1>
+<p><a href="../../">⬅ Back to Main Menu</a></p>
+<hr />
+<h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h2>
+<p>In this task, you will use <strong>MTR (My Traceroute)</strong> from the <strong>Swiss-Knife container</strong> to analyze:</p>
+<ul>
+<li>Network path visibility</li>
+<li>Packet loss behavior</li>
+<li>Latency trends across the path</li>
+</ul>
+<p>This task focuses on <strong>real troubleshooting workflows</strong>, not command syntax memorization.</p>
+<hr />
+<h2 id="page-index">Page Index<a class="headerlink" href="#page-index" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#step-1-baseline-path-test-icmp">Step 1: Baseline Path Test (ICMP)</a></li>
+<li><a href="#step-2-udp-based-path-test">Step 2: UDP-Based Path Test</a></li>
+<li><a href="#step-3-tcp-based-path-test-most-realistic">Step 3: TCP-Based Path Test (Most Realistic)</a></li>
+<li><a href="#step-4-mtr-using-hostnames">Step 4: MTR Using Hostnames</a></li>
+<li><a href="#how-to-interpret-mtr-output">How to Interpret MTR Output</a></li>
+<li><a href="#loss-interpretation-cheat-sheet">Loss Interpretation Cheat Sheet</a></li>
+<li><a href="#key-takeaways">Key Takeaways</a></li>
+</ul>
+<hr />
+<h2 id="step-1-baseline-path-test-icmp">Step 1: Baseline Path Test (ICMP)<a class="headerlink" href="#step-1-baseline-path-test-icmp" title="Permanent link">&para;</a></h2>
+<p>Connect to <strong>Cat8Kv-Task-1</strong> and access the Swiss-Knife container:</p>
+<pre><code class="language-bash">ssh 198.18.1.11
+app-hosting connect appid swiss_knife session /bin/bash
+</code></pre>
+<p>Run a baseline ICMP MTR to a public destination:</p>
+<pre><code class="language-bash">mtr -r -n -c 20 8.8.8.8
+</code></pre>
+<p><strong>Why this matters</strong></p>
+<ul>
+<li>Establishes basic reachability</li>
+<li>Shows hop-by-hop latency</li>
+<li>Acts as a baseline before deeper analysis</li>
+</ul>
+<h3 id="mtr-commonly-used-options">MTR – Commonly Used Options<a class="headerlink" href="#mtr-commonly-used-options" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Meaning</th>
+<th>Why it’s used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-n</code></td>
+<td>Numeric output (no DNS lookup)</td>
+<td>Faster results, avoids DNS delays</td>
+</tr>
+<tr>
+<td><code>-r</code></td>
+<td>Report mode (no interactive UI)</td>
+<td>Script-friendly, clean output</td>
+</tr>
+<tr>
+<td><code>-c &lt;count&gt;</code></td>
+<td>Number of probes to send</td>
+<td>Control test duration</td>
+</tr>
+<tr>
+<td><code>-w</code></td>
+<td>Wide report format</td>
+<td>Prevents column wrapping, improves readability</td>
+</tr>
+<tr>
+<td><code>-T</code></td>
+<td>Use TCP probes</td>
+<td>Test application-like paths</td>
+</tr>
+<tr>
+<td><code>-u</code></td>
+<td>Use UDP probes</td>
+<td>Test non-ICMP traffic behavior</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="step-2-udp-based-path-test">Step 2: UDP-Based Path Test<a class="headerlink" href="#step-2-udp-based-path-test" title="Permanent link">&para;</a></h2>
+<p>Run MTR using UDP to simulate application-like traffic.</p>
+<h3 id="dns-like-traffic-example">DNS-like traffic example<a class="headerlink" href="#dns-like-traffic-example" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">mtr -r -n -u -P 53 8.8.8.8
+</code></pre>
+<h3 id="voice-video-sla-style-traffic">Voice / video / SLA-style traffic<a class="headerlink" href="#voice-video-sla-style-traffic" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">mtr -r -n -u -P 16384 8.8.4.4
+</code></pre>
+<p><strong>When to use UDP MTR</strong></p>
+<ul>
+<li>SD-WAN SLA validation</li>
+<li>Voice / video path testing</li>
+<li>Comparing ICMP vs policy-based paths</li>
+</ul>
+<blockquote>
+<p>Note: UDP MTR does not send real application payloads.
+Some destinations may not respond — this is expected.</p>
+</blockquote>
+<hr />
+<h2 id="step-3-tcp-based-path-test-most-realistic">Step 3: TCP-Based Path Test (Most Realistic)<a class="headerlink" href="#step-3-tcp-based-path-test-most-realistic" title="Permanent link">&para;</a></h2>
+<p>TCP MTR is the <strong>most reliable</strong> method in enterprise and cloud networks.</p>
+<h3 id="https-path-test">HTTPS path test<a class="headerlink" href="#https-path-test" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">mtr -r -n -T -P 3000 198.18.5.101
+</code></pre>
+<h3 id="alternate-public-target">Alternate public target<a class="headerlink" href="#alternate-public-target" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">mtr -r -n -T -P 443 208.67.220.220
+</code></pre>
+<p><strong>Why TCP MTR is preferred</strong></p>
+<ul>
+<li>Traverses firewalls and NAT</li>
+<li>Matches real application behavior</li>
+<li>Aligns with SD-WAN and security policies</li>
+</ul>
+<hr />
+<h2 id="step-4-mtr-using-hostnames">Step 4: MTR Using Hostnames<a class="headerlink" href="#step-4-mtr-using-hostnames" title="Permanent link">&para;</a></h2>
+<p>You can also run MTR directly to hostnames:</p>
+<pre><code class="language-bash">mtr -r -T -P 443 www.cisco.com
+</code></pre>
+<p><strong>What happens</strong></p>
+<ul>
+<li>DNS is resolved once</li>
+<li>MTR traces to the resolved IP</li>
+<li>Useful for SaaS and cloud troubleshooting</li>
+</ul>
+<p><strong>Best practice</strong></p>
+<pre><code class="language-bash">dig www.google.com
+mtr -r -n -T -P 443 &lt;resolved-ip&gt;
+</code></pre>
+<hr />
+<h2 id="how-to-interpret-mtr-output">How to Interpret MTR Output<a class="headerlink" href="#how-to-interpret-mtr-output" title="Permanent link">&para;</a></h2>
+<h3 id="sample-output-reference">Sample Output (Reference)<a class="headerlink" href="#sample-output-reference" title="Permanent link">&para;</a></h3>
+<pre><code class="language-text">HOST: swissknife                  Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- 192.168.100.1              0.0%    20    0.4   0.4   0.3   0.6   0.1
+  2.|-- 198.18.6.10                0.0%    20    0.7   0.7   0.6   1.1   0.1
+  3.|-- 198.18.1.1                 0.0%    20    1.4   1.4   1.2   1.5   0.1
+  4.|-- 10.255.0.3                 0.0%    20    1.9   1.6   1.4   2.1   0.2
+  5.|-- ???                       100.0    20    0.0   0.0   0.0   0.0   0.0
+  6.|-- 8.8.8.8                    0.0%    20    7.5   7.7   6.6  15.1   2.6
+</code></pre>
+<h3 id="key-interpretation-rules">Key interpretation rules<a class="headerlink" href="#key-interpretation-rules" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>Destination matters most</strong></p>
+</li>
+<li>
+<p>If destination shows 0% loss → path is healthy</p>
+</li>
+<li>
+<p><strong><code>???</code> hops are normal</strong></p>
+</li>
+<li>
+<p>ICMP is often filtered or rate-limited</p>
+</li>
+<li>
+<p><strong>Latency trends matter</strong></p>
+</li>
+<li>
+<p>Gradual increase is normal</p>
+</li>
+<li>Sudden jump that continues indicates an issue</li>
+</ul>
+<hr />
+<h2 id="loss-interpretation-cheat-sheet">Loss Interpretation Cheat Sheet<a class="headerlink" href="#loss-interpretation-cheat-sheet" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loss at one hop only</td>
+<td>Ignore</td>
+</tr>
+<tr>
+<td>Loss continues to destination</td>
+<td>Real problem</td>
+</tr>
+<tr>
+<td><code>???</code> but destination reachable</td>
+<td>Normal behavior</td>
+</tr>
+<tr>
+<td>ICMP fails, TCP works</td>
+<td>ICMP filtered</td>
+</tr>
+<tr>
+<td>UDP fails, TCP works</td>
+<td>Expected</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="key-takeaways">Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permanent link">&para;</a></h2>
+<ul>
+<li>MTR provides <strong>path visibility</strong>, not application testing</li>
+<li>TCP MTR is the <strong>most reliable in real networks</strong></li>
+<li>Ignore loss unless it reaches the destination</li>
+<li><code>???</code> hops are expected in SP and cloud environments</li>
+</ul>
+<hr />
+<p><a href="../../">⬅ Return to Main Menu</a></p>
+<hr />
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../task-4-basic/" class="btn btn-neutral float-left" title="Task 4 – Basic Network Validation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../task-6-web-ts/" class="btn btn-neutral float-right" title="Task 6 – Web Testing & Troubleshooting">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../task-4-basic/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../task-6-web-ts/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

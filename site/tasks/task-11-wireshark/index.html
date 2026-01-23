@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Cisco Live Lab" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Task 11 – Wireshark Live Packet Capture - LTRCLD-1199 – Containers on IOS-XE</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Task 11 \u2013 Wireshark Live Packet Capture";
+        var mkdocs_page_input_path = "tasks/task-11-wireshark.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> LTRCLD-1199 – Containers on IOS-XE
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Overview</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../containers/">Container Details</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Tasks</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../task-1/">Task 1 – App-Hosting Deployment (Manual)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-2/">Task 2 – App-Hosting Automation with Terraform</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-3/">Task 3 – Kubernetes Orchestration (Placeholder)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-4-basic/">Task 4 – Basic Network Validation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-5-mtr/">Task 5 – MTR Path Analysis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-6-web-ts/">Task 6 – Web Testing & Troubleshooting</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-7-socat/">Task 7 – socat Practical Use Cases</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-8-kcat/">Task 8 – kcat (Kafka CAT)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-9-mrtg/">Task 9 – MRTG Interface Monitoring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-10-iperf3/">Task 10 – iPerf3 Performance Testing</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Task 11 – Wireshark Live Packet Capture</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#task-overview">Task Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-1-connect-to-the-wireshark-container">Step 1 – Connect to the Wireshark Container</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-2-enable-packet-capture-permissions-one-time-fix">Step 2 – Enable Packet Capture Permissions (One-Time Fix)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#explanation">Explanation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-3-restart-the-wireshark-application">Step 3 – Restart the Wireshark Application</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-4-configure-erspan-on-cat8kv-task-1">Step 4 – Configure ERSPAN on Cat8Kv-Task-1</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#41-create-an-acl-to-match-ssh-traffic">4.1 Create an ACL to Match SSH Traffic</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#42-configure-erspan-source-session">4.2 Configure ERSPAN Source Session</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#explanation_1">Explanation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-5-access-the-wireshark-web-gui">Step 5 – Access the Wireshark Web GUI</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-6-start-packet-capture">Step 6 – Start Packet Capture</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#explanation_2">Explanation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-7-generate-ssh-traffic">Step 7 – Generate SSH Traffic</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-8-observe-the-live-capture">Step 8 – Observe the Live Capture</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#what-you-have-demonstrated">What You Have Demonstrated</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-12-telegraf/">Task 12 – Telegraf Monitoring</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">LTRCLD-1199 – Containers on IOS-XE</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Lab Tasks</li>
+      <li class="breadcrumb-item active">Task 11 – Wireshark Live Packet Capture</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="task-11-wireshark-live-packet-capture-web-gui-erspan">Task 11: Wireshark Live Packet Capture (Web GUI + ERSPAN)<a class="headerlink" href="#task-11-wireshark-live-packet-capture-web-gui-erspan" title="Permanent link">&para;</a></h1>
+<p><a href="../../">⬅️ Back to Main Menu</a></p>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#task-overview">Task Overview</a></li>
+<li><a href="#step-1-connect-to-the-wireshark-container">Step 1 – Connect to the Wireshark Container</a></li>
+<li><a href="#step-2-enable-packet-capture-permissions-one-time-fix">Step 2 – Enable Packet Capture Permissions (One-Time Fix)</a></li>
+<li><a href="#step-3-restart-the-wireshark-application">Step 3 – Restart the Wireshark Application</a></li>
+<li><a href="#step-4-configure-erspan-on-cat8kv-task-1">Step 4 – Configure ERSPAN on Cat8Kv-Task-1</a></li>
+<li><a href="#step-5-access-the-wireshark-web-gui">Step 5 – Access the Wireshark Web GUI</a></li>
+<li><a href="#step-6-start-packet-capture">Step 6 – Start Packet Capture</a></li>
+<li><a href="#step-7-generate-ssh-traffic">Step 7 – Generate SSH Traffic</a></li>
+<li><a href="#step-8-observe-the-live-capture">Step 8 – Observe the Live Capture</a></li>
+<li><a href="#what-you-have-demonstrated">What You Have Demonstrated</a></li>
+</ul>
+<hr />
+<p>In this task, you will use <strong>Wireshark running inside a container</strong> to perform <strong>live packet capture</strong> from a remote router interface using <strong>ERSPAN</strong>.
+This demonstrates how App-Hosting on Cisco edge devices can be used for <strong>real-time traffic visibility</strong> without deploying external probes.</p>
+<hr />
+<h2 id="task-overview">Task Overview<a class="headerlink" href="#task-overview" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Wireshark container is deployed on <strong>Cat8Kv-Task-2</strong></li>
+<li>SSH traffic on <strong>Cat8Kv-Task-1 (GigabitEthernet6)</strong> is mirrored using <strong>ERSPAN</strong></li>
+<li>Mirrored packets are sent to the Wireshark container</li>
+<li>Traffic is analyzed live using the <strong>Wireshark Web GUI</strong></li>
+</ul>
+<hr />
+<h2 id="step-1-connect-to-the-wireshark-container">Step 1 – Connect to the Wireshark Container<a class="headerlink" href="#step-1-connect-to-the-wireshark-container" title="Permanent link">&para;</a></h2>
+<p>Login to <strong>Cat8Kv-Task-2</strong> and connect to the Wireshark container shell.</p>
+<pre><code class="language-bash">app-hosting connect appid wireshark session /bin/bash
+</code></pre>
+<p>You should now be inside the container.</p>
+<hr />
+<h2 id="step-2-enable-packet-capture-permissions-one-time-fix">Step 2 – Enable Packet Capture Permissions (One-Time Fix)<a class="headerlink" href="#step-2-enable-packet-capture-permissions-one-time-fix" title="Permanent link">&para;</a></h2>
+<p>Wireshark GUI uses a helper binary called <strong><code>dumpcap</code></strong> to capture packets.
+By default, it does not have the required Linux capabilities inside the container.</p>
+<p>Run the following commands <strong>inside the container</strong>:</p>
+<pre><code class="language-bash">sudo -i
+</code></pre>
+<pre><code class="language-bash">which dumpcap
+</code></pre>
+<pre><code class="language-bash">setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap
+</code></pre>
+<pre><code class="language-bash">getcap /usr/bin/dumpcap
+</code></pre>
+<h3 id="explanation">Explanation<a class="headerlink" href="#explanation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><code>sudo -i</code>
+  Switches to root inside the container.</p>
+</li>
+<li>
+<p><code>which dumpcap</code>
+  Confirms the location of the packet capture binary.</p>
+</li>
+<li>
+<p><code>setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap</code>
+  Grants packet capture permissions without running Wireshark as root.</p>
+</li>
+<li>
+<p><code>getcap /usr/bin/dumpcap</code>
+  Verifies that the permissions are applied correctly.</p>
+</li>
+</ul>
+<p>Expected output:</p>
+<pre><code>/usr/bin/dumpcap = cap_net_admin,cap_net_raw+eip
+</code></pre>
+<hr />
+<h2 id="step-3-restart-the-wireshark-application">Step 3 – Restart the Wireshark Application<a class="headerlink" href="#step-3-restart-the-wireshark-application" title="Permanent link">&para;</a></h2>
+<p>Exit the wireshark container and restart the application so the new permissions take effect.</p>
+<pre><code class="language-bash">app-hosting stop appid wireshark
+</code></pre>
+<pre><code class="language-bash">app-hosting start appid wireshark
+</code></pre>
+<hr />
+<h2 id="step-4-configure-erspan-on-cat8kv-task-1">Step 4 – Configure ERSPAN on Cat8Kv-Task-1<a class="headerlink" href="#step-4-configure-erspan-on-cat8kv-task-1" title="Permanent link">&para;</a></h2>
+<p>On <strong>Cat8Kv-Task-1</strong>, configure ERSPAN to mirror <strong>SSH traffic (TCP port 22)</strong> from <strong>GigabitEthernet6</strong>.</p>
+<h3 id="41-create-an-acl-to-match-ssh-traffic">4.1 Create an ACL to Match SSH Traffic<a class="headerlink" href="#41-create-an-acl-to-match-ssh-traffic" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">ip access-list extended 100
+ 10 permit tcp any any eq 22
+</code></pre>
+<hr />
+<h3 id="42-configure-erspan-source-session">4.2 Configure ERSPAN Source Session<a class="headerlink" href="#42-configure-erspan-source-session" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">monitor session 11 type erspan-source
+ no shutdown
+ source interface GigabitEthernet6
+ filter access-group 100
+ destination
+  erspan-id 11
+  mtu 1464
+  ip address 198.18.101.6
+  origin ip address 198.18.6.11
+</code></pre>
+<p>Verify ERSPAN Status</p>
+<pre><code class="language-bash">show monitor session all
+</code></pre>
+<h3 id="explanation_1">Explanation<a class="headerlink" href="#explanation_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Traffic on <strong>GigabitEthernet6</strong> is monitored</li>
+<li>Only <strong>SSH traffic</strong> is mirrored (via ACL 100)</li>
+<li>Packets are encapsulated using <strong>GRE (ERSPAN)</strong></li>
+<li>Destination is the <strong>Wireshark container IP</strong></li>
+</ul>
+<hr />
+<h2 id="step-5-access-the-wireshark-web-gui">Step 5 – Access the Wireshark Web GUI<a class="headerlink" href="#step-5-access-the-wireshark-web-gui" title="Permanent link">&para;</a></h2>
+<p>From your workstation:</p>
+<ol>
+<li>RDP into the Windows VM:</li>
+</ol>
+<p><code>198.18.9.20</code></p>
+<ol>
+<li>Open a browser and access:</li>
+</ol>
+<p><code>https://198.18.101.6:3001</code></p>
+<ol>
+<li>Launch <strong>Wireshark</strong> from the web desktop.</li>
+</ol>
+<hr />
+<h2 id="step-6-start-packet-capture">Step 6 – Start Packet Capture<a class="headerlink" href="#step-6-start-packet-capture" title="Permanent link">&para;</a></h2>
+<p>Select the capture interface (typically <code>eth0</code>) and apply the following <strong>display filter</strong>:</p>
+<pre><code class="language-text">(!(ip.src == 198.18.9.20)) &amp;&amp; !(ip.dst == 198.18.9.20)
+</code></pre>
+<h3 id="explanation_2">Explanation<a class="headerlink" href="#explanation_2" title="Permanent link">&para;</a></h3>
+<p>This filter removes RDP traffic generated by the Windows VM itself, keeping the capture focused on mirrored SSH traffic.</p>
+<hr />
+<h2 id="step-7-generate-ssh-traffic">Step 7 – Generate SSH Traffic<a class="headerlink" href="#step-7-generate-ssh-traffic" title="Permanent link">&para;</a></h2>
+<p>From the <strong>Lab Ubuntu VM</strong>, initiate an SSH session:</p>
+<pre><code class="language-bash">ssh admin@198.18.6.11
+</code></pre>
+<p>Login successfully to generate traffic.</p>
+<hr />
+<h2 id="step-8-observe-the-live-capture">Step 8 – Observe the Live Capture<a class="headerlink" href="#step-8-observe-the-live-capture" title="Permanent link">&para;</a></h2>
+<p>On the Wireshark GUI (RDP session):</p>
+<ul>
+<li>Observe packets arriving in real time</li>
+<li>Packets will appear <strong>GRE-encapsulated</strong> (ERSPAN)</li>
+<li>Inner packets will show <strong>TCP port 22 (SSH)</strong> traffic</li>
+</ul>
+<p><img alt="Image" src="../../images/wireshark.jpg" /></p>
+<p>This confirms successful <strong>remote live packet capture</strong> using ERSPAN.</p>
+<hr />
+<h2 id="what-you-have-demonstrated">What You Have Demonstrated<a class="headerlink" href="#what-you-have-demonstrated" title="Permanent link">&para;</a></h2>
+<p>✔ Wireshark running as a container on a Cisco edge device
+✔ Secure, browser-based packet analysis
+✔ ERSPAN-based traffic mirroring
+✔ Live troubleshooting without external probes</p>
+<p>This approach is ideal for <strong>on-demand troubleshooting</strong>, <strong>remote operations</strong>, and <strong>lab environments</strong> where deploying physical taps or SPAN ports is not feasible.</p>
+<hr />
+<p><a href="../../">⬅️ Return to Main Menu</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../task-10-iperf3/" class="btn btn-neutral float-left" title="Task 10 – iPerf3 Performance Testing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../task-12-telegraf/" class="btn btn-neutral float-right" title="Task 12 – Telegraf Monitoring">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../task-10-iperf3/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../task-12-telegraf/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
