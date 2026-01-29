@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Cisco Live Lab" /><link rel="canonical" href="https://joshhalley.github.io/LTRCLD-1199/tasks/task-7-socat/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Task 7 – socat Practical Use Cases - LTRCLD-1199 – Containers on IOS-XE</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Task 7 \u2013 socat Practical Use Cases";
+        var mkdocs_page_input_path = "tasks/task-7-socat.md";
+        var mkdocs_page_url = "/LTRCLD-1199/tasks/task-7-socat/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> LTRCLD-1199 – Containers on IOS-XE
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Overview</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../containers/">Container Details</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Tasks</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../task-1/">Task 1 – App-Hosting Deployment (Manual)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-2/">Task 2 – App-Hosting Automation with Terraform</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-3/">Task 3 – Kubernetes Orchestration (Placeholder)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-4-basic/">Task 4 – Basic Network Validation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-5-mtr/">Task 5 – MTR Path Analysis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-6-web-ts/">Task 6 – Web Testing & Troubleshooting</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Task 7 – socat Practical Use Cases</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#accessing-the-lab-containers">Accessing the Lab Containers</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#lab-setup-overview">Lab Setup Overview</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-1-ssh-to-both-the-routers-directly-from-the-pc">Step 1: SSH to both the Routers directly from the PC</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-2-access-the-swiss-knife-container">Step 2: Access the Swiss-Knife Container</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#use-case-1-simple-tcp-listener">Use Case 1: Simple TCP Listener</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#objective">Objective</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#command-listener-cat8kv-task-1-container">Command (Listener &gt; Cat8Kv-task-1 &gt; container)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#test-client-cat8kv-task-2-container">Test (Client &gt; Cat8Kv-task-2 &gt; container)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#expected-result">Expected Result</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#use-case-2-tcp-port-forwarding-proxy-verbosedebug">Use Case 2: TCP Port Forwarding (Proxy) + Verbose/Debug</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#objective_1">Objective</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#command-cat8kv-task-1-container">Command (Cat8Kv-task-1 &gt; container)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#optional-hex-dump-of-payloads">Optional (Hex dump of payloads)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#test-lab-ubuntu">Test (Lab Ubuntu)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#expected-result_1">Expected Result</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#use-case-3-udp-send-and-receive-ipv4-explicit">Use Case 3: UDP Send and Receive (IPv4 Explicit)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#objective_2">Objective</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#receiver-cat8kv-task-1-container">Receiver (Cat8Kv-task-1 &gt; container)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sender-cat8kv-task-2-container">Sender (Cat8Kv-task-2 &gt; container)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#expected-result_2">Expected Result</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#use-case-4-file-transfer-over-tcp-txt-one-way">Use Case 4: File Transfer Over TCP (TXT, One-Way)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#objective_3">Objective</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#receiver-cat8kv-task-1-container_1">Receiver (Cat8Kv-task-1 &gt; container)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sender-cat8kv-task-2-container_1">Sender (Cat8Kv-task-2 &gt; container)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#verify-on-receiver">Verify (on receiver)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#expected-result_3">Expected Result</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#use-case-5-inline-traffic-inspection-using-two-router-containers">Use Case 5: Inline Traffic Inspection Using Two Router Containers</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#objective_4">Objective</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#lab-topology">Lab Topology</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-1-start-backend-http-server-on-r2-container">Step 1: Start Backend HTTP Server on R2 Container</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-2-start-inline-inspection-proxy-on-r1-container">Step 2: Start Inline Inspection Proxy on R1 Container</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#optional-hex-dump-of-payloads_1">Optional (Hex dump of payloads)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-3-generate-traffic-from-lab-ubuntu">Step 3: Generate Traffic from Lab Ubuntu</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#expected-result_4">Expected Result</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-8-kcat/">Task 8 – kcat (Kafka CAT)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-9-mrtg/">Task 9 – MRTG Interface Monitoring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-10-iperf3/">Task 10 – iPerf3 Performance Testing</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-11-wireshark/">Task 11 – Wireshark Live Packet Capture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-12-telegraf/">Task 12 – Telegraf Monitoring</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">LTRCLD-1199 – Containers on IOS-XE</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Lab Tasks</li>
+      <li class="breadcrumb-item active">Task 7 – socat Practical Use Cases</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="task-7-socat-practical-use-cases">Task 7: socat Practical Use Cases<a class="headerlink" href="#task-7-socat-practical-use-cases" title="Permanent link">&para;</a></h1>
+<p><a href="../../">⬅️ Back to Main Menu</a></p>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#accessing-the-lab-containers">Accessing the Lab Containers</a></li>
+<li><a href="#use-case-1-simple-tcp-listener">Use Case 1: Simple TCP Listener</a></li>
+<li><a href="#use-case-2-tcp-port-forwarding-proxy-verbosedebug">Use Case 2: TCP Port Forwarding (Proxy) + Verbose/Debug</a></li>
+<li><a href="#use-case-3-udp-send-and-receive-ipv4-explicit">Use Case 3: UDP Send and Receive (IPv4 Explicit)</a></li>
+<li><a href="#use-case-4-file-transfer-over-tcp-txt-one-way">Use Case 4: File Transfer Over TCP (TXT, One-Way)</a></li>
+<li><a href="#use-case-5-inline-traffic-inspection-using-two-router-containers">Use Case 5: Inline Traffic Inspection Using Two Router Containers</a></li>
+</ul>
+<hr />
+<p><code>socat</code> is a versatile data-transfer utility that can relay traffic between sockets, files, and processes.<br />
+In this lab, <code>socat</code> is used to validate connectivity, simulate services, proxy traffic, generate traffic, transfer files, and inspect application flows running inside containers.</p>
+<p>Here’s a <strong>clean, lab-ready section</strong> you can drop <strong>immediately after the intro</strong>.
+It’s written in the same neutral, instructional tone you’ve been using elsewhere.</p>
+<hr />
+<h2 id="accessing-the-lab-containers">Accessing the Lab Containers<a class="headerlink" href="#accessing-the-lab-containers" title="Permanent link">&para;</a></h2>
+<p>For the following demonstrations, two <strong>Swiss-Knife containers</strong> are used.
+Each container is deployed on a separate <strong>Catalyst 8000v (C8Kv)</strong> router using App-Hosting.</p>
+<h3 id="lab-setup-overview">Lab Setup Overview<a class="headerlink" href="#lab-setup-overview" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Management IP</th>
+<th>Container IP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cat8kv-task-1</td>
+<td><code>198.18.1.11</code></td>
+<td><code>198.18.100.5</code></td>
+</tr>
+<tr>
+<td>cat8kv-task-2</td>
+<td><code>198.18.1.12</code></td>
+<td><code>198.18.101.5</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="step-1-ssh-to-both-the-routers-directly-from-the-pc">Step 1: SSH to both the Routers directly from the PC<a class="headerlink" href="#step-1-ssh-to-both-the-routers-directly-from-the-pc" title="Permanent link">&para;</a></h3>
+<p>Connect to the cat8kv-task-1 and cat8kv-task-2 hosting the swiss knife container.</p>
+<h3 id="step-2-access-the-swiss-knife-container">Step 2: Access the Swiss-Knife Container<a class="headerlink" href="#step-2-access-the-swiss-knife-container" title="Permanent link">&para;</a></h3>
+<p>Once logged into the router CLI, connect to the container shell:</p>
+<pre><code class="language-bash">app-hosting connect appid swiss_knife session /bin/bash
+</code></pre>
+<p>You will now be inside the Swiss-Knife container and can run <code>socat</code> commands directly.</p>
+<hr />
+<h3 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>All <code>socat</code> commands in this document are executed <strong>inside the Swiss-Knife container</strong></li>
+<li>Container IPs are reachable end-to-end and are used for traffic generation, proxying, and inspection</li>
+<li>Multiple terminal sessions are recommended when running listeners and clients simultaneously</li>
+</ul>
+<hr />
+<h2 id="use-case-1-simple-tcp-listener">Use Case 1: Simple TCP Listener<a class="headerlink" href="#use-case-1-simple-tcp-listener" title="Permanent link">&para;</a></h2>
+<h3 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h3>
+<p>Start a lightweight TCP service to receive and display incoming data.</p>
+<h3 id="command-listener-cat8kv-task-1-container">Command (Listener &gt; Cat8Kv-task-1 &gt; container)<a class="headerlink" href="#command-listener-cat8kv-task-1-container" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">socat -v TCP-LISTEN:8080,reuseaddr,fork STDOUT
+</code></pre>
+<h3 id="test-client-cat8kv-task-2-container">Test (Client &gt; Cat8Kv-task-2 &gt; container)<a class="headerlink" href="#test-client-cat8kv-task-2-container" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">echo &quot;hello from client&quot; | socat - TCP:198.18.100.5:8080
+</code></pre>
+<h3 id="expected-result">Expected Result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h3>
+<p>Incoming TCP connections are accepted and payloads are printed to the terminal.</p>
+<hr />
+<h2 id="use-case-2-tcp-port-forwarding-proxy-verbosedebug">Use Case 2: TCP Port Forwarding (Proxy) + Verbose/Debug<a class="headerlink" href="#use-case-2-tcp-port-forwarding-proxy-verbosedebug" title="Permanent link">&para;</a></h2>
+<h3 id="objective_1">Objective<a class="headerlink" href="#objective_1" title="Permanent link">&para;</a></h3>
+<p>Forward traffic from a local TCP port to a remote service while logging connection and payload details.
+We will SSH on port 9000 to the container's IP which will be redirected on port 22 to the router (cat8Kv-task-1) IP</p>
+<h3 id="command-cat8kv-task-1-container">Command (Cat8Kv-task-1 &gt; container)<a class="headerlink" href="#command-cat8kv-task-1-container" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">socat -d -d -v TCP-LISTEN:9000,reuseaddr,fork TCP:198.18.100.1:22
+</code></pre>
+<h3 id="optional-hex-dump-of-payloads">Optional (Hex dump of payloads)<a class="headerlink" href="#optional-hex-dump-of-payloads" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">socat -d -d -v -x TCP-LISTEN:9000,reuseaddr,fork TCP:198.18.100.1:22
+</code></pre>
+<h3 id="test-lab-ubuntu">Test (Lab Ubuntu)<a class="headerlink" href="#test-lab-ubuntu" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">ssh -p 9000 admin@198.18.100.5
+</code></pre>
+<p>Give router's password</p>
+<h3 id="expected-result_1">Expected Result<a class="headerlink" href="#expected-result_1" title="Permanent link">&para;</a></h3>
+<p>Traffic received on port <code>9000</code> on the swiss_knife is forwarded to the cat8Kv-task-1 router on port 22, while <code>socat</code> logs connection lifecycle and payloads.</p>
+<hr />
+<h2 id="use-case-3-udp-send-and-receive-ipv4-explicit">Use Case 3: UDP Send and Receive (IPv4 Explicit)<a class="headerlink" href="#use-case-3-udp-send-and-receive-ipv4-explicit" title="Permanent link">&para;</a></h2>
+<h3 id="objective_2">Objective<a class="headerlink" href="#objective_2" title="Permanent link">&para;</a></h3>
+<p>Generate and receive UDP traffic between endpoints.</p>
+<h3 id="receiver-cat8kv-task-1-container">Receiver (Cat8Kv-task-1 &gt; container)<a class="headerlink" href="#receiver-cat8kv-task-1-container" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">socat -d -d -v UDP4-LISTEN:5000,reuseaddr,fork STDOUT
+</code></pre>
+<h3 id="sender-cat8kv-task-2-container">Sender (Cat8Kv-task-2 &gt; container)<a class="headerlink" href="#sender-cat8kv-task-2-container" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">  echo &quot;UDP Test From Cat8Kv-task-2 $(date)&quot; | socat - UDP4:198.18.100.5:5000
+</code></pre>
+<h3 id="expected-result_2">Expected Result<a class="headerlink" href="#expected-result_2" title="Permanent link">&para;</a></h3>
+<p>UDP payloads are received and displayed in real time.</p>
+<hr />
+<h2 id="use-case-4-file-transfer-over-tcp-txt-one-way">Use Case 4: File Transfer Over TCP (TXT, One-Way)<a class="headerlink" href="#use-case-4-file-transfer-over-tcp-txt-one-way" title="Permanent link">&para;</a></h2>
+<h3 id="objective_3">Objective<a class="headerlink" href="#objective_3" title="Permanent link">&para;</a></h3>
+<p>Transfer a text file between containers using a raw TCP connection.</p>
+<h3 id="receiver-cat8kv-task-1-container_1">Receiver (Cat8Kv-task-1 &gt; container)<a class="headerlink" href="#receiver-cat8kv-task-1-container_1" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">socat -d -d -u TCP4-LISTEN:6000,reuseaddr,fork OPEN:/tmp/received.txt,creat,trunc
+</code></pre>
+<h3 id="sender-cat8kv-task-2-container_1">Sender (Cat8Kv-task-2 &gt; container)<a class="headerlink" href="#sender-cat8kv-task-2-container_1" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">printf &quot;hello-from-R1\n&quot; &gt; /tmp/send.txt
+socat -d -d -u FILE:/tmp/send.txt TCP4:198.18.100.5:6000
+</code></pre>
+<h3 id="verify-on-receiver">Verify (on receiver)<a class="headerlink" href="#verify-on-receiver" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">cat /tmp/received.txt
+</code></pre>
+<h3 id="expected-result_3">Expected Result<a class="headerlink" href="#expected-result_3" title="Permanent link">&para;</a></h3>
+<p>The receiver writes the file to <code>/tmp/received.txt</code> successfully.</p>
+<hr />
+<h2 id="use-case-5-inline-traffic-inspection-using-two-router-containers">Use Case 5: Inline Traffic Inspection Using Two Router Containers<a class="headerlink" href="#use-case-5-inline-traffic-inspection-using-two-router-containers" title="Permanent link">&para;</a></h2>
+<h3 id="objective_4">Objective<a class="headerlink" href="#objective_4" title="Permanent link">&para;</a></h3>
+<p>Inspect application traffic inline while forwarding it between two router-hosted containers.</p>
+<h3 id="lab-topology">Lab Topology<a class="headerlink" href="#lab-topology" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Cat8Kv-task-1 Container (Proxy / Inspection): <code>198.18.100.5</code></li>
+<li>Cat8Kv-task-2 Container (Backend Service): <code>198.18.101.5</code></li>
+<li>Lab Ubuntu (Client): <code>198.18.9.100</code></li>
+</ul>
+<hr />
+<h3 id="step-1-start-backend-http-server-on-r2-container">Step 1: Start Backend HTTP Server on R2 Container<a class="headerlink" href="#step-1-start-backend-http-server-on-r2-container" title="Permanent link">&para;</a></h3>
+<p>On <strong>Cat8Kv-task-2 container (<code>198.18.101.5</code>)</strong>:</p>
+<pre><code class="language-bash">python3 -m http.server 8080 --bind 0.0.0.0
+</code></pre>
+<h3 id="step-2-start-inline-inspection-proxy-on-r1-container">Step 2: Start Inline Inspection Proxy on R1 Container<a class="headerlink" href="#step-2-start-inline-inspection-proxy-on-r1-container" title="Permanent link">&para;</a></h3>
+<p>On <strong>Cat8Kv-task-1 container (<code>198.18.100.5</code>)</strong>:</p>
+<pre><code class="language-bash">socat -d -d -v TCP-LISTEN:8081,reuseaddr,fork TCP:198.18.101.5:8080
+</code></pre>
+<h3 id="optional-hex-dump-of-payloads_1">Optional (Hex dump of payloads)<a class="headerlink" href="#optional-hex-dump-of-payloads_1" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">socat -d -d -v -x TCP-LISTEN:8081,reuseaddr,fork TCP:198.18.101.5:8080
+</code></pre>
+<h3 id="step-3-generate-traffic-from-lab-ubuntu">Step 3: Generate Traffic from Lab Ubuntu<a class="headerlink" href="#step-3-generate-traffic-from-lab-ubuntu" title="Permanent link">&para;</a></h3>
+<p>From <strong>Lab Ubuntu (<code>198.18.9.100</code>)</strong>:</p>
+<pre><code class="language-bash">curl -v http://198.18.100.5:8081/
+</code></pre>
+<h3 id="expected-result_4">Expected Result<a class="headerlink" href="#expected-result_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Ubuntu receives the HTTP response from Cat8Kv-task-2 Container via Cat8Kv-task-1 Container</li>
+<li>Cat8Kv-task-1 Container prints request/response payloads due to <code>-v</code> (and hex if <code>-x</code>)</li>
+<li>Cat8Kv-task-2 Container logs incoming requests via the python HTTP server</li>
+</ul>
+<hr />
+<p><a href="../../">⬅️ Return to Main Menu</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../task-6-web-ts/" class="btn btn-neutral float-left" title="Task 6 – Web Testing & Troubleshooting"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../task-8-kcat/" class="btn btn-neutral float-right" title="Task 8 – kcat (Kafka CAT)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../task-6-web-ts/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../task-8-kcat/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Cisco Live Lab" /><link rel="canonical" href="https://joshhalley.github.io/LTRCLD-1199/tasks/task-4-basic/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Task 4 – Basic Network Validation - LTRCLD-1199 – Containers on IOS-XE</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Task 4 \u2013 Basic Network Validation";
+        var mkdocs_page_input_path = "tasks/task-4-basic.md";
+        var mkdocs_page_url = "/LTRCLD-1199/tasks/task-4-basic/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> LTRCLD-1199 – Containers on IOS-XE
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Overview</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../containers/">Container Details</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Tasks</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../task-1/">Task 1 – App-Hosting Deployment (Manual)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-2/">Task 2 – App-Hosting Automation with Terraform</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-3/">Task 3 – Kubernetes Orchestration (Placeholder)</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Task 4 – Basic Network Validation</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#fping-fast-icmp-reachability-testing">fping – Fast ICMP Reachability Testing</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-basic-reachability-test">1. Basic reachability test</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-continuous-packet-loss-and-latency-check">2. Continuous packet loss and latency check</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-test-multiple-hosts-at-once">3. Test multiple hosts at once</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dig-dns-query-and-resolution-testing">dig – DNS Query and Resolution Testing</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-basic-dns-lookup">1. Basic DNS lookup</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-query-a-specific-dns-server">2. Query a specific DNS server</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-query-specific-record-types">3. Query specific record types</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-short-script-friendly-output">4. Short, script-friendly output</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#nmap-practical-examples">nmap – Practical Examples</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#1-check-if-a-host-is-reachable-ping-scan">1. Check if a host is reachable (Ping scan)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-scan-specific-tcp-ports">2. Scan specific TCP ports</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-fast-scan-of-common-ports">3. Fast scan of common ports</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#how-fping-dig-and-nmap-fit-in-the-flow">How fping, dig and nmap fit in the flow</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-5-mtr/">Task 5 – MTR Path Analysis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-6-web-ts/">Task 6 – Web Testing & Troubleshooting</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-7-socat/">Task 7 – socat Practical Use Cases</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-8-kcat/">Task 8 – kcat (Kafka CAT)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-9-mrtg/">Task 9 – MRTG Interface Monitoring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-10-iperf3/">Task 10 – iPerf3 Performance Testing</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-11-wireshark/">Task 11 – Wireshark Live Packet Capture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-12-telegraf/">Task 12 – Telegraf Monitoring</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">LTRCLD-1199 – Containers on IOS-XE</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Lab Tasks</li>
+      <li class="breadcrumb-item active">Task 4 – Basic Network Validation</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="task-4-basic-network-validation-fping-dig-nmap">Task 4: Basic Network Validation (fping, dig, nmap)<a class="headerlink" href="#task-4-basic-network-validation-fping-dig-nmap" title="Permanent link">&para;</a></h1>
+<p><a href="../../">⬅️ Back to Main Menu</a></p>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#fping-fast-icmp-reachability-testing">fping – Fast ICMP Reachability Testing</a></li>
+<li><a href="#dig-dns-query-and-resolution-testing">dig – DNS Query and Resolution Testing</a></li>
+<li><a href="#nmap-practical-examples">nmap – Practical Examples</a></li>
+<li><a href="#1-check-if-a-host-is-reachable-ping-scan">1. Check if a host is reachable (Ping scan)</a></li>
+<li><a href="#2-scan-specific-tcp-ports">2. Scan specific TCP ports</a></li>
+<li><a href="#3-fast-scan-of-common-ports">3. Fast scan of common ports</a></li>
+<li><a href="#how-fping-dig-and-nmap-fit-in-the-flow">How fping, dig and nmap fit in the flow</a></li>
+</ul>
+<hr />
+<p>These tools answer two very specific questions:</p>
+<ul>
+<li><strong>fping</strong> → <em>Is the network path stable and fast?</em></li>
+<li><strong>dig</strong> → <em>Is DNS resolving correctly and consistently?</em></li>
+</ul>
+<p>They are often used <strong>before</strong> application troubleshooting.</p>
+<hr />
+<h2 id="fping-fast-icmp-reachability-testing">fping – Fast ICMP Reachability Testing<a class="headerlink" href="#fping-fast-icmp-reachability-testing" title="Permanent link">&para;</a></h2>
+<p><code>fping</code> is an enhanced alternative to <code>ping</code>, designed for <strong>speed and scale</strong>.</p>
+<p>Think of fping as:</p>
+<blockquote>
+<p><strong>“Can I test reachability to many hosts quickly and repeatedly?”</strong></p>
+</blockquote>
+<hr />
+<h3 id="1-basic-reachability-test">1. Basic reachability test<a class="headerlink" href="#1-basic-reachability-test" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Login to the Cat8Kv-Task-1 (ssh 198.18.1.11)</li>
+<li>Connect to the swiss_knife container</li>
+</ul>
+<pre><code class="language-bash">app-hosting connect appid swiss_knife session /bin/bash
+</code></pre>
+<pre><code class="language-bash">fping 8.8.8.8
+</code></pre>
+<p><strong>What this shows</strong></p>
+<ul>
+<li>ICMP reachability</li>
+<li>Immediate success or failure</li>
+</ul>
+<hr />
+<h3 id="2-continuous-packet-loss-and-latency-check">2. Continuous packet loss and latency check<a class="headerlink" href="#2-continuous-packet-loss-and-latency-check" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">fping -c 10 -p 100 8.8.8.8
+</code></pre>
+<p><strong>What this shows</strong></p>
+<ul>
+<li>Packet loss percentage</li>
+<li>Min / avg / max latency</li>
+</ul>
+<p><strong>When to use</strong></p>
+<ul>
+<li>Intermittent connectivity issues</li>
+<li>Path instability</li>
+</ul>
+<hr />
+<h3 id="3-test-multiple-hosts-at-once">3. Test multiple hosts at once<a class="headerlink" href="#3-test-multiple-hosts-at-once" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">fping 1.1.1.1 8.8.8.8 9.9.9.9
+</code></pre>
+<p><strong>Why this matters</strong></p>
+<ul>
+<li>Quickly compare reachability across paths</li>
+<li>Identify localized issues</li>
+</ul>
+<hr />
+<h2 id="dig-dns-query-and-resolution-testing">dig – DNS Query and Resolution Testing<a class="headerlink" href="#dig-dns-query-and-resolution-testing" title="Permanent link">&para;</a></h2>
+<p><code>dig</code> (Domain Information Groper) is a <strong>DNS inspection tool</strong>, not just a resolver.</p>
+<p>Think of dig as:</p>
+<blockquote>
+<p><strong>“What DNS answer did I get, and where did it come from?”</strong></p>
+</blockquote>
+<hr />
+<h3 id="1-basic-dns-lookup">1. Basic DNS lookup<a class="headerlink" href="#1-basic-dns-lookup" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">dig google.com
+</code></pre>
+<p><strong>What this shows</strong></p>
+<ul>
+<li>Query result</li>
+<li>TTL</li>
+<li>DNS server used</li>
+</ul>
+<hr />
+<h3 id="2-query-a-specific-dns-server">2. Query a specific DNS server<a class="headerlink" href="#2-query-a-specific-dns-server" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">dig @8.8.8.8 google.com
+</code></pre>
+<p><strong>What this shows</strong></p>
+<ul>
+<li>DNS response from a <strong>specific resolver</strong></li>
+<li>Useful for split-DNS troubleshooting</li>
+</ul>
+<hr />
+<h3 id="3-query-specific-record-types">3. Query specific record types<a class="headerlink" href="#3-query-specific-record-types" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">dig google.com A
+dig google.com AAAA
+</code></pre>
+<p><strong>When to use</strong></p>
+<ul>
+<li>IPv4 vs IPv6 validation</li>
+<li>Application connectivity issues</li>
+</ul>
+<hr />
+<h3 id="4-short-script-friendly-output">4. Short, script-friendly output<a class="headerlink" href="#4-short-script-friendly-output" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">dig +short google.com
+</code></pre>
+<p><strong>Why this matters</strong></p>
+<ul>
+<li>Clean output for automation</li>
+<li>Easy comparison across resolvers</li>
+</ul>
+<hr />
+<h2 id="nmap-practical-examples">nmap – Practical Examples<a class="headerlink" href="#nmap-practical-examples" title="Permanent link">&para;</a></h2>
+<p>nmap is used <strong>before</strong> tools like <code>nc</code>, <code>curl</code>, or <code>openssl</code> to answer:</p>
+<blockquote>
+<p><strong>“What ports and services are exposed?”</strong></p>
+</blockquote>
+<hr />
+<h2 id="1-check-if-a-host-is-reachable-ping-scan">1. Check if a host is reachable (Ping scan)<a class="headerlink" href="#1-check-if-a-host-is-reachable-ping-scan" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">nmap -sn 8.8.8.8
+</code></pre>
+<p><strong>What this does</strong></p>
+<ul>
+<li>Verifies basic host reachability</li>
+<li>Uses ICMP and/or TCP probes</li>
+</ul>
+<p><strong>When to use</strong></p>
+<ul>
+<li>Confirm host is alive before deeper scans</li>
+<li>Equivalent to router <code>ping</code>, but smarter</li>
+</ul>
+<hr />
+<h2 id="2-scan-specific-tcp-ports">2. Scan specific TCP ports<a class="headerlink" href="#2-scan-specific-tcp-ports" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">nmap -p 22,80,443 198.18.101.5
+</code></pre>
+<p><strong>What this tells you</strong></p>
+<ul>
+<li>Which ports are <strong>open / closed / filtered</strong></li>
+<li>Whether a service is reachable at all</li>
+</ul>
+<p><strong>Why this matters</strong></p>
+<blockquote>
+<p>If a port is closed here, <code>nc</code> and <code>curl</code> will fail too.</p>
+</blockquote>
+<hr />
+<h2 id="3-fast-scan-of-common-ports">3. Fast scan of common ports<a class="headerlink" href="#3-fast-scan-of-common-ports" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">nmap -F 198.18.101.6
+</code></pre>
+<p><strong>What this does</strong></p>
+<ul>
+<li>Scans top 100 common ports</li>
+<li>Faster and safer than full scans</li>
+</ul>
+<p><strong>Typical use</strong></p>
+<ul>
+<li>Initial visibility check</li>
+<li>Lab or pre-deployment validation</li>
+</ul>
+<hr />
+<h2 id="how-fping-dig-and-nmap-fit-in-the-flow">How fping, dig and nmap fit in the flow<a class="headerlink" href="#how-fping-dig-and-nmap-fit-in-the-flow" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fping</code></td>
+<td>Network reachability &amp; stability</td>
+</tr>
+<tr>
+<td><code>dig</code></td>
+<td>DNS correctness</td>
+</tr>
+<tr>
+<td><code>nmap</code></td>
+<td>Port exposure</td>
+</tr>
+<tr>
+<td><code>nc</code></td>
+<td>TCP connectivity</td>
+</tr>
+<tr>
+<td><code>openssl</code></td>
+<td>TLS validation</td>
+</tr>
+<tr>
+<td><code>curl</code></td>
+<td>Application behavior</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>Summary</strong></p>
+<blockquote>
+<p>Use <strong>fping</strong> to validate the <em>path</em>.
+Use <strong>dig</strong> to validate the <em>name resolution</em>.
+Use <strong>nmap</strong> to discover, not to troubleshoot application logic.</p>
+</blockquote>
+<hr />
+<p><a href="../../">⬅️ Return to Main Menu</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../task-3/" class="btn btn-neutral float-left" title="Task 3 – Kubernetes Orchestration (Placeholder)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../task-5-mtr/" class="btn btn-neutral float-right" title="Task 5 – MTR Path Analysis">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../task-3/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../task-5-mtr/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

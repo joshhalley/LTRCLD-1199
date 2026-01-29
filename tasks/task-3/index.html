@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Cisco Live Lab" /><link rel="canonical" href="https://joshhalley.github.io/LTRCLD-1199/tasks/task-3/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Task 3 – Kubernetes Orchestration (Placeholder) - LTRCLD-1199 – Containers on IOS-XE</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Task 3 \u2013 Kubernetes Orchestration (Placeholder)";
+        var mkdocs_page_input_path = "tasks/task-3.md";
+        var mkdocs_page_url = "/LTRCLD-1199/tasks/task-3/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> LTRCLD-1199 – Containers on IOS-XE
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Overview</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../containers/">Container Details</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Lab Tasks</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../task-1/">Task 1 – App-Hosting Deployment (Manual)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-2/">Task 2 – App-Hosting Automation with Terraform</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Task 3 – Kubernetes Orchestration (Placeholder)</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-1-retrieve-image-from-container-registry">Step 1: Retrieve Image from Container Registry</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-2-create-tar-image-from-docker">Step 2: Create TAR Image from Docker</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-3-activate-scp-on-router">Step 3: Activate SCP on Router</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-4-scp-file-to-router">Step 4: SCP File to Router</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-5-verify-md5-hash">Step 5: Verify MD5 Hash</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-6-install-kind">Step 6: Install KIND</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-7-install-virtual-kubelet-provider">Step 7: Install Virtual Kubelet Provider</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-8-create-manifest-file">Step 8: Create Manifest File</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-9-kubectl-apply">Step 9: Kubectl Apply</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-10-check-kubernetes-node-and-pod-health">Step 10: Check Kubernetes Node and Pod Health</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-4-basic/">Task 4 – Basic Network Validation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-5-mtr/">Task 5 – MTR Path Analysis</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-6-web-ts/">Task 6 – Web Testing & Troubleshooting</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-7-socat/">Task 7 – socat Practical Use Cases</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-8-kcat/">Task 8 – kcat (Kafka CAT)</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-9-mrtg/">Task 9 – MRTG Interface Monitoring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-10-iperf3/">Task 10 – iPerf3 Performance Testing</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-11-wireshark/">Task 11 – Wireshark Live Packet Capture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task-12-telegraf/">Task 12 – Telegraf Monitoring</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">LTRCLD-1199 – Containers on IOS-XE</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Lab Tasks</li>
+      <li class="breadcrumb-item active">Task 3 – Kubernetes Orchestration (Placeholder)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="task-3-kubernetes-based-container-orchestration">Task 3: Kubernetes-Based Container Orchestration<a class="headerlink" href="#task-3-kubernetes-based-container-orchestration" title="Permanent link">&para;</a></h1>
+<p><a href="../../">⬅️ Back to Main Menu</a></p>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#step-1-retrieve-image-from-container-registry">Step 1: Retrieve Image from Container Registry</a></li>
+<li><a href="#step-2-create-tar-image-from-docker">Step 2: Create TAR Image from Docker</a></li>
+<li><a href="#step-3-activate-scp-on-router">Step 3: Activate SCP on Router</a></li>
+<li><a href="#step-4-scp-file-to-router">Step 4: SCP File to Router</a></li>
+<li><a href="#step-5-verify-md5-hash">Step 5: Verify MD5 Hash</a></li>
+<li><a href="#step-6-install-kind">Step 6: Install KIND</a></li>
+<li><a href="#step-7-install-virtual-kubelet-provider">Step 7: Install Virtual Kubelet Provider</a></li>
+<li><a href="#step-8-create-manifest-file">Step 8: Create Manifest File</a></li>
+<li><a href="#step-9-kubectl-apply">Step 9: Kubectl Apply</a></li>
+<li><a href="#step-10-check-kubernetes-node-and-pod-health">Step 10: Check Kubernetes Node and Pod Health</a></li>
+</ul>
+<hr />
+<p>This task introduces Kubernetes-based orchestration to manage containerized network tools running on <strong>Cisco IOS XE Router</strong> devices.</p>
+<p>In this task, you will:</p>
+<ul>
+<li>Retrieve an image from a container registry</li>
+<li>Create a TAR package from Docker</li>
+<li>Transfer the file to the router using SCP</li>
+<li>Install <strong>KIND (Kubernetes in Docker)</strong></li>
+<li>Install a <strong>virtual kubelet provider</strong> for C8Kv</li>
+<li>Create and apply a Kubernetes manifest</li>
+<li>Validate Kubernetes node and pod health</li>
+<li>Test the deployed monitoring tools</li>
+</ul>
+<blockquote>
+<p>⚠️ <em>Note: Full Kubernetes integration tuning will be enhanced later by another team member.</em></p>
+</blockquote>
+<hr />
+<h2 id="step-1-retrieve-image-from-container-registry">Step 1: Retrieve Image from Container Registry<a class="headerlink" href="#step-1-retrieve-image-from-container-registry" title="Permanent link">&para;</a></h2>
+<p>• Pull the container image used for Kubernetes deployment</p>
+<pre><code class="language-bash">docker pull myregistry.example.com/tools/k8s-net-tools:latest
+</code></pre>
+<p>Verify image:</p>
+<pre><code class="language-bash">docker images
+</code></pre>
+<hr />
+<h2 id="step-2-create-tar-image-from-docker">Step 2: Create TAR Image from Docker<a class="headerlink" href="#step-2-create-tar-image-from-docker" title="Permanent link">&para;</a></h2>
+<p>• Convert the image to a TAR format for IOS-XE app hosting</p>
+<pre><code class="language-bash">docker save myregistry.example.com/tools/k8s-net-tools:latest -o k8s-net-tools.tar
+</code></pre>
+<p>Verify:</p>
+<pre><code class="language-bash">ls -lh k8s-net-tools.tar
+</code></pre>
+<hr />
+<h2 id="step-3-activate-scp-on-router">Step 3: Activate SCP on Router<a class="headerlink" href="#step-3-activate-scp-on-router" title="Permanent link">&para;</a></h2>
+<p>• Enable SCP if not already active</p>
+<pre><code class="language-bash">conf t
+ip scp server enable
+end
+write memory
+</code></pre>
+<p>Verify:</p>
+<pre><code class="language-bash">show running-config | include scp
+</code></pre>
+<hr />
+<h2 id="step-4-scp-file-to-router">Step 4: SCP File to Router<a class="headerlink" href="#step-4-scp-file-to-router" title="Permanent link">&para;</a></h2>
+<p>• Copy TAR file to the router</p>
+<pre><code class="language-bash">scp k8s-net-tools.tar admin@10.10.10.1:bootflash:
+</code></pre>
+<p>Verify:</p>
+<pre><code class="language-bash">dir bootflash: | include k8s-net-tools
+</code></pre>
+<hr />
+<h2 id="step-5-verify-md5-hash">Step 5: Verify MD5 Hash<a class="headerlink" href="#step-5-verify-md5-hash" title="Permanent link">&para;</a></h2>
+<p>• Validate file integrity</p>
+<pre><code class="language-bash">verify /md5 bootflash:k8s-net-tools.tar
+</code></pre>
+<p>Local comparison:</p>
+<pre><code class="language-bash">md5sum k8s-net-tools.tar
+</code></pre>
+<hr />
+<h2 id="step-6-install-kind">Step 6: Install KIND<a class="headerlink" href="#step-6-install-kind" title="Permanent link">&para;</a></h2>
+<p>• Install Kubernetes in Docker (KIND) on your Linux / jump host</p>
+<pre><code class="language-bash">curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+</code></pre>
+<p>Create a cluster:</p>
+<pre><code class="language-bash">kind create cluster --name c8kv-lab
+</code></pre>
+<p>Verify:</p>
+<pre><code class="language-bash">kubectl cluster-info --context kind-c8kv-lab
+</code></pre>
+<hr />
+<h2 id="step-7-install-virtual-kubelet-provider">Step 7: Install Virtual Kubelet Provider<a class="headerlink" href="#step-7-install-virtual-kubelet-provider" title="Permanent link">&para;</a></h2>
+<p>• Install the Virtual Kubelet to represent C8Kv as a Kubernetes node</p>
+<pre><code class="language-bash">kubectl apply -f https://raw.githubusercontent.com/virtual-kubelet/virtual-kubelet/main/deploy/virtual-kubelet.yaml
+</code></pre>
+<p>Verify node registration:</p>
+<pre><code class="language-bash">kubectl get nodes
+</code></pre>
+<p>Expected output:</p>
+<pre><code class="language-bash">c8kv-virtual-node   Ready
+</code></pre>
+<p><em>(Name may vary depending on your configuration)</em></p>
+<hr />
+<h2 id="step-8-create-manifest-file">Step 8: Create Manifest File<a class="headerlink" href="#step-8-create-manifest-file" title="Permanent link">&para;</a></h2>
+<p>• Create manifest file for your containerized tool</p>
+<pre><code class="language-bash">nano c8kv-tool.yaml
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-bash">apiVersion: v1
+kind: Pod
+metadata:
+  name: c8kv-net-tools
+spec:
+  containers:
+  - name: net-tools
+    image: myregistry.example.com/tools/k8s-net-tools:latest
+    ports:
+    - containerPort: 8080
+</code></pre>
+<p>Save and exit.</p>
+<hr />
+<h2 id="step-9-kubectl-apply">Step 9: Kubectl Apply<a class="headerlink" href="#step-9-kubectl-apply" title="Permanent link">&para;</a></h2>
+<p>• Deploy container via Kubernetes</p>
+<pre><code class="language-bash">kubectl apply -f c8kv-tool.yaml
+</code></pre>
+<p>Verify pod:</p>
+<pre><code class="language-bash">kubectl get pods -o wide
+</code></pre>
+<hr />
+<h2 id="step-10-check-kubernetes-node-and-pod-health">Step 10: Check Kubernetes Node and Pod Health<a class="headerlink" href="#step-10-check-kubernetes-node-and-pod-health" title="Permanent link">&para;</a></h2>
+<p>• Check Kubernetes cluster status</p>
+<pre><code class="language-bash">kubectl get nodes
+</code></pre>
+<p>• Check pod state</p>
+<pre><code class="language-bash">kubectl get pods
+</code></pre>
+<p>• On the C8Kv router, verify application status</p>
+<pre><code class="language-bash">show app-hosting list
+</code></pre>
+<p>Expected state:</p>
+<pre><code class="language-bash">RUNNING
+</code></pre>
+<hr />
+<ul>
+<li><a href="/README.md/#table-of-content">Main Menu</a></li>
+</ul>
+<hr />
+<p><a href="../../">⬅️ Return to Main Menu</a></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../task-2/" class="btn btn-neutral float-left" title="Task 2 – App-Hosting Automation with Terraform"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../task-4-basic/" class="btn btn-neutral float-right" title="Task 4 – Basic Network Validation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../task-2/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../task-4-basic/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
