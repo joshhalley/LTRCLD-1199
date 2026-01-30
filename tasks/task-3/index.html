@@ -56,27 +56,59 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="./">Task 3 – Kubernetes Orchestration (Placeholder)</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#objective">Objective</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#step-1-retrieve-image-from-container-registry">Step 1: Retrieve Image from Container Registry</a>
+    <li class="toctree-l2"><a class="reference internal" href="#1-kubernetes-cluster-validation">1. Kubernetes Cluster Validation</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#step-2-create-tar-image-from-docker">Step 2: Create TAR Image from Docker</a>
+    <li class="toctree-l2"><a class="reference internal" href="#2-container-registry-verification">2. Container Registry Verification</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#step-3-activate-scp-on-router">Step 3: Activate SCP on Router</a>
+    <li class="toctree-l2"><a class="reference internal" href="#3-router-preparation-cat8kv-task-3">3. Router Preparation (cat8kv-task-3)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#31-verify-iox-and-restconf">3.1 Verify IOX and RESTCONF</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#step-4-scp-file-to-router">Step 4: SCP File to Router</a>
+    <li class="toctree-l3"><a class="reference internal" href="#32-disable-app-hosting-signature-verification">3.2 Disable App Hosting Signature Verification</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#step-5-verify-md5-hash">Step 5: Verify MD5 Hash</a>
+    <li class="toctree-l3"><a class="reference internal" href="#33-virtualportgroup-configuration">3.3 VirtualPortGroup Configuration</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#step-6-install-kind">Step 6: Install KIND</a>
+    <li class="toctree-l3"><a class="reference internal" href="#34-dhcp-relay-configuration">3.4 DHCP Relay Configuration</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#step-7-install-virtual-kubelet-provider">Step 7: Install Virtual Kubelet Provider</a>
+    <li class="toctree-l3"><a class="reference internal" href="#35-enable-scp">3.5 Enable SCP</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#step-8-create-manifest-file">Step 8: Create Manifest File</a>
+    <li class="toctree-l3"><a class="reference internal" href="#36-verify-hello-app-is-not-present-yet">3.6 Verify hello-app Is NOT Present Yet</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#step-9-kubectl-apply">Step 9: Kubectl Apply</a>
+        </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#step-10-check-kubernetes-node-and-pod-health">Step 10: Check Kubernetes Node and Pod Health</a>
+    <li class="toctree-l2"><a class="reference internal" href="#4-build-and-upload-hello-app-image">4. Build and Upload hello-app Image</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#41-pull-hello-app-from-registry">4.1 Pull hello-app from Registry</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#42-save-as-ios-xe-tar">4.2 Save as IOS XE TAR</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#43-upload-to-router-flash">4.3 Upload to Router Flash</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-create-kubernetes-manifests">5. Create Kubernetes Manifests</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#51-rbac-one-time-cluster-role-binding">5.1 RBAC (One-Time) — Cluster Role Binding</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#52-file-01_vk_configmapyaml-remote-kubeconfig">5.2 File: 01_vk_configmap.yaml (Remote Kubeconfig)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#53-file-02_vk_deployment_configyaml-vk-device-node-mapping">5.3 File: 02_vk_deployment_config.yaml (VK Device + Node Mapping)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#54-file-03_vk_deploymentyaml-virtual-kubelet-deployment">5.4 File: 03_vk_deployment.yaml (Virtual Kubelet Deployment)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#55-file-04_vk_pod_hello-appyaml-hello-app-pod-on-c8kv">5.5 File: 04_vk_pod_hello-app.yaml (hello-app Pod on C8Kv)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-deploy-virtual-kubelet-and-hello-app">6. Deploy Virtual Kubelet and hello-app</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#7-verification">7. Verification</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a>
     </li>
     </ul>
                   </li>
@@ -123,151 +155,324 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="task-3-kubernetes-based-container-orchestration">Task 3: Kubernetes-Based Container Orchestration<a class="headerlink" href="#task-3-kubernetes-based-container-orchestration" title="Permanent link">&para;</a></h1>
-<p><a href="../../">⬅️ Back to Main Menu</a></p>
-<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+                <h1 id="task-3-kubernetes-app-hosting-using-virtual-kubelet">Task 3: Kubernetes App Hosting using Virtual Kubelet<a class="headerlink" href="#task-3-kubernetes-app-hosting-using-virtual-kubelet" title="Permanent link">&para;</a></h1>
+<p><a href="../../">⬅ Back to Main Menu</a></p>
+<hr />
+<h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h2>
+<p>In this task, you will deploy a <strong>containerized application on a Cisco Catalyst 8000V (C8Kv)</strong> router using <strong>Kubernetes</strong> and <strong>Cisco Virtual Kubelet</strong>.</p>
+<p>The Kubernetes cluster is <strong>already running</strong>. You will:</p>
 <ul>
-<li><a href="#step-1-retrieve-image-from-container-registry">Step 1: Retrieve Image from Container Registry</a></li>
-<li><a href="#step-2-create-tar-image-from-docker">Step 2: Create TAR Image from Docker</a></li>
-<li><a href="#step-3-activate-scp-on-router">Step 3: Activate SCP on Router</a></li>
-<li><a href="#step-4-scp-file-to-router">Step 4: SCP File to Router</a></li>
-<li><a href="#step-5-verify-md5-hash">Step 5: Verify MD5 Hash</a></li>
-<li><a href="#step-6-install-kind">Step 6: Install KIND</a></li>
-<li><a href="#step-7-install-virtual-kubelet-provider">Step 7: Install Virtual Kubelet Provider</a></li>
-<li><a href="#step-8-create-manifest-file">Step 8: Create Manifest File</a></li>
-<li><a href="#step-9-kubectl-apply">Step 9: Kubectl Apply</a></li>
-<li><a href="#step-10-check-kubernetes-node-and-pod-health">Step 10: Check Kubernetes Node and Pod Health</a></li>
+<li>Validate Kubernetes readiness</li>
+<li>Prepare the router for IOx app-hosting</li>
+<li>Deploy Cisco Virtual Kubelet</li>
+<li>Run <code>hello-app</code> on the router</li>
+<li>Verify application access</li>
 </ul>
 <hr />
-<p>This task introduces Kubernetes-based orchestration to manage containerized network tools running on <strong>Cisco IOS XE Router</strong> devices.</p>
-<p>In this task, you will:</p>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#1-kubernetes-cluster-validation">Kubernetes Cluster Validation</a>  </li>
+<li><a href="#2-container-registry-verification">Container Registry Verification</a>  </li>
+<li><a href="#3-router-preparation-cat8kv-task-3">Router Preparation (cat8kv-task-3)</a>  </li>
+<li><a href="#4-build-and-upload-hello-app-image">Build and Upload hello-app Image</a>  </li>
+<li><a href="#5-create-kubernetes-manifests">Create Kubernetes Manifests</a>  </li>
+<li><a href="#6-deploy-virtual-kubelet-and-hello-app">Deploy Virtual Kubelet and hello-app</a>  </li>
+<li><a href="#7-verification">Verification</a>  </li>
+</ol>
+<hr />
+<h2 id="1-kubernetes-cluster-validation">1. Kubernetes Cluster Validation<a class="headerlink" href="#1-kubernetes-cluster-validation" title="Permanent link">&para;</a></h2>
+<p>Verify the Kubernetes node is healthy:</p>
+<pre><code class="language-bash">kubectl get nodes
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">NAME         STATUS   ROLES           AGE   VERSION
+ubuntu-lab   Ready    control-plane   38h   v1.34.3+k3s1
+</code></pre>
+<hr />
+<h2 id="2-container-registry-verification">2. Container Registry Verification<a class="headerlink" href="#2-container-registry-verification" title="Permanent link">&para;</a></h2>
+<p>Confirm required repositories exist:</p>
+<pre><code class="language-bash">curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-json">{&quot;repositories&quot;:[&quot;cisco-virtual-kubelet&quot;,&quot;hello-app&quot;,&quot;mrtg&quot;,&quot;swiss-knife-alpine&quot;,&quot;wireshark&quot;]}
+</code></pre>
+<p>Confirm tags:</p>
+<pre><code class="language-bash">curl -s https://containers.dmz.cisco.com:5000/v2/cisco-virtual-kubelet/tags/list
+curl -s https://containers.dmz.cisco.com:5000/v2/hello-app/tags/list
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-json">{&quot;name&quot;:&quot;cisco-virtual-kubelet&quot;,&quot;tags&quot;:[&quot;1.0.0&quot;]}
+{&quot;name&quot;:&quot;hello-app&quot;,&quot;tags&quot;:[&quot;latest&quot;]}
+</code></pre>
+<hr />
+<h2 id="3-router-preparation-cat8kv-task-3">3. Router Preparation (cat8kv-task-3)<a class="headerlink" href="#3-router-preparation-cat8kv-task-3" title="Permanent link">&para;</a></h2>
+<p>Router:</p>
 <ul>
-<li>Retrieve an image from a container registry</li>
-<li>Create a TAR package from Docker</li>
-<li>Transfer the file to the router using SCP</li>
-<li>Install <strong>KIND (Kubernetes in Docker)</strong></li>
-<li>Install a <strong>virtual kubelet provider</strong> for C8Kv</li>
-<li>Create and apply a Kubernetes manifest</li>
-<li>Validate Kubernetes node and pod health</li>
-<li>Test the deployed monitoring tools</li>
+<li><strong>Hostname:</strong> cat8kv-task-3</li>
+<li><strong>IP:</strong> 198.18.1.13</li>
 </ul>
+<p>Login:</p>
+<pre><code class="language-bash">ssh admin@198.18.1.13
+</code></pre>
+<hr />
+<h3 id="31-verify-iox-and-restconf">3.1 Verify IOX and RESTCONF<a class="headerlink" href="#31-verify-iox-and-restconf" title="Permanent link">&para;</a></h3>
+<pre><code class="language-text">cat8Kv-task-3# show run | i iox|restconf
+iox
+restconf
+</code></pre>
+<hr />
+<h3 id="32-disable-app-hosting-signature-verification">3.2 Disable App Hosting Signature Verification<a class="headerlink" href="#32-disable-app-hosting-signature-verification" title="Permanent link">&para;</a></h3>
+<pre><code class="language-text">cat8Kv-task-3# app-hosting verification disable
+App signature verification disabled successfully
+</code></pre>
+<p>Persist in config:</p>
+<pre><code class="language-text">cat8Kv-task-3# conf t
+cat8Kv-task-3(config)# no app-hosting signed-verification
+cat8Kv-task-3(config)# end
+</code></pre>
+<hr />
+<h3 id="33-virtualportgroup-configuration">3.3 VirtualPortGroup Configuration<a class="headerlink" href="#33-virtualportgroup-configuration" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>⚠️ <em>Note: Full Kubernetes integration tuning will be enhanced later by another team member.</em></p>
+<p>If <code>show run int virtualportgroup0</code> fails, configure the interface directly.</p>
+</blockquote>
+<pre><code class="language-text">cat8Kv-task-3# conf t
+cat8Kv-task-3(config)# interface virtualportgroup0
+cat8Kv-task-3(config-if)# ip address 198.18.102.1 255.255.255.0
+cat8Kv-task-3(config-if)# end
+</code></pre>
+<hr />
+<h3 id="34-dhcp-relay-configuration">3.4 DHCP Relay Configuration<a class="headerlink" href="#34-dhcp-relay-configuration" title="Permanent link">&para;</a></h3>
+<pre><code class="language-text">cat8Kv-task-3# conf t
+cat8Kv-task-3(config)# interface virtualportgroup0
+cat8Kv-task-3(config-if)# ip helper-address 198.18.1.102
+cat8Kv-task-3(config-if)# end
+</code></pre>
+<hr />
+<h3 id="35-enable-scp">3.5 Enable SCP<a class="headerlink" href="#35-enable-scp" title="Permanent link">&para;</a></h3>
+<p>Check existing:</p>
+<pre><code class="language-text">cat8Kv-task-3# show run | i scp
+</code></pre>
+<p>Enable:</p>
+<pre><code class="language-text">cat8Kv-task-3# conf t
+cat8Kv-task-3(config)# ip scp server enable
+cat8Kv-task-3(config)# end
+</code></pre>
+<hr />
+<h3 id="36-verify-hello-app-is-not-present-yet">3.6 Verify hello-app Is NOT Present Yet<a class="headerlink" href="#36-verify-hello-app-is-not-present-yet" title="Permanent link">&para;</a></h3>
+<pre><code class="language-text">cat8Kv-task-3# dir flash: | i hello.*tar
+</code></pre>
+<p>Expected: <strong>No output</strong>.</p>
+<p>Exit router and return to <code>ubuntu-lab</code>.</p>
+<hr />
+<h2 id="4-build-and-upload-hello-app-image">4. Build and Upload hello-app Image<a class="headerlink" href="#4-build-and-upload-hello-app-image" title="Permanent link">&para;</a></h2>
+<h3 id="41-pull-hello-app-from-registry">4.1 Pull hello-app from Registry<a class="headerlink" href="#41-pull-hello-app-from-registry" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">sudo docker pull containers.dmz.cisco.com:5000/hello-app:latest
+</code></pre>
+<hr />
+<h3 id="42-save-as-ios-xe-tar">4.2 Save as IOS XE TAR<a class="headerlink" href="#42-save-as-ios-xe-tar" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">sudo docker save containers.dmz.cisco.com:5000/hello-app:latest -o hello-app.iosxe.tar
+sudo chmod 666 hello-app.iosxe.tar
+</code></pre>
+<hr />
+<h3 id="43-upload-to-router-flash">4.3 Upload to Router Flash<a class="headerlink" href="#43-upload-to-router-flash" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">scp hello-app.iosxe.tar admin@198.18.1.13:/flash:/hello-app.iosxe.tar
+</code></pre>
+<hr />
+<h2 id="5-create-kubernetes-manifests">5. Create Kubernetes Manifests<a class="headerlink" href="#5-create-kubernetes-manifests" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Create <strong>four YAML files</strong> on <code>ubuntu-lab</code> exactly as shown below.</p>
 </blockquote>
 <hr />
-<h2 id="step-1-retrieve-image-from-container-registry">Step 1: Retrieve Image from Container Registry<a class="headerlink" href="#step-1-retrieve-image-from-container-registry" title="Permanent link">&para;</a></h2>
-<p>• Pull the container image used for Kubernetes deployment</p>
-<pre><code class="language-bash">docker pull myregistry.example.com/tools/k8s-net-tools:latest
-</code></pre>
-<p>Verify image:</p>
-<pre><code class="language-bash">docker images
+<h3 id="51-rbac-one-time-cluster-role-binding">5.1 RBAC (One-Time) — Cluster Role Binding<a class="headerlink" href="#51-rbac-one-time-cluster-role-binding" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">kubectl create clusterrolebinding vk-admin-binding \
+  --clusterrole=cluster-admin \
+  --serviceaccount=default:default
 </code></pre>
 <hr />
-<h2 id="step-2-create-tar-image-from-docker">Step 2: Create TAR Image from Docker<a class="headerlink" href="#step-2-create-tar-image-from-docker" title="Permanent link">&para;</a></h2>
-<p>• Convert the image to a TAR format for IOS-XE app hosting</p>
-<pre><code class="language-bash">docker save myregistry.example.com/tools/k8s-net-tools:latest -o k8s-net-tools.tar
+<h3 id="52-file-01_vk_configmapyaml-remote-kubeconfig">5.2 File: <code>01_vk_configmap.yaml</code> (Remote Kubeconfig)<a class="headerlink" href="#52-file-01_vk_configmapyaml-remote-kubeconfig" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">cat &gt; 01_vk_configmap.yaml &lt;&lt; 'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: remote-kubeconfig
+  namespace: default
+data:
+  config: |
+    apiVersion: v1
+    kind: Config
+    clusters:
+    - name: local-cluster
+      cluster:
+        certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        server: https://kubernetes.default.svc:443
+    contexts:
+    - name: default-context
+      context:
+        cluster: local-cluster
+        user: pod-service-account
+        namespace: default
+    current-context: default-context
+    users:
+    - name: pod-service-account
+      user:
+        tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+EOF
 </code></pre>
-<p>Verify:</p>
-<pre><code class="language-bash">ls -lh k8s-net-tools.tar
+<p>Apply:</p>
+<pre><code class="language-bash">kubectl apply -f 01_vk_configmap.yaml
 </code></pre>
-<hr />
-<h2 id="step-3-activate-scp-on-router">Step 3: Activate SCP on Router<a class="headerlink" href="#step-3-activate-scp-on-router" title="Permanent link">&para;</a></h2>
-<p>• Enable SCP if not already active</p>
-<pre><code class="language-bash">conf t
-ip scp server enable
-end
-write memory
-</code></pre>
-<p>Verify:</p>
-<pre><code class="language-bash">show running-config | include scp
-</code></pre>
-<hr />
-<h2 id="step-4-scp-file-to-router">Step 4: SCP File to Router<a class="headerlink" href="#step-4-scp-file-to-router" title="Permanent link">&para;</a></h2>
-<p>• Copy TAR file to the router</p>
-<pre><code class="language-bash">scp k8s-net-tools.tar admin@10.10.10.1:bootflash:
-</code></pre>
-<p>Verify:</p>
-<pre><code class="language-bash">dir bootflash: | include k8s-net-tools
-</code></pre>
-<hr />
-<h2 id="step-5-verify-md5-hash">Step 5: Verify MD5 Hash<a class="headerlink" href="#step-5-verify-md5-hash" title="Permanent link">&para;</a></h2>
-<p>• Validate file integrity</p>
-<pre><code class="language-bash">verify /md5 bootflash:k8s-net-tools.tar
-</code></pre>
-<p>Local comparison:</p>
-<pre><code class="language-bash">md5sum k8s-net-tools.tar
-</code></pre>
-<hr />
-<h2 id="step-6-install-kind">Step 6: Install KIND<a class="headerlink" href="#step-6-install-kind" title="Permanent link">&para;</a></h2>
-<p>• Install Kubernetes in Docker (KIND) on your Linux / jump host</p>
-<pre><code class="language-bash">curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
-chmod +x ./kind
-sudo mv ./kind /usr/local/bin/kind
-</code></pre>
-<p>Create a cluster:</p>
-<pre><code class="language-bash">kind create cluster --name c8kv-lab
-</code></pre>
-<p>Verify:</p>
-<pre><code class="language-bash">kubectl cluster-info --context kind-c8kv-lab
+<p>Expected:</p>
+<pre><code class="language-text">configmap/remote-kubeconfig created
 </code></pre>
 <hr />
-<h2 id="step-7-install-virtual-kubelet-provider">Step 7: Install Virtual Kubelet Provider<a class="headerlink" href="#step-7-install-virtual-kubelet-provider" title="Permanent link">&para;</a></h2>
-<p>• Install the Virtual Kubelet to represent C8Kv as a Kubernetes node</p>
-<pre><code class="language-bash">kubectl apply -f https://raw.githubusercontent.com/virtual-kubelet/virtual-kubelet/main/deploy/virtual-kubelet.yaml
+<h3 id="53-file-02_vk_deployment_configyaml-vk-device-node-mapping">5.3 File: <code>02_vk_deployment_config.yaml</code> (VK Device + Node Mapping)<a class="headerlink" href="#53-file-02_vk_deployment_configyaml-vk-device-node-mapping" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">cat &gt; 02_vk_deployment_config.yaml &lt;&lt; 'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vk-config
+  namespace: default
+data:
+  config.yaml: |
+    device:
+      name: cat8kv-router
+      driver: XE
+      address: &quot;198.18.8.13&quot;
+      port: 443
+      username: admin
+      password: C1sco12345
+      tls:
+        enabled: true
+        insecureSkipVerify: true
+      networking:
+        dhcpEnabled: true
+        virtualPortGroup: &quot;0&quot;
+        defaultVRF: &quot;&quot;
+
+    kubelet:
+      node_name: &quot;cat8kv-node&quot;
+      namespace: &quot;&quot;
+      update_interval: &quot;30s&quot;
+      os: &quot;Linux&quot;
+      node_internal_ip: &quot;198.18.8.13&quot;
+EOF
 </code></pre>
-<p>Verify node registration:</p>
-<pre><code class="language-bash">kubectl get nodes
+<p>Apply:</p>
+<pre><code class="language-bash">kubectl apply -f 02_vk_deployment_config.yaml
 </code></pre>
-<p>Expected output:</p>
-<pre><code class="language-bash">c8kv-virtual-node   Ready
+<p>Expected:</p>
+<pre><code class="language-text">configmap/vk-config created
 </code></pre>
-<p><em>(Name may vary depending on your configuration)</em></p>
 <hr />
-<h2 id="step-8-create-manifest-file">Step 8: Create Manifest File<a class="headerlink" href="#step-8-create-manifest-file" title="Permanent link">&para;</a></h2>
-<p>• Create manifest file for your containerized tool</p>
-<pre><code class="language-bash">nano c8kv-tool.yaml
+<h3 id="54-file-03_vk_deploymentyaml-virtual-kubelet-deployment">5.4 File: <code>03_vk_deployment.yaml</code> (Virtual Kubelet Deployment)<a class="headerlink" href="#54-file-03_vk_deploymentyaml-virtual-kubelet-deployment" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">cat &gt; 03_vk_deployment.yaml &lt;&lt; 'EOF'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cisco-virtual-kubelet
+  labels:
+    app: cisco-virtual-kubelet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cisco-virtual-kubelet
+  template:
+    metadata:
+      labels:
+        app: cisco-virtual-kubelet
+    spec:
+      containers:
+      - name: virtual-kubelet
+        image: containers.dmz.cisco.com:5000/cisco-virtual-kubelet:1.0.0
+        env:
+        - name: KUBECONFIG
+          value: &quot;/etc/kubernetes/kubeconfig.yaml&quot;
+        volumeMounts:
+        - name: kubeconfig-storage
+          mountPath: &quot;/etc/kubernetes&quot;
+          readOnly: true
+        - name: vk-config-storage
+          mountPath: &quot;/etc/virtual-kubelet&quot;
+          readOnly: true
+      volumes:
+      - name: kubeconfig-storage
+        configMap:
+          name: remote-kubeconfig
+          items:
+          - key: &quot;config&quot;
+            path: &quot;kubeconfig.yaml&quot;
+      - name: vk-config-storage
+        configMap:
+          name: vk-config
+          items:
+          - key: &quot;config.yaml&quot;
+            path: &quot;config.yaml&quot;
+EOF
 </code></pre>
-<p>Example:</p>
-<pre><code class="language-bash">apiVersion: v1
+<p>Apply:</p>
+<pre><code class="language-bash">kubectl apply -f 03_vk_deployment.yaml
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">deployment.apps/cisco-virtual-kubelet created
+</code></pre>
+<hr />
+<h3 id="55-file-04_vk_pod_hello-appyaml-hello-app-pod-on-c8kv">5.5 File: <code>04_vk_pod_hello-app.yaml</code> (hello-app Pod on C8Kv)<a class="headerlink" href="#55-file-04_vk_pod_hello-appyaml-hello-app-pod-on-c8kv" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">cat &gt; 04_vk_pod_hello-app.yaml &lt;&lt; 'EOF'
+apiVersion: v1
 kind: Pod
 metadata:
-  name: c8kv-net-tools
+  name: iox-xe-hello-app-pod
+  namespace: default
 spec:
+  nodeName: cat8kv-node
   containers:
-  - name: net-tools
-    image: myregistry.example.com/tools/k8s-net-tools:latest
-    ports:
-    - containerPort: 8080
+  - name: test-app
+    image: flash:/hello-app.iosxe.tar
+    resources:
+      requests:
+        memory: &quot;64Mi&quot;
+        cpu: &quot;250m&quot;
+      limits:
+        memory: &quot;128Mi&quot;
+        cpu: &quot;500m&quot;
+EOF
 </code></pre>
-<p>Save and exit.</p>
-<hr />
-<h2 id="step-9-kubectl-apply">Step 9: Kubectl Apply<a class="headerlink" href="#step-9-kubectl-apply" title="Permanent link">&para;</a></h2>
-<p>• Deploy container via Kubernetes</p>
-<pre><code class="language-bash">kubectl apply -f c8kv-tool.yaml
+<p>Apply:</p>
+<pre><code class="language-bash">kubectl apply -f 04_vk_pod_hello-app.yaml
 </code></pre>
-<p>Verify pod:</p>
-<pre><code class="language-bash">kubectl get pods -o wide
-</code></pre>
-<hr />
-<h2 id="step-10-check-kubernetes-node-and-pod-health">Step 10: Check Kubernetes Node and Pod Health<a class="headerlink" href="#step-10-check-kubernetes-node-and-pod-health" title="Permanent link">&para;</a></h2>
-<p>• Check Kubernetes cluster status</p>
-<pre><code class="language-bash">kubectl get nodes
-</code></pre>
-<p>• Check pod state</p>
-<pre><code class="language-bash">kubectl get pods
-</code></pre>
-<p>• On the C8Kv router, verify application status</p>
-<pre><code class="language-bash">show app-hosting list
-</code></pre>
-<p>Expected state:</p>
-<pre><code class="language-bash">RUNNING
+<p>Expected:</p>
+<pre><code class="language-text">pod/iox-xe-hello-app-pod created
 </code></pre>
 <hr />
-<ul>
-<li><a href="/README.md/#table-of-content">Main Menu</a></li>
-</ul>
+<h2 id="6-deploy-virtual-kubelet-and-hello-app">6. Deploy Virtual Kubelet and hello-app<a class="headerlink" href="#6-deploy-virtual-kubelet-and-hello-app" title="Permanent link">&para;</a></h2>
+<p>Monitor the deployment:</p>
+<pre><code class="language-bash">kubectl get pods -o wide -w
+</code></pre>
+<p>Expected progression:</p>
+<pre><code class="language-text">cisco-virtual-kubelet-xxxxx   1/1   Running   10.0.0.x     ubuntu-lab
+iox-xe-hello-app-pod          1/1   Running   198.18.102.x cat8kv-node
+</code></pre>
 <hr />
-<p><a href="../../">⬅️ Return to Main Menu</a></p>
+<h2 id="7-verification">7. Verification<a class="headerlink" href="#7-verification" title="Permanent link">&para;</a></h2>
+<p>Use the Pod IP shown in the output (example: <code>198.18.102.3</code>) and validate the app:</p>
+<pre><code class="language-bash">curl http://198.18.102.3:8080
+</code></pre>
+<p>Expected:</p>
+<pre><code class="language-text">Hello, world!
+Version: 1.0.0
+Hostname: cvkxxxxxxxxxxxxxxxx
+</code></pre>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>✔ Pulled and packaged <code>hello-app</code> as an IOS XE TAR
+✔ Uploaded the application TAR to router flash
+✔ Deployed Cisco Virtual Kubelet into Kubernetes
+✔ Scheduled a pod to the C8Kv node (<code>cat8kv-node</code>)
+✔ Validated application reachability from the lab server</p>
+<hr />
+<p><a href="../../">⬅ Back to Main Menu</a></p>
+<p>```</p>
               
             </div>
           </div><footer>
