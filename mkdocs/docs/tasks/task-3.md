@@ -8,37 +8,37 @@
 
 In this task, you will deploy a **containerized application on a Cisco Catalyst 8000V (C8Kv)** router using **Kubernetes** and **Cisco Virtual Kubelet**.
 
-To save time during the lab, the Kubernetes cluster and supporting infrastructure are **already deployed and running**. You will focus on:
+The Kubernetes cluster is **already running**. You will:
 
-- Validating Kubernetes readiness
-- Preparing the Cisco C8Kv router for app-hosting
-- Deploying Cisco Virtual Kubelet
-- Running a containerized application (`hello-app`) on the router
-- Verifying application reachability
+- Validate Kubernetes readiness
+- Prepare the router for IOx app-hosting
+- Deploy Cisco Virtual Kubelet
+- Run `hello-app` on the router
+- Verify application access
 
 ---
 
 ## Table of Contents
 
-1. [Kubernetes Cluster Validation](#1-kubernetes-cluster-validation)
-2. [Container Registry Verification](#2-container-registry-verification)
-3. [Router Preparation (cat8kv-task-3)](#3-router-preparation-cat8kv-task-3)
-4. [Build and Upload hello-app Image](#4-build-and-upload-hello-app-image)
-5. [Virtual Kubelet Deployment](#5-virtual-kubelet-deployment)
-6. [Deploy hello-app on C8Kv](#6-deploy-hello-app-on-c8kv)
-7. [Verification and Validation](#7-verification-and-validation)
+1. [Kubernetes Cluster Validation](#1-kubernetes-cluster-validation)  
+2. [Container Registry Verification](#2-container-registry-verification)  
+3. [Router Preparation (cat8kv-task-3)](#3-router-preparation-cat8kv-task-3)  
+4. [Build and Upload hello-app Image](#4-build-and-upload-hello-app-image)  
+5. [Create Kubernetes Manifests](#5-create-kubernetes-manifests)  
+6. [Deploy Virtual Kubelet and hello-app](#6-deploy-virtual-kubelet-and-hello-app)  
+7. [Verification](#7-verification)  
 
 ---
 
 ## 1. Kubernetes Cluster Validation
 
-Verify that Kubernetes is up and running:
+Verify the Kubernetes node is healthy:
 
 ```bash
 kubectl get nodes
 ```
 
-Expected output:
+Expected:
 
 ```text
 NAME         STATUS   ROLES           AGE   VERSION
@@ -49,27 +49,19 @@ ubuntu-lab   Ready    control-plane   38h   v1.34.3+k3s1
 
 ## 2. Container Registry Verification
 
-Confirm the required images are available in the registry:
+Confirm required repositories exist:
 
 ```bash
 curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
 ```
 
-Expected output:
+Expected:
 
 ```json
-{
-  "repositories": [
-    "cisco-virtual-kubelet",
-    "hello-app",
-    "mrtg",
-    "swiss-knife-alpine",
-    "wireshark"
-  ]
-}
+{"repositories":["cisco-virtual-kubelet","hello-app","mrtg","swiss-knife-alpine","wireshark"]}
 ```
 
-Verify image tags:
+Confirm tags:
 
 ```bash
 curl -s https://containers.dmz.cisco.com:5000/v2/cisco-virtual-kubelet/tags/list
@@ -87,18 +79,20 @@ Expected:
 
 ## 3. Router Preparation (cat8kv-task-3)
 
-Target router:
+Router:
 
-```text
-cat8kv-task-3
-IP Address: 198.18.1.13
-```
+* **Hostname:** cat8kv-task-3
+* **IP:** 198.18.1.13
 
-### 3.1 Verify IOX and RESTCONF
+Login:
 
 ```bash
 ssh admin@198.18.1.13
 ```
+
+---
+
+### 3.1 Verify IOX and RESTCONF
 
 ```text
 cat8Kv-task-3# show run | i iox|restconf
@@ -112,19 +106,28 @@ restconf
 
 ```text
 cat8Kv-task-3# app-hosting verification disable
+App signature verification disabled successfully
 ```
 
+Persist in config:
+
 ```text
+cat8Kv-task-3# conf t
 cat8Kv-task-3(config)# no app-hosting signed-verification
+cat8Kv-task-3(config)# end
 ```
 
 ---
 
-### 3.3 Configure Virtual Port Group
+### 3.3 VirtualPortGroup Configuration
+
+> If `show run int virtualportgroup0` fails, configure the interface directly.
 
 ```text
+cat8Kv-task-3# conf t
 cat8Kv-task-3(config)# interface virtualportgroup0
 cat8Kv-task-3(config-if)# ip address 198.18.102.1 255.255.255.0
+cat8Kv-task-3(config-if)# end
 ```
 
 ---
@@ -132,35 +135,47 @@ cat8Kv-task-3(config-if)# ip address 198.18.102.1 255.255.255.0
 ### 3.4 DHCP Relay Configuration
 
 ```text
+cat8Kv-task-3# conf t
 cat8Kv-task-3(config)# interface virtualportgroup0
 cat8Kv-task-3(config-if)# ip helper-address 198.18.1.102
+cat8Kv-task-3(config-if)# end
 ```
 
 ---
 
 ### 3.5 Enable SCP
 
+Check existing:
+
 ```text
+cat8Kv-task-3# show run | i scp
+```
+
+Enable:
+
+```text
+cat8Kv-task-3# conf t
 cat8Kv-task-3(config)# ip scp server enable
+cat8Kv-task-3(config)# end
 ```
 
 ---
 
-### 3.6 Verify hello-app Is Not Present
+### 3.6 Verify hello-app Is NOT Present Yet
 
 ```text
 cat8Kv-task-3# dir flash: | i hello.*tar
 ```
 
-(No output expected)
+Expected: **No output**.
 
-Exit the router and return to **ubuntu-lab**.
+Exit router and return to `ubuntu-lab`.
 
 ---
 
 ## 4. Build and Upload hello-app Image
 
-### 4.1 Pull the Docker Image
+### 4.1 Pull hello-app from Registry
 
 ```bash
 sudo docker pull containers.dmz.cisco.com:5000/hello-app:latest
@@ -168,7 +183,7 @@ sudo docker pull containers.dmz.cisco.com:5000/hello-app:latest
 
 ---
 
-### 4.2 Create IOS XE Compatible TAR
+### 4.2 Save as IOS XE TAR
 
 ```bash
 sudo docker save containers.dmz.cisco.com:5000/hello-app:latest -o hello-app.iosxe.tar
@@ -177,7 +192,7 @@ sudo chmod 666 hello-app.iosxe.tar
 
 ---
 
-### 4.3 Upload Image to Router
+### 4.3 Upload to Router Flash
 
 ```bash
 scp hello-app.iosxe.tar admin@198.18.1.13:/flash:/hello-app.iosxe.tar
@@ -185,9 +200,13 @@ scp hello-app.iosxe.tar admin@198.18.1.13:/flash:/hello-app.iosxe.tar
 
 ---
 
-## 5. Virtual Kubelet Deployment
+## 5. Create Kubernetes Manifests
 
-### 5.1 Create Cluster Role Binding
+> Create **four YAML files** on `ubuntu-lab` exactly as shown below.
+
+---
+
+### 5.1 RBAC (One-Time) — Cluster Role Binding
 
 ```bash
 kubectl create clusterrolebinding vk-admin-binding \
@@ -197,67 +216,228 @@ kubectl create clusterrolebinding vk-admin-binding \
 
 ---
 
-### 5.2 Remote Kubeconfig ConfigMap
+### 5.2 File: `01_vk_configmap.yaml` (Remote Kubeconfig)
+
+```bash
+cat > 01_vk_configmap.yaml << 'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: remote-kubeconfig
+  namespace: default
+data:
+  config: |
+    apiVersion: v1
+    kind: Config
+    clusters:
+    - name: local-cluster
+      cluster:
+        certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        server: https://kubernetes.default.svc:443
+    contexts:
+    - name: default-context
+      context:
+        cluster: local-cluster
+        user: pod-service-account
+        namespace: default
+    current-context: default-context
+    users:
+    - name: pod-service-account
+      user:
+        tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+EOF
+```
+
+Apply:
 
 ```bash
 kubectl apply -f 01_vk_configmap.yaml
 ```
 
+Expected:
+
+```text
+configmap/remote-kubeconfig created
+```
+
 ---
 
-### 5.3 Virtual Kubelet Configuration
+### 5.3 File: `02_vk_deployment_config.yaml` (VK Device + Node Mapping)
+
+```bash
+cat > 02_vk_deployment_config.yaml << 'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vk-config
+  namespace: default
+data:
+  config.yaml: |
+    device:
+      name: cat8kv-router
+      driver: XE
+      address: "198.18.8.13"
+      port: 443
+      username: admin
+      password: C1sco12345
+      tls:
+        enabled: true
+        insecureSkipVerify: true
+      networking:
+        dhcpEnabled: true
+        virtualPortGroup: "0"
+        defaultVRF: ""
+
+    kubelet:
+      node_name: "cat8kv-node"
+      namespace: ""
+      update_interval: "30s"
+      os: "Linux"
+      node_internal_ip: "198.18.8.13"
+EOF
+```
+
+Apply:
 
 ```bash
 kubectl apply -f 02_vk_deployment_config.yaml
 ```
 
+Expected:
+
+```text
+configmap/vk-config created
+```
+
 ---
 
-### 5.4 Deploy Virtual Kubelet
+### 5.4 File: `03_vk_deployment.yaml` (Virtual Kubelet Deployment)
+
+```bash
+cat > 03_vk_deployment.yaml << 'EOF'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cisco-virtual-kubelet
+  labels:
+    app: cisco-virtual-kubelet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cisco-virtual-kubelet
+  template:
+    metadata:
+      labels:
+        app: cisco-virtual-kubelet
+    spec:
+      containers:
+      - name: virtual-kubelet
+        image: containers.dmz.cisco.com:5000/cisco-virtual-kubelet:1.0.0
+        env:
+        - name: KUBECONFIG
+          value: "/etc/kubernetes/kubeconfig.yaml"
+        volumeMounts:
+        - name: kubeconfig-storage
+          mountPath: "/etc/kubernetes"
+          readOnly: true
+        - name: vk-config-storage
+          mountPath: "/etc/virtual-kubelet"
+          readOnly: true
+      volumes:
+      - name: kubeconfig-storage
+        configMap:
+          name: remote-kubeconfig
+          items:
+          - key: "config"
+            path: "kubeconfig.yaml"
+      - name: vk-config-storage
+        configMap:
+          name: vk-config
+          items:
+          - key: "config.yaml"
+            path: "config.yaml"
+EOF
+```
+
+Apply:
 
 ```bash
 kubectl apply -f 03_vk_deployment.yaml
 ```
 
-Verify deployment:
+Expected:
 
-```bash
-kubectl get pods -o wide
+```text
+deployment.apps/cisco-virtual-kubelet created
 ```
 
 ---
 
-## 6. Deploy hello-app on C8Kv
+### 5.5 File: `04_vk_pod_hello-app.yaml` (hello-app Pod on C8Kv)
 
-Apply the pod manifest:
+```bash
+cat > 04_vk_pod_hello-app.yaml << 'EOF'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: iox-xe-hello-app-pod
+  namespace: default
+spec:
+  nodeName: cat8kv-node
+  containers:
+  - name: test-app
+    image: flash:/hello-app.iosxe.tar
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+EOF
+```
+
+Apply:
 
 ```bash
 kubectl apply -f 04_vk_pod_hello-app.yaml
 ```
 
-Monitor provisioning:
+Expected:
+
+```text
+pod/iox-xe-hello-app-pod created
+```
+
+---
+
+## 6. Deploy Virtual Kubelet and hello-app
+
+Monitor the deployment:
 
 ```bash
 kubectl get pods -o wide -w
 ```
 
-Expected state:
+Expected progression:
 
 ```text
-iox-xe-hello-app-pod   1/1   Running   198.18.102.3   cat8kv-node
+cisco-virtual-kubelet-xxxxx   1/1   Running   10.0.0.x     ubuntu-lab
+iox-xe-hello-app-pod          1/1   Running   198.18.102.x cat8kv-node
 ```
 
 ---
 
-## 7. Verification and Validation
+## 7. Verification
 
-Access the application using the assigned IP:
+Use the Pod IP shown in the output (example: `198.18.102.3`) and validate the app:
 
 ```bash
 curl http://198.18.102.3:8080
 ```
 
-Expected output:
+Expected:
 
 ```text
 Hello, world!
@@ -269,10 +449,11 @@ Hostname: cvkxxxxxxxxxxxxxxxx
 
 ## Summary
 
-✔ Kubernetes workload scheduled on a **Cisco C8Kv router**
-✔ Application deployed using **Virtual Kubelet**
-✔ IOS XE App Hosting integrated with Kubernetes
-✔ End-to-end application reachability verified
+✔ Pulled and packaged `hello-app` as an IOS XE TAR
+✔ Uploaded the application TAR to router flash
+✔ Deployed Cisco Virtual Kubelet into Kubernetes
+✔ Scheduled a pod to the C8Kv node (`cat8kv-node`)
+✔ Validated application reachability from the lab server
 
 ---
 
