@@ -20,7 +20,7 @@ Welcome to **LTRCLD-1199**, a hands-on lab for deploying and operating container
 ### Lab Tasks
 - **Task 1**: [App-Hosting Deployment on IOS-XE (Manual)](tasks/task-1.md)
 - **Task 2**: [App-Hosting Automation with Terraform](tasks/task-2.md)
-- **Task 3**: [Kubernetes-Based Container Orchestration](tasks/task-3.md)
+- **Task 3**: [Kubernetes App Hosting using Virtual Kubelet](tasks/task-3.md)
 - **Task 4**: [Basic Network Validation (fping, dig, nmap)](tasks/task-4-basic.md)
 - **Task 5**: [MTR Path Analysis (My Traceroute)](tasks/task-5-mtr.md)
 - **Task 6**: [Web Testing & Troubleshooting (curl, wget, httpie)](tasks/task-6-web-ts.md)

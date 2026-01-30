@@ -1,6 +1,6 @@
-# Task 3: Kubernetes App Hosting using Virtual Kubelet (C8Kv)
+# Task 3: Kubernetes App Hosting using Virtual Kubelet
 
-[⬅ Back to Main Menu](index.md)
+[⬅ Back to Main Menu](../index.md)
 
 ---
 
@@ -276,6 +276,6 @@ Hostname: cvkxxxxxxxxxxxxxxxx
 
 ---
 
-[⬅ Back to Main Menu](index.md)
+[⬅ Back to Main Menu](../index.md)
 
 ```
