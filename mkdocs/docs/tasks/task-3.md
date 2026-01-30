@@ -1,155 +1,38 @@
-# Task 3: Kubernetes-Based Container Orchestration
+# Task 3: Kubernetes App Hosting using Virtual Kubelet (C8Kv)
 
-[⬅️ Back to Main Menu](../index.md)
+[⬅ Back to Main Menu](README.md)
+
+---
+
+## Objective
+
+In this task, you will deploy a **containerized application on a Cisco Catalyst 8000V (C8Kv)** router using **Kubernetes** and **Cisco Virtual Kubelet**.
+
+To save time during the lab, the Kubernetes cluster and supporting infrastructure are **already deployed and running**. You will focus on:
+
+- Validating Kubernetes readiness
+- Preparing the Cisco C8Kv router for app-hosting
+- Deploying Cisco Virtual Kubelet
+- Running a containerized application (`hello-app`) on the router
+- Verifying application reachability
+
+---
 
 ## Table of Contents
 
-- [Step 1: Retrieve Image from Container Registry](#step-1-retrieve-image-from-container-registry)
-- [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
-- [Step 3: Activate SCP on Router](#step-3-activate-scp-on-router)
-- [Step 4: SCP File to Router](#step-4-scp-file-to-router)
-- [Step 5: Verify MD5 Hash](#step-5-verify-md5-hash)
-- [Step 6: Install KIND](#step-6-install-kind)
-- [Step 7: Install Virtual Kubelet Provider](#step-7-install-virtual-kubelet-provider)
-- [Step 8: Create Manifest File](#step-8-create-manifest-file)
-- [Step 9: Kubectl Apply](#step-9-kubectl-apply)
-- [Step 10: Check Kubernetes Node and Pod Health](#step-10-check-kubernetes-node-and-pod-health)
+1. [Kubernetes Cluster Validation](#1-kubernetes-cluster-validation)
+2. [Container Registry Verification](#2-container-registry-verification)
+3. [Router Preparation (cat8kv-task-3)](#3-router-preparation-cat8kv-task-3)
+4. [Build and Upload hello-app Image](#4-build-and-upload-hello-app-image)
+5. [Virtual Kubelet Deployment](#5-virtual-kubelet-deployment)
+6. [Deploy hello-app on C8Kv](#6-deploy-hello-app-on-c8kv)
+7. [Verification and Validation](#7-verification-and-validation)
 
 ---
 
-This task introduces Kubernetes-based orchestration to manage containerized network tools running on **Cisco IOS XE Router** devices.
+## 1. Kubernetes Cluster Validation
 
-In this task, you will:
-
-* Retrieve an image from a container registry
-* Create a TAR package from Docker
-* Transfer the file to the router using SCP
-* Install **KIND (Kubernetes in Docker)**
-* Install a **virtual kubelet provider** for C8Kv
-* Create and apply a Kubernetes manifest
-* Validate Kubernetes node and pod health
-* Test the deployed monitoring tools
-
-> ⚠️ *Note: Full Kubernetes integration tuning will be enhanced later by another team member.*
-
----
-
-## Step 1: Retrieve Image from Container Registry
-
-• Pull the container image used for Kubernetes deployment
-
-```bash
-docker pull myregistry.example.com/tools/k8s-net-tools:latest
-```
-
-Verify image:
-
-```bash
-docker images
-```
-
----
-
-## Step 2: Create TAR Image from Docker
-
-• Convert the image to a TAR format for IOS-XE app hosting
-
-```bash
-docker save myregistry.example.com/tools/k8s-net-tools:latest -o k8s-net-tools.tar
-```
-
-Verify:
-
-```bash
-ls -lh k8s-net-tools.tar
-```
-
----
-
-## Step 3: Activate SCP on Router
-
-• Enable SCP if not already active
-
-```bash
-conf t
-ip scp server enable
-end
-write memory
-```
-
-Verify:
-
-```bash
-show running-config | include scp
-```
-
----
-
-## Step 4: SCP File to Router
-
-• Copy TAR file to the router
-
-```bash
-scp k8s-net-tools.tar admin@10.10.10.1:bootflash:
-```
-
-Verify:
-
-```bash
-dir bootflash: | include k8s-net-tools
-```
-
----
-
-## Step 5: Verify MD5 Hash
-
-• Validate file integrity
-
-```bash
-verify /md5 bootflash:k8s-net-tools.tar
-```
-
-Local comparison:
-
-```bash
-md5sum k8s-net-tools.tar
-```
-
----
-
-## Step 6: Install KIND
-
-• Install Kubernetes in Docker (KIND) on your Linux / jump host
-
-```bash
-curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
-chmod +x ./kind
-sudo mv ./kind /usr/local/bin/kind
-```
-
-Create a cluster:
-
-```bash
-kind create cluster --name c8kv-lab
-```
-
-Verify:
-
-```bash
-kubectl cluster-info --context kind-c8kv-lab
-```
-
----
-
-## Step 7: Install Virtual Kubelet Provider
-
-• Install the Virtual Kubelet to represent C8Kv as a Kubernetes node
-
-```bash
-kubectl apply -f https://raw.githubusercontent.com/virtual-kubelet/virtual-kubelet/main/deploy/virtual-kubelet.yaml
-```
-
-Verify node registration:
+Verify that Kubernetes is up and running:
 
 ```bash
 kubectl get nodes
@@ -157,50 +40,186 @@ kubectl get nodes
 
 Expected output:
 
-```bash
-c8kv-virtual-node   Ready
+```text
+NAME         STATUS   ROLES           AGE   VERSION
+ubuntu-lab   Ready    control-plane   38h   v1.34.3+k3s1
 ```
-
-*(Name may vary depending on your configuration)*
 
 ---
 
-## Step 8: Create Manifest File
+## 2. Container Registry Verification
 
-• Create manifest file for your containerized tool
-
-```bash
-nano c8kv-tool.yaml
-```
-
-Example:
+Confirm the required images are available in the registry:
 
 ```bash
-apiVersion: v1
-kind: Pod
-metadata:
-  name: c8kv-net-tools
-spec:
-  containers:
-  - name: net-tools
-    image: myregistry.example.com/tools/k8s-net-tools:latest
-    ports:
-    - containerPort: 8080
+curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
 ```
 
-Save and exit.
+Expected output:
+
+```json
+{
+  "repositories": [
+    "cisco-virtual-kubelet",
+    "hello-app",
+    "mrtg",
+    "swiss-knife-alpine",
+    "wireshark"
+  ]
+}
+```
+
+Verify image tags:
+
+```bash
+curl -s https://containers.dmz.cisco.com:5000/v2/cisco-virtual-kubelet/tags/list
+curl -s https://containers.dmz.cisco.com:5000/v2/hello-app/tags/list
+```
+
+Expected:
+
+```json
+{"name":"cisco-virtual-kubelet","tags":["1.0.0"]}
+{"name":"hello-app","tags":["latest"]}
+```
 
 ---
 
-## Step 9: Kubectl Apply
+## 3. Router Preparation (cat8kv-task-3)
 
-• Deploy container via Kubernetes
+Target router:
 
-```bash
-kubectl apply -f c8kv-tool.yaml
+```text
+cat8kv-task-3
+IP Address: 198.18.1.13
 ```
 
-Verify pod:
+### 3.1 Verify IOX and RESTCONF
+
+```bash
+ssh admin@198.18.1.13
+```
+
+```text
+cat8Kv-task-3# show run | i iox|restconf
+iox
+restconf
+```
+
+---
+
+### 3.2 Disable App Hosting Signature Verification
+
+```text
+cat8Kv-task-3# app-hosting verification disable
+```
+
+```text
+cat8Kv-task-3(config)# no app-hosting signed-verification
+```
+
+---
+
+### 3.3 Configure Virtual Port Group
+
+```text
+cat8Kv-task-3(config)# interface virtualportgroup0
+cat8Kv-task-3(config-if)# ip address 198.18.102.1 255.255.255.0
+```
+
+---
+
+### 3.4 DHCP Relay Configuration
+
+```text
+cat8Kv-task-3(config)# interface virtualportgroup0
+cat8Kv-task-3(config-if)# ip helper-address 198.18.1.102
+```
+
+---
+
+### 3.5 Enable SCP
+
+```text
+cat8Kv-task-3(config)# ip scp server enable
+```
+
+---
+
+### 3.6 Verify hello-app Is Not Present
+
+```text
+cat8Kv-task-3# dir flash: | i hello.*tar
+```
+
+(No output expected)
+
+Exit the router and return to **ubuntu-lab**.
+
+---
+
+## 4. Build and Upload hello-app Image
+
+### 4.1 Pull the Docker Image
+
+```bash
+sudo docker pull containers.dmz.cisco.com:5000/hello-app:latest
+```
+
+---
+
+### 4.2 Create IOS XE Compatible TAR
+
+```bash
+sudo docker save containers.dmz.cisco.com:5000/hello-app:latest -o hello-app.iosxe.tar
+sudo chmod 666 hello-app.iosxe.tar
+```
+
+---
+
+### 4.3 Upload Image to Router
+
+```bash
+scp hello-app.iosxe.tar admin@198.18.1.13:/flash:/hello-app.iosxe.tar
+```
+
+---
+
+## 5. Virtual Kubelet Deployment
+
+### 5.1 Create Cluster Role Binding
+
+```bash
+kubectl create clusterrolebinding vk-admin-binding \
+  --clusterrole=cluster-admin \
+  --serviceaccount=default:default
+```
+
+---
+
+### 5.2 Remote Kubeconfig ConfigMap
+
+```bash
+kubectl apply -f 01_vk_configmap.yaml
+```
+
+---
+
+### 5.3 Virtual Kubelet Configuration
+
+```bash
+kubectl apply -f 02_vk_deployment_config.yaml
+```
+
+---
+
+### 5.4 Deploy Virtual Kubelet
+
+```bash
+kubectl apply -f 03_vk_deployment.yaml
+```
+
+Verify deployment:
 
 ```bash
 kubectl get pods -o wide
@@ -208,36 +227,55 @@ kubectl get pods -o wide
 
 ---
 
-## Step 10: Check Kubernetes Node and Pod Health
+## 6. Deploy hello-app on C8Kv
 
-• Check Kubernetes cluster status
+Apply the pod manifest:
 
 ```bash
-kubectl get nodes
+kubectl apply -f 04_vk_pod_hello-app.yaml
 ```
 
-• Check pod state
+Monitor provisioning:
 
 ```bash
-kubectl get pods
-```
-
-• On the C8Kv router, verify application status
-
-```bash
-show app-hosting list
+kubectl get pods -o wide -w
 ```
 
 Expected state:
 
-```bash
-RUNNING
+```text
+iox-xe-hello-app-pod   1/1   Running   198.18.102.3   cat8kv-node
 ```
 
 ---
 
-* [Main Menu](/README.md/#table-of-content)
+## 7. Verification and Validation
+
+Access the application using the assigned IP:
+
+```bash
+curl http://198.18.102.3:8080
+```
+
+Expected output:
+
+```text
+Hello, world!
+Version: 1.0.0
+Hostname: cvkxxxxxxxxxxxxxxxx
+```
 
 ---
 
-[⬅️ Return to Main Menu](../index.md)
+## Summary
+
+✔ Kubernetes workload scheduled on a **Cisco C8Kv router**
+✔ Application deployed using **Virtual Kubelet**
+✔ IOS XE App Hosting integrated with Kubernetes
+✔ End-to-end application reachability verified
+
+---
+
+[⬅ Back to Main Menu](README.md)
+
+```
