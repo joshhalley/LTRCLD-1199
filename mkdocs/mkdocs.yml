@@ -11,7 +11,7 @@ nav:
   - Lab Tasks:
       - "Task 1 – App-Hosting Deployment (Manual)": tasks/task-1.md
       - "Task 2 – App-Hosting Automation with Terraform": tasks/task-2.md
-      - "Task 3 – Kubernetes Orchestration (Placeholder)": tasks/task-3.md
+      - "Task 3 – Kubernetes App Hosting using Virtual Kubelet": tasks/task-3.md
       - "Task 4 – Basic Network Validation": tasks/task-4-basic.md
       - "Task 5 – MTR Path Analysis": tasks/task-5-mtr.md
       - "Task 6 – Web Testing & Troubleshooting": tasks/task-6-web-ts.md
