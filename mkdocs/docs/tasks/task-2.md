@@ -133,26 +133,26 @@ ls -lh wireshark.tar
 
 ## Step 3: SCP File to Router
 
-* Copy the wireshark and swiss_knife TAR images from your machine to the router
-* The file will be stored in bootflash
-* Initiate the copy from the router cat8Kv-task-2
-* Login to cat8Kv-task-3 using 198.18.1.12
+* Login to cat8Kv-task-2 using 198.18.1.12
+* Enable SCP server
+
+```text
+cat8Kv-task-1# conf t
+cat8Kv-task-1(config)# ip scp server enable
+cat8Kv-task-1(config)# end
+```
+
+* Copy the TAR image from your lab ubuntu to the router
 
 Copy swiss knife container
 ```bash
-cat8Kv-task-2#copy scp: bootflash:
-Address or name of remote host []? 198.18.9.100
-Source username [admin]? root
-Source filename []? swiss-knife-alpine.tar
-Destination filename [swiss-knife-alpine.tar]? 
+dcloud@ubuntu-lab:~$ sudo scp swiss-knife-alpine.tar admin@198.18.1.12:/flash:/swiss-knife-alpine.tar
+```
+
 ```
 Copy wireshark container
 ```bash
-cat8Kv-task-2#copy scp: bootflash:
-Address or name of remote host []? 198.18.9.100
-Source username [admin]? root
-Source filename []? wireshark.tar
-Destination filename [wireshark.tar]? 
+dcloud@ubuntu-lab:~$ sudo scp wireshark.tar admin@198.18.1.12:/flash:/wireshark.tar
 ```
 
 Verify the file on the router:

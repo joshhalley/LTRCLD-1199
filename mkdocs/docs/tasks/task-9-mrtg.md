@@ -62,15 +62,11 @@ sudo docker save 198.18.5.101:5000/mrtg:latest -o mrtg.tar
 
 ## Step 2: Copy Image TAR to Cat8Kv-Task-1
 
-From **Cat8Kv-Task-1**:
+* Copy the TAR image from your lab ubuntu to the router
 
-```text
-Cat8Kv-Task-1# copy scp: bootflash:
-Address or name of remote host []? 198.18.9.100
-Source username [admin]? root
-Source filename []? mrtg.tar
-Destination filename [mrtg.tar]?
-Password:
+Copy swiss knife container
+```bash
+dcloud@ubuntu-lab:~$ sudo scp mrtg.tar admin@198.18.1.11:/flash:/mrtg.tar
 ```
 
 ---
