@@ -228,53 +228,6 @@
   
   
   
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Lab Overview
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Lab Overview
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
       <a href="../../containers/" class="md-nav__link">
         
@@ -292,14 +245,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1049,14 +994,14 @@ dcloud@ubuntu-lab:~$
 <li>Login to cat8Kv-task-1 using 198.18.1.11</li>
 <li>Enable SCP server</li>
 </ul>
-<pre><code class="language-text">cat8Kv-task-1# conf t
-cat8Kv-task-1(config)# ip scp server enable
-cat8Kv-task-1(config)# end
+<pre><code class="language-text">conf t
+ip scp server enable
+end
 </code></pre>
 <ul>
 <li>Copy the TAR image from your lab ubuntu to the router</li>
 </ul>
-<pre><code class="language-bash">dcloud@ubuntu-lab:~$ sudo scp swiss-knife-alpine.tar admin@198.18.1.11:/flash:/swiss-knife-alpine.tar
+<pre><code class="language-bash">sudo scp swiss-knife-alpine.tar admin@198.18.1.11:/flash:/swiss-knife-alpine.tar
 </code></pre>
 <p>Verify the file on the router:</p>
 <pre><code class="language-bash">dir bootflash: | include swiss-knife-alpine.tar
@@ -1108,9 +1053,10 @@ end
 </ul>
 <pre><code class="language-bash">app-hosting install appid swiss_knife package bootflash:swiss-knife-alpine.tar
 </code></pre>
-<p>In case the following error is seen
-App signature validation is required. App signature file package.cert or package.sign not found in package
-enable and disable app hosting signature verification </p>
+<p>In case the following error is seen, </p>
+<pre><code class="language-text">ioxman: app-hosting: Failed to install swiss_knife: App signature validation is required. App signature file package.cert or package.sign not found in package
+</code></pre>
+<p>Enable and disable app hosting signature verification and run the install command again</p>
 <pre><code class="language-bash">cat8Kv-task-1(config)#app-hosting signed-verification 
 cat8Kv-task-1(config)#
 *Jan 13 12:00:22.429: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification enabled successfully

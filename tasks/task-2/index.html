@@ -228,53 +228,6 @@
   
   
   
-    
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Lab Overview
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Lab Overview
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
       <a href="../../containers/" class="md-nav__link">
         
@@ -292,14 +245,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1301,7 +1246,7 @@ show app-hosting infra
 <pre><code class="language-bash">curl -k -u admin:C1sco12345 -H &quot;Accept: application/yang-data+json&quot; \
 https://198.18.9.12/restconf/data/Cisco-IOS-XE-native:native/iox
 </code></pre>
-<p>Expected response:</p>
+<p>Expected response: (It takes a few minutes)</p>
 <pre><code class="language-json">{
   &quot;Cisco-IOS-XE-native:iox&quot;: {}
 }
@@ -1339,19 +1284,18 @@ https://198.18.9.12/restconf/data/Cisco-IOS-XE-native:native/iox
 <li>Login to cat8Kv-task-2 using 198.18.1.12</li>
 <li>Enable SCP server</li>
 </ul>
-<pre><code class="language-text">cat8Kv-task-1# conf t
-cat8Kv-task-1(config)# ip scp server enable
-cat8Kv-task-1(config)# end
+<pre><code class="language-text">conf t
+ip scp server enable
+end
 </code></pre>
 <ul>
 <li>Copy the TAR image from your lab ubuntu to the router</li>
 </ul>
 <p>Copy swiss knife container</p>
-<pre><code class="language-bash">dcloud@ubuntu-lab:~$ sudo scp swiss-knife-alpine.tar admin@198.18.1.12:/flash:/swiss-knife-alpine.tar
+<pre><code class="language-bash">sudo scp swiss-knife-alpine.tar admin@198.18.1.12:/flash:/swiss-knife-alpine.tar
 </code></pre>
-<pre><code>Copy wireshark container
-```bash
-dcloud@ubuntu-lab:~$ sudo scp wireshark.tar admin@198.18.1.12:/flash:/wireshark.tar
+<p>Copy wireshark container</p>
+<pre><code class="language-bash">sudo scp wireshark.tar admin@198.18.1.12:/flash:/wireshark.tar
 </code></pre>
 <p>Verify the file on the router:</p>
 <pre><code class="language-bash">dir bootflash: | include tar
@@ -1389,24 +1333,26 @@ Verify the versions before proceeding.</p>
 <hr />
 <h2 id="step-6-clone-the-app-hosting-terraform-provider">Step 6: Clone the App-Hosting Terraform Provider<a class="headerlink" href="#step-6-clone-the-app-hosting-terraform-provider" title="Permanent link">&para;</a></h2>
 <p>Clone the Terraform provider repository from the <strong>instructor VM</strong>:</p>
-<pre><code class="language-bash">sudo git clone ssh://lab@198.18.5.101/home/lab/terraform-provider-ciscoapphosting
+<pre><code class="language-bash">GIT_SSH_COMMAND='ssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa' \
+git clone ssh://lab@198.18.5.101/home/lab/terraform-provider-ciscoapphosting
 </code></pre>
 <p>Enter the <strong>lab user password</strong> when prompted. password is "lab"</p>
 <p>Build the provider binary:</p>
 <pre><code class="language-bash">cd terraform-provider-ciscoapphosting
-sudo go build -o terraform-provider-ciscoapphosting
+</code></pre>
+<pre><code class="language-bash">go build -o terraform-provider-ciscoapphosting
 
 </code></pre>
 <hr />
 <h2 id="step-7-configure-terraform-to-use-the-local-provider">Step 7: Configure Terraform to Use the Local Provider<a class="headerlink" href="#step-7-configure-terraform-to-use-the-local-provider" title="Permanent link">&para;</a></h2>
 <p>Terraform must be instructed to use the <strong>local provider</strong> instead of the public registry.</p>
 <p>Create the Terraform CLI configuration file:</p>
-<pre><code class="language-bash">sudo nano ~/.terraformrc
+<pre><code class="language-bash">nano ~/.terraformrc
 </code></pre>
 <p>Paste the following content:</p>
 <pre><code class="language-hcl">provider_installation {
   dev_overrides {
-    &quot;local/ciscoapphosting&quot; = &quot;/root/terraform-provider-ciscoapphosting&quot;
+    &quot;local/ciscoapphosting&quot; = &quot;/home/dcloud/terraform-provider-ciscoapphosting&quot;
   }
   direct {}
 }
@@ -1418,11 +1364,11 @@ sudo go build -o terraform-provider-ciscoapphosting
 <hr />
 <h2 id="step-8-create-the-terraform-working-directory">Step 8: Create the Terraform Working Directory<a class="headerlink" href="#step-8-create-the-terraform-working-directory" title="Permanent link">&para;</a></h2>
 <p>Create a directory for the App-Hosting deployment:</p>
-<pre><code class="language-bash">sudo mkdir ~/terraform-c8kv-apphosting
+<pre><code class="language-bash">mkdir ~/terraform-c8kv-apphosting
 cd ~/terraform-c8kv-apphosting
 </code></pre>
 <p>Create a single Terraform file:</p>
-<pre><code class="language-bash">sudo nano main.tf
+<pre><code class="language-bash">nano main.tf
 </code></pre>
 <hr />
 <h2 id="step-9-paste-and-review-maintf-to-install-the-swiss-knife-container">Step 9: Paste and Review <code>main.tf</code> to install the swiss-knife container<a class="headerlink" href="#step-9-paste-and-review-maintf-to-install-the-swiss-knife-container" title="Permanent link">&para;</a></h2>
@@ -1473,7 +1419,7 @@ resource &quot;ciscoapphosting_app&quot; &quot;swiss_knife&quot; {
 <hr />
 <h2 id="step-10-terraform-init">Step 10: Terraform Init<a class="headerlink" href="#step-10-terraform-init" title="Permanent link">&para;</a></h2>
 <p>Initialize the Terraform project:</p>
-<pre><code class="language-bash">sudo terraform init
+<pre><code class="language-bash">terraform init
 </code></pre>
 <p>Expected output includes:</p>
 <pre><code class="language-text">Warning: Provider development overrides are in effect
@@ -1483,11 +1429,11 @@ resource &quot;ciscoapphosting_app&quot; &quot;swiss_knife&quot; {
 <hr />
 <h2 id="step-11-terraform-plan-and-apply">Step 11: Terraform Plan and Apply<a class="headerlink" href="#step-11-terraform-plan-and-apply" title="Permanent link">&para;</a></h2>
 <p>Review the execution plan:</p>
-<pre><code class="language-bash">sudo terraform plan
+<pre><code class="language-bash">terraform plan
 </code></pre>
 <p>Enable <code>terminal monitor</code> on cat8kv-task-2 to observe the app hosting logs</p>
 <p>Apply the configuration:</p>
-<pre><code class="language-bash">sudo terraform apply
+<pre><code class="language-bash">terraform apply
 </code></pre>
 <p>When prompted, type:</p>
 <pre><code class="language-text">yes
@@ -1514,7 +1460,7 @@ show run | section ospf
 <h2 id="step-13-install-wireshark-container">Step 13: Install Wireshark container<a class="headerlink" href="#step-13-install-wireshark-container" title="Permanent link">&para;</a></h2>
 <p>Update and Review <code>main.tf</code> \
 Paste the following configuration <strong>as provided</strong> at the end of main.tf created above (modify IP addresses only if instructed):</p>
-<pre><code class="language-bash">sudo nano main.tf
+<pre><code class="language-bash">nano main.tf
 </code></pre>
 <pre><code class="language-hcl">
 resource &quot;ciscoapphosting_app&quot; &quot;wireshark&quot; {
@@ -1548,7 +1494,7 @@ resource &quot;ciscoapphosting_app&quot; &quot;wireshark&quot; {
 <hr />
 <h2 id="step-14-terraform-init">Step 14: Terraform Init<a class="headerlink" href="#step-14-terraform-init" title="Permanent link">&para;</a></h2>
 <p>Initialize the Terraform project:</p>
-<pre><code class="language-bash">sudo terraform init
+<pre><code class="language-bash">terraform init
 </code></pre>
 <p>Expected output includes:</p>
 <pre><code class="language-text">Warning: Provider development overrides are in effect
@@ -1558,10 +1504,10 @@ resource &quot;ciscoapphosting_app&quot; &quot;wireshark&quot; {
 <hr />
 <h2 id="step-15-terraform-plan-and-apply">Step 15: Terraform Plan and Apply<a class="headerlink" href="#step-15-terraform-plan-and-apply" title="Permanent link">&para;</a></h2>
 <p>Review the execution plan:</p>
-<pre><code class="language-bash">sudo terraform plan
+<pre><code class="language-bash">terraform plan
 </code></pre>
 <p>Apply the configuration:</p>
-<pre><code class="language-bash">sudo terraform apply
+<pre><code class="language-bash">terraform apply
 </code></pre>
 <p>When prompted, type:</p>
 <pre><code class="language-text">yes
