@@ -32,6 +32,8 @@ The Kubernetes cluster is **already running**. You will:
 
 ## 1. Kubernetes Cluster Validation
 
+* Login to the Lab Ubuntu (ssh 198.18.1.100)
+
 Verify the Kubernetes node is healthy:
 
 ```bash

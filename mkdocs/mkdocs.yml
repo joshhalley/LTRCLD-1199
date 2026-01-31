@@ -3,7 +3,10 @@ site_description: Using Containers on Cisco Edge Devices to Turbocharge Troubles
 site_author: Cisco Live Lab
 site_url: https://joshhalley.github.io/LTRCLD-1199/
 theme:
-  name: readthedocs
+  name: material
+  features:
+    - content.code.copy
+
 nav:
   - Home: index.md
   - Lab Overview:

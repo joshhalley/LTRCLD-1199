@@ -103,13 +103,13 @@ Sample Ouptut
 {"repositories":["mrtg","swiss-knife-alpine","telegraf-alpine","wireshark"]}
 
 ```bash
-docker pull 198.18.5.101:5000/wireshark:latest
+sudo docker pull 198.18.5.101:5000/wireshark:latest
 ```
 
 Validate the download:
 
 ```bash
-docker images
+sudo docker images
 ```
 
 ---
@@ -120,7 +120,7 @@ docker images
 • This is the image format required for IOS-XE app hosting
 
 ```bash
-docker save 198.18.5.101:5000/wireshark:latest -o wireshark.tar
+sudo docker save 198.18.5.101:5000/wireshark:latest -o wireshark.tar
 ```
 
 Verify the TAR file exists:
@@ -218,7 +218,7 @@ go version go1.18.1 linux/amd64
 Clone the Terraform provider repository from the **instructor VM**:
 
 ```bash
-git clone ssh://lab@198.18.5.101/home/lab/terraform-provider-ciscoapphosting
+sudo git clone ssh://lab@198.18.5.101/home/lab/terraform-provider-ciscoapphosting
 ```
 
 Enter the **lab user password** when prompted. password is "lab"
@@ -227,7 +227,7 @@ Build the provider binary:
 
 ```bash
 cd terraform-provider-ciscoapphosting
-go build -o terraform-provider-ciscoapphosting
+sudo go build -o terraform-provider-ciscoapphosting
 
 ```
 
@@ -240,7 +240,7 @@ Terraform must be instructed to use the **local provider** instead of the public
 Create the Terraform CLI configuration file:
 
 ```bash
-nano ~/.terraformrc
+sudo nano ~/.terraformrc
 ```
 
 Paste the following content:
@@ -265,14 +265,14 @@ Save and exit.
 Create a directory for the App-Hosting deployment:
 
 ```bash
-mkdir ~/terraform-c8kv-apphosting
+sudo mkdir ~/terraform-c8kv-apphosting
 cd ~/terraform-c8kv-apphosting
 ```
 
 Create a single Terraform file:
 
 ```bash
-nano main.tf
+sudo nano main.tf
 ```
 
 ---
@@ -336,7 +336,7 @@ Confirm:
 Initialize the Terraform project:
 
 ```bash
-terraform init
+sudo terraform init
 ```
 
 Expected output includes:
@@ -355,14 +355,14 @@ Warning: Provider development overrides are in effect
 Review the execution plan:
 
 ```bash
-terraform plan
+sudo terraform plan
 ```
 Enable `terminal monitor` on cat8kv-task-2 to observe the app hosting logs
 
 Apply the configuration:
 
 ```bash
-terraform apply
+sudo terraform apply
 ```
 
 When prompted, type:
@@ -407,7 +407,7 @@ Update and Review `main.tf` \
 Paste the following configuration **as provided** at the end of main.tf created above (modify IP addresses only if instructed):
 
 ```bash
-nano main.tf
+sudo nano main.tf
 ```
 
 ```hcl
@@ -451,7 +451,7 @@ Confirm:
 Initialize the Terraform project:
 
 ```bash
-terraform init
+sudo terraform init
 ```
 
 Expected output includes:
@@ -470,13 +470,13 @@ Warning: Provider development overrides are in effect
 Review the execution plan:
 
 ```bash
-terraform plan
+sudo terraform plan
 ```
 
 Apply the configuration:
 
 ```bash
-terraform apply
+sudo terraform apply
 ```
 
 When prompted, type:

@@ -52,10 +52,10 @@ Graphs are served via a lightweight web server on the container.
 Pull from the **Docker registry hosted on Mgmt Ubuntu**:
 
 ```bash
-docker pull 198.18.5.101:5000/mrtg:latest
+sudo docker pull 198.18.5.101:5000/mrtg:latest
 ```
 ```bash
-docker save 198.18.5.101:5000/mrtg:latest -o mrtg.tar
+sudo docker save 198.18.5.101:5000/mrtg:latest -o mrtg.tar
 ```
 
 ---

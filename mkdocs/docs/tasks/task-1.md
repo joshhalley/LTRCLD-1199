@@ -37,25 +37,29 @@ The process includes:
 ```bash
 curl -s http://198.18.5.101:5000/v2/_catalog
 ```
-Sample output\
-root@ubuntu-lab:~# curl -s http://198.18.5.101:5000/v2/_catalog
-{"repositories":["mrtg","swiss-knife-alpine","wireshark"]}
+Sample output
+
+```bash
+dcloud@ubuntu-lab:~$ curl -s http://198.18.5.101:5000/v2/_catalog
+{"repositories":["hello-app","mrtg","swiss-knife-alpine","wireshark"]}
+```
 
 
 ```bash
-docker pull 198.18.5.101:5000/swiss-knife-alpine:latest
+sudo docker pull 198.18.5.101:5000/swiss-knife-alpine:latest
 ```
 
 Verify the image was downloaded:
 
 ```bash
-docker images
+sudo docker images
 ```
 ```bash
-root@ubuntu-lab:~# docker images
-REPOSITORY                             TAG       IMAGE ID       CREATED      SIZE
-198.18.5.101:5000/swiss-knife-alpine   latest    ef61409cede7   2 days ago   270MB
-root@ubuntu-lab:~# 
+dcloud@ubuntu-lab:~$ sudo docker images
+REPOSITORY                             TAG       IMAGE ID       CREATED       SIZE
+198.18.5.101:5000/swiss-knife-alpine   latest    987b29fae1f2   10 days ago   396MB
+registry                               2         26b2eb03618e   2 years ago   25.4MB
+dcloud@ubuntu-lab:~$ 
 ```
 ---
 
@@ -65,7 +69,7 @@ root@ubuntu-lab:~#
 * This file will be transferred to the router
 
 ```bash
-docker save 198.18.5.101:5000/swiss-knife-alpine:latest -o swiss-knife-alpine.tar
+sudo docker save 198.18.5.101:5000/swiss-knife-alpine:latest -o swiss-knife-alpine.tar
 ```
 
 Verify the TAR file exists:
