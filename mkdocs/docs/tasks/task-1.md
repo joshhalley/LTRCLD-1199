@@ -86,15 +86,15 @@ ls -lh swiss-knife-alpine.tar
 * Enable SCP server
 
 ```text
-cat8Kv-task-1# conf t
-cat8Kv-task-1(config)# ip scp server enable
-cat8Kv-task-1(config)# end
+conf t
+ip scp server enable
+end
 ```
 
 * Copy the TAR image from your lab ubuntu to the router
 
 ```bash
-dcloud@ubuntu-lab:~$ sudo scp swiss-knife-alpine.tar admin@198.18.1.11:/flash:/swiss-knife-alpine.tar
+sudo scp swiss-knife-alpine.tar admin@198.18.1.11:/flash:/swiss-knife-alpine.tar
 ```
 
 Verify the file on the router:
@@ -164,9 +164,11 @@ show run | sec app-hosting
 ```bash
 app-hosting install appid swiss_knife package bootflash:swiss-knife-alpine.tar
 ```
-In case the following error is seen
-App signature validation is required. App signature file package.cert or package.sign not found in package
-enable and disable app hosting signature verification 
+In case the following error is seen, 
+```text
+ioxman: app-hosting: Failed to install swiss_knife: App signature validation is required. App signature file package.cert or package.sign not found in package
+```
+Enable and disable app hosting signature verification and run the install command again
 
 ```bash
 cat8Kv-task-1(config)#app-hosting signed-verification 

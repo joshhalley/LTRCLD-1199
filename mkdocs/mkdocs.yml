@@ -9,8 +9,7 @@ theme:
 
 nav:
   - Home: index.md
-  - Lab Overview:
-      - Container Details: containers.md
+  - Container Details: containers.md
   - Lab Tasks:
       - "Task 1 – App-Hosting Deployment (Manual)": tasks/task-1.md
       - "Task 2 – App-Hosting Automation with Terraform": tasks/task-2.md

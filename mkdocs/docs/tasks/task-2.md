@@ -76,7 +76,7 @@ curl -k -u admin:C1sco12345 -H "Accept: application/yang-data+json" \
 https://198.18.9.12/restconf/data/Cisco-IOS-XE-native:native/iox
 ```
 
-Expected response:
+Expected response: (It takes a few minutes)
 
 ```json
 {
@@ -137,22 +137,22 @@ ls -lh wireshark.tar
 * Enable SCP server
 
 ```text
-cat8Kv-task-1# conf t
-cat8Kv-task-1(config)# ip scp server enable
-cat8Kv-task-1(config)# end
+conf t
+ip scp server enable
+end
 ```
 
 * Copy the TAR image from your lab ubuntu to the router
 
 Copy swiss knife container
 ```bash
-dcloud@ubuntu-lab:~$ sudo scp swiss-knife-alpine.tar admin@198.18.1.12:/flash:/swiss-knife-alpine.tar
+sudo scp swiss-knife-alpine.tar admin@198.18.1.12:/flash:/swiss-knife-alpine.tar
 ```
 
-```
+
 Copy wireshark container
 ```bash
-dcloud@ubuntu-lab:~$ sudo scp wireshark.tar admin@198.18.1.12:/flash:/wireshark.tar
+sudo scp wireshark.tar admin@198.18.1.12:/flash:/wireshark.tar
 ```
 
 Verify the file on the router:
@@ -218,7 +218,8 @@ go version go1.18.1 linux/amd64
 Clone the Terraform provider repository from the **instructor VM**:
 
 ```bash
-sudo git clone ssh://lab@198.18.5.101/home/lab/terraform-provider-ciscoapphosting
+GIT_SSH_COMMAND='ssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa' \
+git clone ssh://lab@198.18.5.101/home/lab/terraform-provider-ciscoapphosting
 ```
 
 Enter the **lab user password** when prompted. password is "lab"
@@ -227,7 +228,9 @@ Build the provider binary:
 
 ```bash
 cd terraform-provider-ciscoapphosting
-sudo go build -o terraform-provider-ciscoapphosting
+```
+```bash
+go build -o terraform-provider-ciscoapphosting
 
 ```
 
@@ -240,7 +243,7 @@ Terraform must be instructed to use the **local provider** instead of the public
 Create the Terraform CLI configuration file:
 
 ```bash
-sudo nano ~/.terraformrc
+nano ~/.terraformrc
 ```
 
 Paste the following content:
@@ -248,7 +251,7 @@ Paste the following content:
 ```hcl
 provider_installation {
   dev_overrides {
-    "local/ciscoapphosting" = "/root/terraform-provider-ciscoapphosting"
+    "local/ciscoapphosting" = "/home/dcloud/terraform-provider-ciscoapphosting"
   }
   direct {}
 }
@@ -265,14 +268,14 @@ Save and exit.
 Create a directory for the App-Hosting deployment:
 
 ```bash
-sudo mkdir ~/terraform-c8kv-apphosting
+mkdir ~/terraform-c8kv-apphosting
 cd ~/terraform-c8kv-apphosting
 ```
 
 Create a single Terraform file:
 
 ```bash
-sudo nano main.tf
+nano main.tf
 ```
 
 ---
@@ -336,7 +339,7 @@ Confirm:
 Initialize the Terraform project:
 
 ```bash
-sudo terraform init
+terraform init
 ```
 
 Expected output includes:
@@ -355,14 +358,14 @@ Warning: Provider development overrides are in effect
 Review the execution plan:
 
 ```bash
-sudo terraform plan
+terraform plan
 ```
 Enable `terminal monitor` on cat8kv-task-2 to observe the app hosting logs
 
 Apply the configuration:
 
 ```bash
-sudo terraform apply
+terraform apply
 ```
 
 When prompted, type:
@@ -407,7 +410,7 @@ Update and Review `main.tf` \
 Paste the following configuration **as provided** at the end of main.tf created above (modify IP addresses only if instructed):
 
 ```bash
-sudo nano main.tf
+nano main.tf
 ```
 
 ```hcl
@@ -451,7 +454,7 @@ Confirm:
 Initialize the Terraform project:
 
 ```bash
-sudo terraform init
+terraform init
 ```
 
 Expected output includes:
@@ -470,13 +473,13 @@ Warning: Provider development overrides are in effect
 Review the execution plan:
 
 ```bash
-sudo terraform plan
+terraform plan
 ```
 
 Apply the configuration:
 
 ```bash
-sudo terraform apply
+terraform apply
 ```
 
 When prompted, type:

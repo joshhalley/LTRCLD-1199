@@ -67,7 +67,7 @@ Use the following information to access the lab devices via OOB
 
 | Name         | IP            | Username       | Password   |
 |--------------|---------------|----------------|------------|
-| Ubuntu LAB   | 198.18.1.100  | root           | C1sco12345 |
+| Ubuntu LAB   | 198.18.1.100  | dcloud           | C1sco12345 |
 | cat8Kv-task-1| 198.18.1.11   | admin          | C1sco12345 |
 | cat8Kv-task-2| 198.18.2.12   | admin          | C1sco12345 |
 | cat8Kv-task-3| 198.18.2.13   | admin          | C1sco12345 |

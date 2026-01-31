@@ -66,7 +66,7 @@ sudo docker save 198.18.5.101:5000/mrtg:latest -o mrtg.tar
 
 Copy swiss knife container
 ```bash
-dcloud@ubuntu-lab:~$ sudo scp mrtg.tar admin@198.18.1.11:/flash:/mrtg.tar
+sudo scp mrtg.tar admin@198.18.1.11:/flash:/mrtg.tar
 ```
 
 ---
