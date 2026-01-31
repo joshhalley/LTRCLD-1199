@@ -1441,13 +1441,11 @@
 </code></pre>
 <hr />
 <h2 id="step-2-copy-image-tar-to-cat8kv-task-1">Step 2: Copy Image TAR to Cat8Kv-Task-1<a class="headerlink" href="#step-2-copy-image-tar-to-cat8kv-task-1" title="Permanent link">&para;</a></h2>
-<p>From <strong>Cat8Kv-Task-1</strong>:</p>
-<pre><code class="language-text">Cat8Kv-Task-1# copy scp: bootflash:
-Address or name of remote host []? 198.18.9.100
-Source username [admin]? root
-Source filename []? mrtg.tar
-Destination filename [mrtg.tar]?
-Password:
+<ul>
+<li>Copy the TAR image from your lab ubuntu to the router</li>
+</ul>
+<p>Copy swiss knife container</p>
+<pre><code class="language-bash">dcloud@ubuntu-lab:~$ sudo scp mrtg.tar admin@198.18.1.11:/flash:/mrtg.tar
 </code></pre>
 <hr />
 <h2 id="step-3-configure-app-hosting-on-cat8kv-task-1">Step 3: Configure App-Hosting on Cat8Kv-Task-1<a class="headerlink" href="#step-3-configure-app-hosting-on-cat8kv-task-1" title="Permanent link">&para;</a></h2>

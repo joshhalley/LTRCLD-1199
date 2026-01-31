@@ -1336,24 +1336,22 @@ https://198.18.9.12/restconf/data/Cisco-IOS-XE-native:native/iox
 <hr />
 <h2 id="step-3-scp-file-to-router">Step 3: SCP File to Router<a class="headerlink" href="#step-3-scp-file-to-router" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Copy the wireshark and swiss_knife TAR images from your machine to the router</li>
-<li>The file will be stored in bootflash</li>
-<li>Initiate the copy from the router cat8Kv-task-2</li>
-<li>Login to cat8Kv-task-3 using 198.18.1.12</li>
+<li>Login to cat8Kv-task-2 using 198.18.1.12</li>
+<li>Enable SCP server</li>
+</ul>
+<pre><code class="language-text">cat8Kv-task-1# conf t
+cat8Kv-task-1(config)# ip scp server enable
+cat8Kv-task-1(config)# end
+</code></pre>
+<ul>
+<li>Copy the TAR image from your lab ubuntu to the router</li>
 </ul>
 <p>Copy swiss knife container</p>
-<pre><code class="language-bash">cat8Kv-task-2#copy scp: bootflash:
-Address or name of remote host []? 198.18.9.100
-Source username [admin]? root
-Source filename []? swiss-knife-alpine.tar
-Destination filename [swiss-knife-alpine.tar]? 
+<pre><code class="language-bash">dcloud@ubuntu-lab:~$ sudo scp swiss-knife-alpine.tar admin@198.18.1.12:/flash:/swiss-knife-alpine.tar
 </code></pre>
-<p>Copy wireshark container</p>
-<pre><code class="language-bash">cat8Kv-task-2#copy scp: bootflash:
-Address or name of remote host []? 198.18.9.100
-Source username [admin]? root
-Source filename []? wireshark.tar
-Destination filename [wireshark.tar]? 
+<pre><code>Copy wireshark container
+```bash
+dcloud@ubuntu-lab:~$ sudo scp wireshark.tar admin@198.18.1.12:/flash:/wireshark.tar
 </code></pre>
 <p>Verify the file on the router:</p>
 <pre><code class="language-bash">dir bootflash: | include tar
