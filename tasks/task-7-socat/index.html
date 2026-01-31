@@ -1,191 +1,1656 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Cisco Live Lab" /><link rel="canonical" href="https://joshhalley.github.io/LTRCLD-1199/tasks/task-7-socat/" />
-      <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Task 7 – socat Practical Use Cases - LTRCLD-1199 – Containers on IOS-XE</title>
-    <link rel="stylesheet" href="../../css/theme.css" />
-    <link rel="stylesheet" href="../../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
     
-      <script>
-        // Current page data
-        var mkdocs_page_name = "Task 7 \u2013 socat Practical Use Cases";
-        var mkdocs_page_input_path = "tasks/task-7-socat.md";
-        var mkdocs_page_url = "/LTRCLD-1199/tasks/task-7-socat/";
-      </script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Using Containers on Cisco Edge Devices to Turbocharge Troubleshooting">
+      
+      
+        <meta name="author" content="Cisco Live Lab">
+      
+      
+        <link rel="canonical" href="https://joshhalley.github.io/LTRCLD-1199/tasks/task-7-socat/">
+      
+      
+        <link rel="prev" href="../task-6-web-ts/">
+      
+      
+        <link rel="next" href="../task-8-kcat/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
-    <!--[if lt IE 9]>
-      <script src="../../js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-      <script>hljs.highlightAll();</script> 
-</head>
+    
+      
+        <title>Task 7 – socat Practical Use Cases - LTRCLD-1199 – Containers on IOS-XE</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
 
-<body class="wy-body-for-nav" role="document">
 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href="../.." class="icon icon-home"> LTRCLD-1199 – Containers on IOS-XE
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
-  </form>
-</div>
-      </div>
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Lab Overview</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../containers/">Container Details</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Lab Tasks</span></p>
-              <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../task-1/">Task 1 – App-Hosting Deployment (Manual)</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../task-2/">Task 2 – App-Hosting Automation with Terraform</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../task-3/">Task 3 – Kubernetes App Hosting using Virtual Kubelet</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../task-4-basic/">Task 4 – Basic Network Validation</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../task-5-mtr/">Task 5 – MTR Path Analysis</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../task-6-web-ts/">Task 6 – Web Testing & Troubleshooting</a>
-                  </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Task 7 – socat Practical Use Cases</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#accessing-the-lab-containers">Accessing the Lab Containers</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#lab-setup-overview">Lab Setup Overview</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#step-1-ssh-to-both-the-routers-directly-from-the-pc">Step 1: SSH to both the Routers directly from the PC</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#step-2-access-the-swiss-knife-container">Step 2: Access the Swiss-Knife Container</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#use-case-1-simple-tcp-listener">Use Case 1: Simple TCP Listener</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#objective">Objective</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#command-listener-cat8kv-task-1-container">Command (Listener &gt; Cat8Kv-task-1 &gt; container)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#test-client-cat8kv-task-2-container">Test (Client &gt; Cat8Kv-task-2 &gt; container)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#expected-result">Expected Result</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#use-case-2-tcp-port-forwarding-proxy-verbosedebug">Use Case 2: TCP Port Forwarding (Proxy) + Verbose/Debug</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#objective_1">Objective</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#command-cat8kv-task-1-container">Command (Cat8Kv-task-1 &gt; container)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#optional-hex-dump-of-payloads">Optional (Hex dump of payloads)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#test-lab-ubuntu">Test (Lab Ubuntu)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#expected-result_1">Expected Result</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#use-case-3-udp-send-and-receive-ipv4-explicit">Use Case 3: UDP Send and Receive (IPv4 Explicit)</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#objective_2">Objective</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#receiver-cat8kv-task-1-container">Receiver (Cat8Kv-task-1 &gt; container)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#sender-cat8kv-task-2-container">Sender (Cat8Kv-task-2 &gt; container)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#expected-result_2">Expected Result</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#use-case-4-file-transfer-over-tcp-txt-one-way">Use Case 4: File Transfer Over TCP (TXT, One-Way)</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#objective_3">Objective</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#receiver-cat8kv-task-1-container_1">Receiver (Cat8Kv-task-1 &gt; container)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#sender-cat8kv-task-2-container_1">Sender (Cat8Kv-task-2 &gt; container)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#verify-on-receiver">Verify (on receiver)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#expected-result_3">Expected Result</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#use-case-5-inline-traffic-inspection-using-two-router-containers">Use Case 5: Inline Traffic Inspection Using Two Router Containers</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#objective_4">Objective</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#lab-topology">Lab Topology</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#step-1-start-backend-http-server-on-r2-container">Step 1: Start Backend HTTP Server on R2 Container</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#step-2-start-inline-inspection-proxy-on-r1-container">Step 2: Start Inline Inspection Proxy on R1 Container</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#optional-hex-dump-of-payloads_1">Optional (Hex dump of payloads)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#step-3-generate-traffic-from-lab-ubuntu">Step 3: Generate Traffic from Lab Ubuntu</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#expected-result_4">Expected Result</a>
-    </li>
-        </ul>
-    </li>
-    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../task-8-kcat/">Task 8 – kcat (Kafka CAT)</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../task-9-mrtg/">Task 9 – MRTG Interface Monitoring</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../task-10-iperf3/">Task 10 – iPerf3 Performance Testing</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../task-11-wireshark/">Task 11 – Wireshark Live Packet Capture</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../task-12-telegraf/">Task 12 – Telegraf Monitoring</a>
-                  </li>
-              </ul>
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#task-7-socat-practical-use-cases" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LTRCLD-1199 – Containers on IOS-XE" class="md-header__button md-logo" aria-label="LTRCLD-1199 – Containers on IOS-XE" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LTRCLD-1199 – Containers on IOS-XE
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Task 7 – socat Practical Use Cases
+            
+          </span>
+        </div>
       </div>
     </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../..">LTRCLD-1199 – Containers on IOS-XE</a>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
         
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
       </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Lab Tasks</li>
-      <li class="breadcrumb-item active">Task 7 – socat Practical Use Cases</li>
-    <li class="wy-breadcrumbs-aside">
-    </li>
-  </ul>
-  <hr/>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
               
-                <h1 id="task-7-socat-practical-use-cases">Task 7: socat Practical Use Cases<a class="headerlink" href="#task-7-socat-practical-use-cases" title="Permanent link">&para;</a></h1>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LTRCLD-1199 – Containers on IOS-XE" class="md-nav__button md-logo" aria-label="LTRCLD-1199 – Containers on IOS-XE" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LTRCLD-1199 – Containers on IOS-XE
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Overview
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Lab Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../containers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Container Details
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Tasks
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Lab Tasks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 1 – App-Hosting Deployment (Manual)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 2 – App-Hosting Automation with Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 3 – Kubernetes App Hosting using Virtual Kubelet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-4-basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 4 – Basic Network Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-5-mtr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 5 – MTR Path Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-6-web-ts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 6 – Web Testing & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 7 – socat Practical Use Cases
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 7 – socat Practical Use Cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-the-lab-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessing the Lab Containers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accessing the Lab Containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lab-setup-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab Setup Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-ssh-to-both-the-routers-directly-from-the-pc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: SSH to both the Routers directly from the PC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-access-the-swiss-knife-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Access the Swiss-Knife Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-1-simple-tcp-listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Case 1: Simple TCP Listener
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Case 1: Simple TCP Listener">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-listener-cat8kv-task-1-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command (Listener &gt; Cat8Kv-task-1 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-client-cat8kv-task-2-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test (Client &gt; Cat8Kv-task-2 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-2-tcp-port-forwarding-proxy-verbosedebug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Case 2: TCP Port Forwarding (Proxy) + Verbose/Debug
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Case 2: TCP Port Forwarding (Proxy) + Verbose/Debug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objective_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-cat8kv-task-1-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command (Cat8Kv-task-1 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-hex-dump-of-payloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional (Hex dump of payloads)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-lab-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test (Lab Ubuntu)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-result_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-3-udp-send-and-receive-ipv4-explicit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Case 3: UDP Send and Receive (IPv4 Explicit)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Case 3: UDP Send and Receive (IPv4 Explicit)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objective_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiver-cat8kv-task-1-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Receiver (Cat8Kv-task-1 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sender-cat8kv-task-2-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sender (Cat8Kv-task-2 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-result_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-4-file-transfer-over-tcp-txt-one-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Case 4: File Transfer Over TCP (TXT, One-Way)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Case 4: File Transfer Over TCP (TXT, One-Way)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objective_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiver-cat8kv-task-1-container_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Receiver (Cat8Kv-task-1 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sender-cat8kv-task-2-container_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sender (Cat8Kv-task-2 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-on-receiver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify (on receiver)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-result_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-5-inline-traffic-inspection-using-two-router-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Case 5: Inline Traffic Inspection Using Two Router Containers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Case 5: Inline Traffic Inspection Using Two Router Containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objective_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab Topology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-start-backend-http-server-on-r2-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Start Backend HTTP Server on R2 Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-start-inline-inspection-proxy-on-r1-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Start Inline Inspection Proxy on R1 Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-hex-dump-of-payloads_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional (Hex dump of payloads)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-generate-traffic-from-lab-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Generate Traffic from Lab Ubuntu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-result_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-8-kcat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 8 – kcat (Kafka CAT)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-9-mrtg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 9 – MRTG Interface Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-10-iperf3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 10 – iPerf3 Performance Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-11-wireshark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 11 – Wireshark Live Packet Capture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-12-telegraf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 12 – Telegraf Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-the-lab-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accessing the Lab Containers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accessing the Lab Containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lab-setup-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab Setup Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-ssh-to-both-the-routers-directly-from-the-pc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: SSH to both the Routers directly from the PC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-access-the-swiss-knife-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Access the Swiss-Knife Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-1-simple-tcp-listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Case 1: Simple TCP Listener
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Case 1: Simple TCP Listener">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-listener-cat8kv-task-1-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command (Listener &gt; Cat8Kv-task-1 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-client-cat8kv-task-2-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test (Client &gt; Cat8Kv-task-2 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-2-tcp-port-forwarding-proxy-verbosedebug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Case 2: TCP Port Forwarding (Proxy) + Verbose/Debug
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Case 2: TCP Port Forwarding (Proxy) + Verbose/Debug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objective_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-cat8kv-task-1-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command (Cat8Kv-task-1 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-hex-dump-of-payloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional (Hex dump of payloads)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-lab-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test (Lab Ubuntu)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-result_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-3-udp-send-and-receive-ipv4-explicit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Case 3: UDP Send and Receive (IPv4 Explicit)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Case 3: UDP Send and Receive (IPv4 Explicit)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objective_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiver-cat8kv-task-1-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Receiver (Cat8Kv-task-1 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sender-cat8kv-task-2-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sender (Cat8Kv-task-2 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-result_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-4-file-transfer-over-tcp-txt-one-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Case 4: File Transfer Over TCP (TXT, One-Way)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Case 4: File Transfer Over TCP (TXT, One-Way)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objective_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiver-cat8kv-task-1-container_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Receiver (Cat8Kv-task-1 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sender-cat8kv-task-2-container_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sender (Cat8Kv-task-2 &gt; container)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-on-receiver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify (on receiver)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-result_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-case-5-inline-traffic-inspection-using-two-router-containers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Case 5: Inline Traffic Inspection Using Two Router Containers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use Case 5: Inline Traffic Inspection Using Two Router Containers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objective_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-topology" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab Topology
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-start-backend-http-server-on-r2-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Start Backend HTTP Server on R2 Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-start-inline-inspection-proxy-on-r1-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Start Inline Inspection Proxy on R1 Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-hex-dump-of-payloads_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional (Hex dump of payloads)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-generate-traffic-from-lab-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Generate Traffic from Lab Ubuntu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-result_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Result
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="task-7-socat-practical-use-cases">Task 7: socat Practical Use Cases<a class="headerlink" href="#task-7-socat-practical-use-cases" title="Permanent link">&para;</a></h1>
 <p><a href="../../">⬅️ Back to Main Menu</a></p>
 <h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
 <ul>
@@ -333,51 +1798,60 @@ socat -d -d -u FILE:/tmp/send.txt TCP4:198.18.100.5:6000
 </ul>
 <hr />
 <p><a href="../../">⬅️ Return to Main Menu</a></p>
-              
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
             </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../task-6-web-ts/" class="btn btn-neutral float-left" title="Task 6 – Web Testing & Troubleshooting"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../task-8-kcat/" class="btn btn-neutral float-right" title="Task 8 – kcat (Kafka CAT)">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
           
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-    
-      <span><a href="../task-6-web-ts/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../task-8-kcat/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
 </div>
-    <script src="../../js/jquery-3.6.0.min.js"></script>
-    <script>var base_url = "../..";</script>
-    <script src="../../js/theme_extra.js"></script>
-    <script src="../../js/theme.js"></script>
-      <script src="../../search/main.js"></script>
-    <script>
-        jQuery(function () {
-            SphinxRtdTheme.Navigation.enable(true);
-        });
-    </script>
-
-</body>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
 </html>
