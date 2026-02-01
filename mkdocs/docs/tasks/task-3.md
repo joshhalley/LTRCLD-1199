@@ -97,29 +97,27 @@ ssh admin@198.18.1.13
 ### 3.1 Verify IOX and RESTCONF
 
 ```text
-show run | i iox|restconf
-```
-```text
+cat8Kv-task-3# show run | i iox|restconf
 iox
 restconf
 ```
 
 ---
 
-### 3.2 Enable and Disable App Hosting Signature Verification
+### 3.2 Disable App Hosting Signature Verification
 
-```bash
-conf t
-app-hosting signed-verification
-end
+```text
+cat8Kv-task-3# app-hosting verification disable
+App signature verification disabled successfully
 ```
-*Jan 13 12:00:22.429: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification enabled successfully
-```bash
-conf t
-no app-hosting signed-verification
-end
+
+Persist in config:
+
+```text
+cat8Kv-task-3# conf t
+cat8Kv-task-3(config)# no app-hosting signed-verification
+cat8Kv-task-3(config)# end
 ```
-*Jan 13 12:00:35.447: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification disabled successfully
 
 ---
 
@@ -128,10 +126,10 @@ end
 > If `show run int virtualportgroup0` fails, configure the interface directly.
 
 ```text
-conf t
-interface virtualportgroup0
-ip address 198.18.102.1 255.255.255.0
-end
+cat8Kv-task-3# conf t
+cat8Kv-task-3(config)# interface virtualportgroup0
+cat8Kv-task-3(config-if)# ip address 198.18.102.1 255.255.255.0
+cat8Kv-task-3(config-if)# end
 ```
 
 ---
@@ -139,10 +137,10 @@ end
 ### 3.4 DHCP Relay Configuration
 
 ```text
-conf t
-interface virtualportgroup0
-ip helper-address 198.18.1.102
-end
+cat8Kv-task-3# conf t
+cat8Kv-task-3(config)# interface virtualportgroup0
+cat8Kv-task-3(config-if)# ip helper-address 198.18.1.102
+cat8Kv-task-3(config-if)# end
 ```
 
 ---
@@ -152,15 +150,15 @@ end
 Check existing:
 
 ```text
-show run | i scp
+cat8Kv-task-3# show run | i scp
 ```
 
 Enable:
 
 ```text
-conf t
-ip scp server enable
-end
+cat8Kv-task-3# conf t
+cat8Kv-task-3(config)# ip scp server enable
+cat8Kv-task-3(config)# end
 ```
 
 ---
@@ -168,7 +166,7 @@ end
 ### 3.6 Verify hello-app Is NOT Present Yet
 
 ```text
-dir flash: | i hello.*tar
+cat8Kv-task-3# dir flash: | i hello.*tar
 ```
 
 Expected: **No output**.
@@ -217,23 +215,44 @@ cat8Kv-task-3(config)# end
 ### 4.5 Deploy hello-app image 
 
 ```text
-cat8Kv-task-3# cat8Kv-task-3#app-hosting install appid hello_app_verify package flash:hello-app.iosxe.tar
+cat8Kv-task-3#app-hosting install appid hello_app_verify package flash:hello-app.iosxe.tar
 ```
 
 ---
 
 ## 5. Create Kubernetes Manifests
 
-> Create **four YAML files** on `ubuntu-lab` exactly as shown below.
+> Create **five YAML files** on `ubuntu-lab` exactly as shown below.
 
 ---
 
-### 5.1 RBAC (One-Time) — Cluster Role Binding
+### 5.1 RBAC (One-Time) — Service Account
 
 ```bash
-kubectl create clusterrolebinding vk-admin-binding \
-  --clusterrole=cluster-admin \
-  --serviceaccount=default:default
+cat > 00_vk_service_account.yaml << 'EOF'
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: virtual-kubelet-sa
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: virtual-kubelet-rb
+subjects:
+- kind: ServiceAccount
+  name: virtual-kubelet-sa
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: virtual-kubelet-role
+  apiGroup: rbac.authorization.k8s.io
+```
+Apply:
+
+```bash
+kubectl apply -f 00_vk_service_account.yaml
 ```
 
 ---
@@ -353,6 +372,7 @@ spec:
       labels:
         app: cisco-virtual-kubelet
     spec:
+      serviceAccountName: virtual-kubelet-sa
       containers:
       - name: virtual-kubelet
         image: containers.dmz.cisco.com:5000/cisco-virtual-kubelet:1.0.0
@@ -379,6 +399,29 @@ spec:
           items:
           - key: "config.yaml"
             path: "config.yaml"
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: virtual-kubelet-role
+rules:
+- apiGroups: [""]
+  resources: ["nodes", "nodes/status"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["pods", "pods/status", "pods/log"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["services", "endpoints"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create", "patch"]
+- apiGroups: [""]
+  resources: ["secrets", "configmaps"]
+  verbs: ["get", "list", "watch"]
 EOF
 ```
 
