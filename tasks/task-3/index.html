@@ -477,65 +477,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-verify-iox-and-restconf" class="md-nav__link">
+  <a href="#31-dhcp-relay-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.1 Verify IOX and RESTCONF
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-enable-and-disable-app-hosting-signature-verification" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 Enable and Disable App Hosting Signature Verification
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-virtualportgroup-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 VirtualPortGroup Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-dhcp-relay-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 DHCP Relay Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-enable-scp" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 Enable SCP
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#36-verify-hello-app-is-not-present-yet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.6 Verify hello-app Is NOT Present Yet
+        3.1 DHCP Relay Configuration
       
     </span>
   </a>
@@ -586,28 +531,6 @@
     <span class="md-ellipsis">
       
         4.3 Upload to Router Flash
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#44-create-appid-to-verify-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.4 Create AppID to Verify Image
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#45-deploy-hello-app-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.5 Deploy hello-app image
       
     </span>
   </a>
@@ -1075,65 +998,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-verify-iox-and-restconf" class="md-nav__link">
+  <a href="#31-dhcp-relay-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.1 Verify IOX and RESTCONF
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-enable-and-disable-app-hosting-signature-verification" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.2 Enable and Disable App Hosting Signature Verification
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#33-virtualportgroup-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.3 VirtualPortGroup Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#34-dhcp-relay-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.4 DHCP Relay Configuration
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#35-enable-scp" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.5 Enable SCP
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#36-verify-hello-app-is-not-present-yet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3.6 Verify hello-app Is NOT Present Yet
+        3.1 DHCP Relay Configuration
       
     </span>
   </a>
@@ -1184,28 +1052,6 @@
     <span class="md-ellipsis">
       
         4.3 Upload to Router Flash
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#44-create-appid-to-verify-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.4 Create AppID to Verify Image
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#45-deploy-hello-app-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4.5 Deploy hello-app image
       
     </span>
   </a>
@@ -1402,57 +1248,12 @@ curl -s https://containers.dmz.cisco.com:5000/v2/hello-app/tags/list
 <pre><code class="language-bash">ssh admin@198.18.1.13
 </code></pre>
 <hr />
-<h3 id="31-verify-iox-and-restconf">3.1 Verify IOX and RESTCONF<a class="headerlink" href="#31-verify-iox-and-restconf" title="Permanent link">&para;</a></h3>
-<pre><code class="language-text">show run | i iox|restconf
-</code></pre>
-<pre><code class="language-text">iox
-restconf
-</code></pre>
-<hr />
-<h3 id="32-enable-and-disable-app-hosting-signature-verification">3.2 Enable and Disable App Hosting Signature Verification<a class="headerlink" href="#32-enable-and-disable-app-hosting-signature-verification" title="Permanent link">&para;</a></h3>
-<pre><code class="language-bash">conf t
-app-hosting signed-verification
-end
-</code></pre>
-<p>*Jan 13 12:00:22.429: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification enabled successfully</p>
-<pre><code class="language-bash">conf t
-no app-hosting signed-verification
-end
-</code></pre>
-<p>*Jan 13 12:00:35.447: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification disabled successfully</p>
-<hr />
-<h3 id="33-virtualportgroup-configuration">3.3 VirtualPortGroup Configuration<a class="headerlink" href="#33-virtualportgroup-configuration" title="Permanent link">&para;</a></h3>
-<blockquote>
-<p>If <code>show run int virtualportgroup0</code> fails, configure the interface directly.</p>
-</blockquote>
-<pre><code class="language-text">conf t
-interface virtualportgroup0
-ip address 198.18.102.1 255.255.255.0
-end
-</code></pre>
-<hr />
-<h3 id="34-dhcp-relay-configuration">3.4 DHCP Relay Configuration<a class="headerlink" href="#34-dhcp-relay-configuration" title="Permanent link">&para;</a></h3>
+<h3 id="31-dhcp-relay-configuration">3.1 DHCP Relay Configuration<a class="headerlink" href="#31-dhcp-relay-configuration" title="Permanent link">&para;</a></h3>
 <pre><code class="language-text">conf t
 interface virtualportgroup0
 ip helper-address 198.18.1.102
 end
 </code></pre>
-<hr />
-<h3 id="35-enable-scp">3.5 Enable SCP<a class="headerlink" href="#35-enable-scp" title="Permanent link">&para;</a></h3>
-<p>Check existing:</p>
-<pre><code class="language-text">show run | i scp
-</code></pre>
-<p>Enable:</p>
-<pre><code class="language-text">conf t
-ip scp server enable
-end
-</code></pre>
-<hr />
-<h3 id="36-verify-hello-app-is-not-present-yet">3.6 Verify hello-app Is NOT Present Yet<a class="headerlink" href="#36-verify-hello-app-is-not-present-yet" title="Permanent link">&para;</a></h3>
-<pre><code class="language-text">dir flash: | i hello.*tar
-</code></pre>
-<p>Expected: <strong>No output</strong>.</p>
-<p>Exit router and return to <code>ubuntu-lab</code>.</p>
 <hr />
 <h2 id="4-build-and-upload-hello-app-image">4. Build and Upload hello-app Image<a class="headerlink" href="#4-build-and-upload-hello-app-image" title="Permanent link">&para;</a></h2>
 <h3 id="41-pull-hello-app-from-registry">4.1 Pull hello-app from Registry<a class="headerlink" href="#41-pull-hello-app-from-registry" title="Permanent link">&para;</a></h3>
@@ -1466,16 +1267,6 @@ sudo chmod 666 hello-app.iosxe.tar
 <hr />
 <h3 id="43-upload-to-router-flash">4.3 Upload to Router Flash<a class="headerlink" href="#43-upload-to-router-flash" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">scp hello-app.iosxe.tar admin@198.18.1.13:/flash:/hello-app.iosxe.tar
-</code></pre>
-<hr />
-<h3 id="44-create-appid-to-verify-image">4.4 Create AppID to Verify Image<a class="headerlink" href="#44-create-appid-to-verify-image" title="Permanent link">&para;</a></h3>
-<pre><code class="language-text">cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# app-hosting appid hello_app_verify
-cat8Kv-task-3(config)# end
-</code></pre>
-<hr />
-<h3 id="45-deploy-hello-app-image">4.5 Deploy hello-app image<a class="headerlink" href="#45-deploy-hello-app-image" title="Permanent link">&para;</a></h3>
-<pre><code class="language-text">cat8Kv-task-3# cat8Kv-task-3#app-hosting install appid hello_app_verify package flash:hello-app.iosxe.tar
 </code></pre>
 <hr />
 <h2 id="5-create-kubernetes-manifests">5. Create Kubernetes Manifests<a class="headerlink" href="#5-create-kubernetes-manifests" title="Permanent link">&para;</a></h2>
@@ -1650,13 +1441,27 @@ EOF
 <pre><code class="language-bash">kubectl get pods -o wide -w
 </code></pre>
 <p>Expected progression:</p>
-<pre><code class="language-text">cisco-virtual-kubelet-xxxxx   1/1   Running   10.0.0.x     ubuntu-lab
-iox-xe-hello-app-pod          1/1   Running   198.18.102.x cat8kv-node
+<pre><code class="language-text">dcloud@ubuntu-lab:~$ kubectl get pods -o wide -w
+NAME                                     READY   STATUS              RESTARTS   AGE   IP          NODE          NOMINATED NODE   READINESS GATES
+cisco-virtual-kubelet-7b58bd86db-mvnr2   1/1     Running             0          54s   10.0.0.61   ubuntu-lab    &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          8s    0.0.0.0     cat8kv-node   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          13s   0.0.0.0     cat8kv-node   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          18s   0.0.0.0     cat8kv-node   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          23s   198.18.102.175   cat8kv-node   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          28s   198.18.102.175   cat8kv-node   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          34s   198.18.102.175   cat8kv-node   &lt;none&gt;           &lt;none&gt;
+
+</code></pre>
+<p>Expected output once container is deployed</p>
+<pre><code class="language-text">dcloud@ubuntu-lab:~$ kubectl get pods -o wide -w
+NAME                                     READY   STATUS    RESTARTS   AGE     IP               NODE          NOMINATED NODE   READINESS GATES
+cisco-virtual-kubelet-7b58bd86db-mvnr2   1/1     Running   0          8m9s    10.0.0.61        ubuntu-lab    &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod                     1/1     Running   0          7m23s   198.18.102.175   cat8kv-node   &lt;none&gt;           &lt;none&gt;
 </code></pre>
 <hr />
 <h2 id="7-verification">7. Verification<a class="headerlink" href="#7-verification" title="Permanent link">&para;</a></h2>
-<p>Use the Pod IP shown in the output (example: <code>198.18.102.3</code>) and validate the app:</p>
-<pre><code class="language-bash">curl http://198.18.102.3:8080
+<p>Use the Pod IP shown in the output (example: <code>198.18.102.175</code>) and validate the app:</p>
+<pre><code class="language-bash">curl http://198.18.102.X:8080
 </code></pre>
 <p>Expected:</p>
 <pre><code class="language-text">Hello, world!

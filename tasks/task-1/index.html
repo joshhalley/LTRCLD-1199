@@ -1073,7 +1073,7 @@
 <ul>
 <li>Login to the Lab Ubuntu (ssh 198.18.1.100)</li>
 <li>Check the docker registry </li>
-<li>Pull the required image from a container registry</li>
+<li>Pull the swiss-knife and mrtg image from a container registry</li>
 <li>This image will be used to create a TAR file for router deployment</li>
 </ul>
 <pre><code class="language-bash">curl -s http://198.18.5.101:5000/v2/_catalog
@@ -1091,7 +1091,8 @@
 </code></pre>
 <pre><code class="language-bash">dcloud@ubuntu-lab:~$ sudo docker images
 REPOSITORY                             TAG       IMAGE ID       CREATED       SIZE
-198.18.5.101:5000/swiss-knife-alpine   latest    987b29fae1f2   10 days ago   396MB
+198.18.5.101:5000/swiss-knife-alpine   latest    987b29fae1f2   12 days ago   396MB
+198.18.5.101:5000/mrtg                 latest    a5b113ce6bff   2 weeks ago   132MB
 registry                               2         26b2eb03618e   2 years ago   25.4MB
 dcloud@ubuntu-lab:~$ 
 </code></pre>
@@ -1107,6 +1108,7 @@ dcloud@ubuntu-lab:~$
 </code></pre>
 <p>Verify the TAR file exists:</p>
 <pre><code class="language-bash">ls -lh swiss-knife-alpine.tar
+ls -lh mrtg.tar
 </code></pre>
 <hr />
 <h2 id="step-3-scp-file-to-cat8kv-task-1">Step 3: SCP File to cat8Kv-task-1<a class="headerlink" href="#step-3-scp-file-to-cat8kv-task-1" title="Permanent link">&para;</a></h2>
@@ -1219,7 +1221,7 @@ end
 <p>Ensure it is running:</p>
 <pre><code class="language-bash">show app-hosting detail appid swiss_knife
 </code></pre>
-<p>Connect to the container and explore</p>
+<p>Connect to the container and explore and exit</p>
 <pre><code class="language-bash">app-hosting connect appid swiss_knife session /bin/bash
 </code></pre>
 <hr />
@@ -1297,7 +1299,7 @@ end
 <p>Ensure it is running:</p>
 <pre><code class="language-bash">show app-hosting detail appid mrtg
 </code></pre>
-<p>Connect to the container and explore</p>
+<p>Connect to the container and explore and exit</p>
 <pre><code class="language-bash">app-hosting connect appid mrtg session /bin/bash
 </code></pre>
 <hr />

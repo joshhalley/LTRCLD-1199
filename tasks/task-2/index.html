@@ -437,10 +437,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-scp-file-to-router" class="md-nav__link">
+  <a href="#step-3-scp-swiss-knife-to-router" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: SCP File to Router
+        Step 3: SCP swiss-knife to Router
       
     </span>
   </a>
@@ -448,10 +448,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-verify-md5-hash" class="md-nav__link">
+  <a href="#step-3-scp-mrtg-to-router" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4: Verify MD5 Hash
+        Step 3: SCP mrtg to Router
       
     </span>
   </a>
@@ -985,10 +985,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-scp-file-to-router" class="md-nav__link">
+  <a href="#step-3-scp-swiss-knife-to-router" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3: SCP File to Router
+        Step 3: SCP swiss-knife to Router
       
     </span>
   </a>
@@ -996,10 +996,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-verify-md5-hash" class="md-nav__link">
+  <a href="#step-3-scp-mrtg-to-router" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4: Verify MD5 Hash
+        Step 3: SCP mrtg to Router
       
     </span>
   </a>
@@ -1279,7 +1279,7 @@ https://198.18.9.12/restconf/data/Cisco-IOS-XE-native:native/iox
 <pre><code class="language-bash">ls -lh wireshark.tar
 </code></pre>
 <hr />
-<h2 id="step-3-scp-file-to-router">Step 3: SCP File to Router<a class="headerlink" href="#step-3-scp-file-to-router" title="Permanent link">&para;</a></h2>
+<h2 id="step-3-scp-swiss-knife-to-router">Step 3: SCP swiss-knife to Router<a class="headerlink" href="#step-3-scp-swiss-knife-to-router" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Login to cat8Kv-task-2 using 198.18.1.12</li>
 <li>Enable SCP server</li>
@@ -1294,22 +1294,20 @@ end
 <p>Copy swiss knife container</p>
 <pre><code class="language-bash">sudo scp swiss-knife-alpine.tar admin@198.18.1.12:/flash:/swiss-knife-alpine.tar
 </code></pre>
+<p>Verify the file on the router:</p>
+<pre><code class="language-bash">dir bootflash: | include tar
+</code></pre>
+<hr />
+<h2 id="step-3-scp-mrtg-to-router">Step 3: SCP mrtg to Router<a class="headerlink" href="#step-3-scp-mrtg-to-router" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Login to cat8Kv-task-2 using 198.18.1.12</li>
+<li>Copy the TAR image from your lab ubuntu to the router</li>
+</ul>
 <p>Copy wireshark container</p>
 <pre><code class="language-bash">sudo scp wireshark.tar admin@198.18.1.12:/flash:/wireshark.tar
 </code></pre>
 <p>Verify the file on the router:</p>
 <pre><code class="language-bash">dir bootflash: | include tar
-</code></pre>
-<hr />
-<h2 id="step-4-verify-md5-hash">Step 4: Verify MD5 Hash<a class="headerlink" href="#step-4-verify-md5-hash" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Confirm file integrity on the router</li>
-<li>Ensures no corruption occurred during transfer</li>
-</ul>
-<pre><code class="language-bash">verify /md5 bootflash:wireshark.tar
-</code></pre>
-<p>Compare with local checksum:</p>
-<pre><code class="language-bash">md5sum wireshark.tar
 </code></pre>
 <h2 id="step-5-verify-tool-versions">Step 5: Verify Tool Versions<a class="headerlink" href="#step-5-verify-tool-versions" title="Permanent link">&para;</a></h2>
 <p>Terraform and Go are already installed on the Lab Ubuntu (SSH 198.18.1.100)
@@ -1332,7 +1330,7 @@ Verify the versions before proceeding.</p>
 </code></pre>
 <hr />
 <h2 id="step-6-clone-the-app-hosting-terraform-provider">Step 6: Clone the App-Hosting Terraform Provider<a class="headerlink" href="#step-6-clone-the-app-hosting-terraform-provider" title="Permanent link">&para;</a></h2>
-<p>Clone the Terraform provider repository from the <strong>instructor VM</strong>:</p>
+<p>Clone the Terraform provider repository from the <strong>Mgmt Ubuntu</strong>:</p>
 <pre><code class="language-bash">GIT_SSH_COMMAND='ssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa' \
 git clone ssh://lab@198.18.5.101/home/lab/terraform-provider-ciscoapphosting
 </code></pre>
@@ -1454,7 +1452,7 @@ show run | section ospf
 <li><code>VirtualPortGroup0</code> configured with IP address</li>
 <li><code>router ospf 1</code> with a network statement for the VPG IP</li>
 </ul>
-<p>Connect to the container and explore</p>
+<p>Connect to the container and explore and exit</p>
 <pre><code class="language-bash">app-hosting connect appid swiss_knife session /bin/bash
 </code></pre>
 <h2 id="step-13-install-wireshark-container">Step 13: Install Wireshark container<a class="headerlink" href="#step-13-install-wireshark-container" title="Permanent link">&para;</a></h2>
@@ -1525,7 +1523,7 @@ resource &quot;ciscoapphosting_app&quot; &quot;wireshark&quot; {
 <li>App state: <strong>RUNNING</strong></li>
 <li>Now we have 2 containers running</li>
 </ul>
-<p>Connect to the container and explore</p>
+<p>Connect to the container and explore and exit</p>
 <pre><code class="language-bash">app-hosting connect appid wireshark session /bin/bash
 </code></pre>
 <hr />
