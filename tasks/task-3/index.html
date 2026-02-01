@@ -488,10 +488,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#32-disable-app-hosting-signature-verification" class="md-nav__link">
+  <a href="#32-enable-and-disable-app-hosting-signature-verification" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.2 Disable App Hosting Signature Verification
+        3.2 Enable and Disable App Hosting Signature Verification
       
     </span>
   </a>
@@ -586,6 +586,28 @@
     <span class="md-ellipsis">
       
         4.3 Upload to Router Flash
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-create-appid-to-verify-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Create AppID to Verify Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-deploy-hello-app-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Deploy hello-app image
       
     </span>
   </a>
@@ -1064,10 +1086,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#32-disable-app-hosting-signature-verification" class="md-nav__link">
+  <a href="#32-enable-and-disable-app-hosting-signature-verification" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.2 Disable App Hosting Signature Verification
+        3.2 Enable and Disable App Hosting Signature Verification
       
     </span>
   </a>
@@ -1162,6 +1184,28 @@
     <span class="md-ellipsis">
       
         4.3 Upload to Router Flash
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-create-appid-to-verify-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Create AppID to Verify Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-deploy-hello-app-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Deploy hello-app image
       
     </span>
   </a>
@@ -1359,50 +1403,53 @@ curl -s https://containers.dmz.cisco.com:5000/v2/hello-app/tags/list
 </code></pre>
 <hr />
 <h3 id="31-verify-iox-and-restconf">3.1 Verify IOX and RESTCONF<a class="headerlink" href="#31-verify-iox-and-restconf" title="Permanent link">&para;</a></h3>
-<pre><code class="language-text">cat8Kv-task-3# show run | i iox|restconf
-iox
+<pre><code class="language-text">show run | i iox|restconf
+</code></pre>
+<pre><code class="language-text">iox
 restconf
 </code></pre>
 <hr />
-<h3 id="32-disable-app-hosting-signature-verification">3.2 Disable App Hosting Signature Verification<a class="headerlink" href="#32-disable-app-hosting-signature-verification" title="Permanent link">&para;</a></h3>
-<pre><code class="language-text">cat8Kv-task-3# app-hosting verification disable
-App signature verification disabled successfully
+<h3 id="32-enable-and-disable-app-hosting-signature-verification">3.2 Enable and Disable App Hosting Signature Verification<a class="headerlink" href="#32-enable-and-disable-app-hosting-signature-verification" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">conf t
+app-hosting signed-verification
+end
 </code></pre>
-<p>Persist in config:</p>
-<pre><code class="language-text">cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# no app-hosting signed-verification
-cat8Kv-task-3(config)# end
+<p>*Jan 13 12:00:22.429: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification enabled successfully</p>
+<pre><code class="language-bash">conf t
+no app-hosting signed-verification
+end
 </code></pre>
+<p>*Jan 13 12:00:35.447: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification disabled successfully</p>
 <hr />
 <h3 id="33-virtualportgroup-configuration">3.3 VirtualPortGroup Configuration<a class="headerlink" href="#33-virtualportgroup-configuration" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>If <code>show run int virtualportgroup0</code> fails, configure the interface directly.</p>
 </blockquote>
-<pre><code class="language-text">cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# interface virtualportgroup0
-cat8Kv-task-3(config-if)# ip address 198.18.102.1 255.255.255.0
-cat8Kv-task-3(config-if)# end
+<pre><code class="language-text">conf t
+interface virtualportgroup0
+ip address 198.18.102.1 255.255.255.0
+end
 </code></pre>
 <hr />
 <h3 id="34-dhcp-relay-configuration">3.4 DHCP Relay Configuration<a class="headerlink" href="#34-dhcp-relay-configuration" title="Permanent link">&para;</a></h3>
-<pre><code class="language-text">cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# interface virtualportgroup0
-cat8Kv-task-3(config-if)# ip helper-address 198.18.1.102
-cat8Kv-task-3(config-if)# end
+<pre><code class="language-text">conf t
+interface virtualportgroup0
+ip helper-address 198.18.1.102
+end
 </code></pre>
 <hr />
 <h3 id="35-enable-scp">3.5 Enable SCP<a class="headerlink" href="#35-enable-scp" title="Permanent link">&para;</a></h3>
 <p>Check existing:</p>
-<pre><code class="language-text">cat8Kv-task-3# show run | i scp
+<pre><code class="language-text">show run | i scp
 </code></pre>
 <p>Enable:</p>
-<pre><code class="language-text">cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# ip scp server enable
-cat8Kv-task-3(config)# end
+<pre><code class="language-text">conf t
+ip scp server enable
+end
 </code></pre>
 <hr />
 <h3 id="36-verify-hello-app-is-not-present-yet">3.6 Verify hello-app Is NOT Present Yet<a class="headerlink" href="#36-verify-hello-app-is-not-present-yet" title="Permanent link">&para;</a></h3>
-<pre><code class="language-text">cat8Kv-task-3# dir flash: | i hello.*tar
+<pre><code class="language-text">dir flash: | i hello.*tar
 </code></pre>
 <p>Expected: <strong>No output</strong>.</p>
 <p>Exit router and return to <code>ubuntu-lab</code>.</p>
@@ -1419,6 +1466,16 @@ sudo chmod 666 hello-app.iosxe.tar
 <hr />
 <h3 id="43-upload-to-router-flash">4.3 Upload to Router Flash<a class="headerlink" href="#43-upload-to-router-flash" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">scp hello-app.iosxe.tar admin@198.18.1.13:/flash:/hello-app.iosxe.tar
+</code></pre>
+<hr />
+<h3 id="44-create-appid-to-verify-image">4.4 Create AppID to Verify Image<a class="headerlink" href="#44-create-appid-to-verify-image" title="Permanent link">&para;</a></h3>
+<pre><code class="language-text">cat8Kv-task-3# conf t
+cat8Kv-task-3(config)# app-hosting appid hello_app_verify
+cat8Kv-task-3(config)# end
+</code></pre>
+<hr />
+<h3 id="45-deploy-hello-app-image">4.5 Deploy hello-app image<a class="headerlink" href="#45-deploy-hello-app-image" title="Permanent link">&para;</a></h3>
+<pre><code class="language-text">cat8Kv-task-3# cat8Kv-task-3#app-hosting install appid hello_app_verify package flash:hello-app.iosxe.tar
 </code></pre>
 <hr />
 <h2 id="5-create-kubernetes-manifests">5. Create Kubernetes Manifests<a class="headerlink" href="#5-create-kubernetes-manifests" title="Permanent link">&para;</a></h2>
