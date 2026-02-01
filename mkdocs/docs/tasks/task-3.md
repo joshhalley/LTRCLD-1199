@@ -202,6 +202,24 @@ scp hello-app.iosxe.tar admin@198.18.1.13:/flash:/hello-app.iosxe.tar
 
 ---
 
+### 4.4 Create AppID to Verify Image
+
+```text
+cat8Kv-task-3# conf t
+cat8Kv-task-3(config)# app-hosting appid hello_app_verify
+cat8Kv-task-3(config)# end
+```
+
+---
+
+### 4.5 Deploy hello-app image 
+
+```text
+cat8Kv-task-3# cat8Kv-task-3#app-hosting install appid hello_app_verify package flash:hello-app.iosxe.tar
+```
+
+---
+
 ## 5. Create Kubernetes Manifests
 
 > Create **four YAML files** on `ubuntu-lab` exactly as shown below.
