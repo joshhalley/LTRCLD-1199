@@ -38,7 +38,7 @@ The process includes:
 
 * Login to the Lab Ubuntu (ssh 198.18.1.100)
 * Check the docker registry 
-* Pull the required image from a container registry
+* Pull the swiss-knife and mrtg image from a container registry
 * This image will be used to create a TAR file for router deployment
 
 ```bash
@@ -67,7 +67,8 @@ sudo docker images
 ```bash
 dcloud@ubuntu-lab:~$ sudo docker images
 REPOSITORY                             TAG       IMAGE ID       CREATED       SIZE
-198.18.5.101:5000/swiss-knife-alpine   latest    987b29fae1f2   10 days ago   396MB
+198.18.5.101:5000/swiss-knife-alpine   latest    987b29fae1f2   12 days ago   396MB
+198.18.5.101:5000/mrtg                 latest    a5b113ce6bff   2 weeks ago   132MB
 registry                               2         26b2eb03618e   2 years ago   25.4MB
 dcloud@ubuntu-lab:~$ 
 ```
@@ -91,6 +92,7 @@ Verify the TAR file exists:
 
 ```bash
 ls -lh swiss-knife-alpine.tar
+ls -lh mrtg.tar
 ```
 
 ---
@@ -245,7 +247,7 @@ Ensure it is running:
 show app-hosting detail appid swiss_knife
 ```
 
-Connect to the container and explore
+Connect to the container and explore and exit
 
 ```bash
 app-hosting connect appid swiss_knife session /bin/bash
@@ -354,7 +356,7 @@ Ensure it is running:
 show app-hosting detail appid mrtg
 ```
 
-Connect to the container and explore
+Connect to the container and explore and exit
 
 ```bash
 app-hosting connect appid mrtg session /bin/bash

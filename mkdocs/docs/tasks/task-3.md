@@ -94,84 +94,14 @@ ssh admin@198.18.1.13
 
 ---
 
-### 3.1 Verify IOX and RESTCONF
+### 3.1 DHCP Relay Configuration
 
 ```text
-cat8Kv-task-3# show run | i iox|restconf
-iox
-restconf
+conf t
+interface virtualportgroup0
+ip helper-address 198.18.1.102
+end
 ```
-
----
-
-### 3.2 Disable App Hosting Signature Verification
-
-```text
-cat8Kv-task-3# app-hosting verification disable
-App signature verification disabled successfully
-```
-
-Persist in config:
-
-```text
-cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# no app-hosting signed-verification
-cat8Kv-task-3(config)# end
-```
-
----
-
-### 3.3 VirtualPortGroup Configuration
-
-> If `show run int virtualportgroup0` fails, configure the interface directly.
-
-```text
-cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# interface virtualportgroup0
-cat8Kv-task-3(config-if)# ip address 198.18.102.1 255.255.255.0
-cat8Kv-task-3(config-if)# end
-```
-
----
-
-### 3.4 DHCP Relay Configuration
-
-```text
-cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# interface virtualportgroup0
-cat8Kv-task-3(config-if)# ip helper-address 198.18.1.102
-cat8Kv-task-3(config-if)# end
-```
-
----
-
-### 3.5 Enable SCP
-
-Check existing:
-
-```text
-cat8Kv-task-3# show run | i scp
-```
-
-Enable:
-
-```text
-cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# ip scp server enable
-cat8Kv-task-3(config)# end
-```
-
----
-
-### 3.6 Verify hello-app Is NOT Present Yet
-
-```text
-cat8Kv-task-3# dir flash: | i hello.*tar
-```
-
-Expected: **No output**.
-
-Exit router and return to `ubuntu-lab`.
 
 ---
 
@@ -199,60 +129,20 @@ sudo chmod 666 hello-app.iosxe.tar
 ```bash
 scp hello-app.iosxe.tar admin@198.18.1.13:/flash:/hello-app.iosxe.tar
 ```
-
----
-
-### 4.4 Create AppID to Verify Image
-
-```text
-cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# app-hosting appid hello_app_verify
-cat8Kv-task-3(config)# end
-```
-
----
-
-### 4.5 Deploy hello-app image 
-
-```text
-cat8Kv-task-3#app-hosting install appid hello_app_verify package flash:hello-app.iosxe.tar
-```
-
 ---
 
 ## 5. Create Kubernetes Manifests
 
-> Create **five YAML files** on `ubuntu-lab` exactly as shown below.
+> Create **four YAML files** on `ubuntu-lab` exactly as shown below.
 
 ---
 
-### 5.1 RBAC (One-Time) — Service Account
+### 5.1 RBAC (One-Time) — Cluster Role Binding
 
 ```bash
-cat > 00_vk_service_account.yaml << 'EOF'
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: virtual-kubelet-sa
-  namespace: default
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: virtual-kubelet-rb
-subjects:
-- kind: ServiceAccount
-  name: virtual-kubelet-sa
-  namespace: default
-roleRef:
-  kind: ClusterRole
-  name: virtual-kubelet-role
-  apiGroup: rbac.authorization.k8s.io
-```
-Apply:
-
-```bash
-kubectl apply -f 00_vk_service_account.yaml
+kubectl create clusterrolebinding vk-admin-binding \
+  --clusterrole=cluster-admin \
+  --serviceaccount=default:default
 ```
 
 ---
@@ -372,7 +262,6 @@ spec:
       labels:
         app: cisco-virtual-kubelet
     spec:
-      serviceAccountName: virtual-kubelet-sa
       containers:
       - name: virtual-kubelet
         image: containers.dmz.cisco.com:5000/cisco-virtual-kubelet:1.0.0
@@ -399,29 +288,6 @@ spec:
           items:
           - key: "config.yaml"
             path: "config.yaml"
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: virtual-kubelet-role
-rules:
-- apiGroups: [""]
-  resources: ["nodes", "nodes/status"]
-  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-- apiGroups: [""]
-  resources: ["pods", "pods/status", "pods/log"]
-  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-- apiGroups: [""]
-  resources: ["services", "endpoints"]
-  verbs: ["get", "list", "watch"]
-- apiGroups: [""]
-  resources: ["events"]
-  verbs: ["create", "patch"]
-- apiGroups: [""]
-  resources: ["secrets", "configmaps"]
-  verbs: ["get", "list", "watch"]
 EOF
 ```
 
@@ -488,18 +354,35 @@ kubectl get pods -o wide -w
 Expected progression:
 
 ```text
-cisco-virtual-kubelet-xxxxx   1/1   Running   10.0.0.x     ubuntu-lab
-iox-xe-hello-app-pod          1/1   Running   198.18.102.x cat8kv-node
+dcloud@ubuntu-lab:~$ kubectl get pods -o wide -w
+NAME                                     READY   STATUS              RESTARTS   AGE   IP          NODE          NOMINATED NODE   READINESS GATES
+cisco-virtual-kubelet-7b58bd86db-mvnr2   1/1     Running             0          54s   10.0.0.61   ubuntu-lab    <none>           <none>
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          8s    0.0.0.0     cat8kv-node   <none>           <none>
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          13s   0.0.0.0     cat8kv-node   <none>           <none>
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          18s   0.0.0.0     cat8kv-node   <none>           <none>
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          23s   198.18.102.175   cat8kv-node   <none>           <none>
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          28s   198.18.102.175   cat8kv-node   <none>           <none>
+iox-xe-hello-app-pod                     0/1     ContainerCreating   0          34s   198.18.102.175   cat8kv-node   <none>           <none>
+
+```
+
+Expected output once container is deployed
+
+```text
+dcloud@ubuntu-lab:~$ kubectl get pods -o wide -w
+NAME                                     READY   STATUS    RESTARTS   AGE     IP               NODE          NOMINATED NODE   READINESS GATES
+cisco-virtual-kubelet-7b58bd86db-mvnr2   1/1     Running   0          8m9s    10.0.0.61        ubuntu-lab    <none>           <none>
+iox-xe-hello-app-pod                     1/1     Running   0          7m23s   198.18.102.175   cat8kv-node   <none>           <none>
 ```
 
 ---
 
 ## 7. Verification
 
-Use the Pod IP shown in the output (example: `198.18.102.3`) and validate the app:
+Use the Pod IP shown in the output (example: `198.18.102.175`) and validate the app:
 
 ```bash
-curl http://198.18.102.3:8080
+curl http://198.18.102.X:8080
 ```
 
 Expected:

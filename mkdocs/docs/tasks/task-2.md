@@ -131,7 +131,7 @@ ls -lh wireshark.tar
 
 ---
 
-## Step 3: SCP File to Router
+## Step 3: SCP swiss-knife to Router
 
 * Login to cat8Kv-task-2 using 198.18.1.12
 * Enable SCP server
@@ -148,7 +148,18 @@ Copy swiss knife container
 ```bash
 sudo scp swiss-knife-alpine.tar admin@198.18.1.12:/flash:/swiss-knife-alpine.tar
 ```
+Verify the file on the router:
 
+```bash
+dir bootflash: | include tar
+```
+
+---
+
+## Step 3: SCP mrtg to Router
+
+* Login to cat8Kv-task-2 using 198.18.1.12
+* Copy the TAR image from your lab ubuntu to the router
 
 Copy wireshark container
 ```bash
@@ -159,23 +170,6 @@ Verify the file on the router:
 
 ```bash
 dir bootflash: | include tar
-```
-
----
-
-## Step 4: Verify MD5 Hash
-
-* Confirm file integrity on the router
-* Ensures no corruption occurred during transfer
-
-```bash
-verify /md5 bootflash:wireshark.tar
-```
-
-Compare with local checksum:
-
-```bash
-md5sum wireshark.tar
 ```
 
 ## Step 5: Verify Tool Versions
@@ -215,7 +209,7 @@ go version go1.18.1 linux/amd64
 
 ## Step 6: Clone the App-Hosting Terraform Provider
 
-Clone the Terraform provider repository from the **instructor VM**:
+Clone the Terraform provider repository from the **Mgmt Ubuntu**:
 
 ```bash
 GIT_SSH_COMMAND='ssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa' \
@@ -398,7 +392,7 @@ You should see:
 * `VirtualPortGroup0` configured with IP address
 * `router ospf 1` with a network statement for the VPG IP
 
-Connect to the container and explore
+Connect to the container and explore and exit
 
 ```bash
 app-hosting connect appid swiss_knife session /bin/bash
@@ -509,7 +503,7 @@ You should see:
 * App state: **RUNNING**
 * Now we have 2 containers running
 
-Connect to the container and explore
+Connect to the container and explore and exit
 
 ```bash
 app-hosting connect appid wireshark session /bin/bash
