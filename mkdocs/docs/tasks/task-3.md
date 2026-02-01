@@ -97,27 +97,29 @@ ssh admin@198.18.1.13
 ### 3.1 Verify IOX and RESTCONF
 
 ```text
-cat8Kv-task-3# show run | i iox|restconf
+show run | i iox|restconf
+```
+```text
 iox
 restconf
 ```
 
 ---
 
-### 3.2 Disable App Hosting Signature Verification
+### 3.2 Enable and Disable App Hosting Signature Verification
 
-```text
-cat8Kv-task-3# app-hosting verification disable
-App signature verification disabled successfully
+```bash
+conf t
+app-hosting signed-verification
+end
 ```
-
-Persist in config:
-
-```text
-cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# no app-hosting signed-verification
-cat8Kv-task-3(config)# end
+*Jan 13 12:00:22.429: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification enabled successfully
+```bash
+conf t
+no app-hosting signed-verification
+end
 ```
+*Jan 13 12:00:35.447: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification disabled successfully
 
 ---
 
@@ -126,10 +128,10 @@ cat8Kv-task-3(config)# end
 > If `show run int virtualportgroup0` fails, configure the interface directly.
 
 ```text
-cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# interface virtualportgroup0
-cat8Kv-task-3(config-if)# ip address 198.18.102.1 255.255.255.0
-cat8Kv-task-3(config-if)# end
+conf t
+interface virtualportgroup0
+ip address 198.18.102.1 255.255.255.0
+end
 ```
 
 ---
@@ -137,10 +139,10 @@ cat8Kv-task-3(config-if)# end
 ### 3.4 DHCP Relay Configuration
 
 ```text
-cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# interface virtualportgroup0
-cat8Kv-task-3(config-if)# ip helper-address 198.18.1.102
-cat8Kv-task-3(config-if)# end
+conf t
+interface virtualportgroup0
+ip helper-address 198.18.1.102
+end
 ```
 
 ---
@@ -150,15 +152,15 @@ cat8Kv-task-3(config-if)# end
 Check existing:
 
 ```text
-cat8Kv-task-3# show run | i scp
+show run | i scp
 ```
 
 Enable:
 
 ```text
-cat8Kv-task-3# conf t
-cat8Kv-task-3(config)# ip scp server enable
-cat8Kv-task-3(config)# end
+conf t
+ip scp server enable
+end
 ```
 
 ---
@@ -166,7 +168,7 @@ cat8Kv-task-3(config)# end
 ### 3.6 Verify hello-app Is NOT Present Yet
 
 ```text
-cat8Kv-task-3# dir flash: | i hello.*tar
+dir flash: | i hello.*tar
 ```
 
 Expected: **No output**.
