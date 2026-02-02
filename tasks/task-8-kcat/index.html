@@ -888,8 +888,8 @@
 <h1 id="task-8-kcat-kafka-cat-connectivity-message-flow">Task 8: kcat (Kafka CAT) Connectivity &amp; Message Flow<a class="headerlink" href="#task-8-kcat-kafka-cat-connectivity-message-flow" title="Permanent link">&para;</a></h1>
 <p><a href="../../">⬅️ Back to Main Menu</a></p>
 <p>kcat is a lightweight CLI tool to validate <strong>Kafka connectivity, topics, and message flow</strong> without needing to install a full Kafka client stack on the router.</p>
-<p><strong>Lab context</strong> \
-- Kafka Broker is running on <strong>Mgmt Ubuntu 1</strong> (<code>198.18.5.101:9092</code>) \
+<p><strong>Lab context</strong> /
+- Kafka Broker is running on <strong>Mgmt Ubuntu 1</strong> (<code>198.18.5.101:9092</code>) /
 - You will run kcat from the <strong>Swiss-Knife container</strong> on <code>cat8Kv-task-1</code></p>
 <hr />
 <h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
@@ -908,9 +908,9 @@
 </code></pre>
 <hr />
 <h2 id="step-2-validate-broker-connectivity-and-metadata">Step 2: Validate broker connectivity and metadata<a class="headerlink" href="#step-2-validate-broker-connectivity-and-metadata" title="Permanent link">&para;</a></h2>
-<p>This confirms: \
-- TCP reachability to the broker \
-- Kafka protocol handshake works \
+<p>This confirms: /
+- TCP reachability to the broker /
+- Kafka protocol handshake works /
 - You can retrieve cluster/topic metadata</p>
 <pre><code class="language-bash">kcat -b 198.18.5.101:9092 -L
 </code></pre>
@@ -924,8 +924,8 @@
 </code></pre>
 <hr />
 <h2 id="step-3-list-topics-read-only-check">Step 3: List topics (read-only check)<a class="headerlink" href="#step-3-list-topics-read-only-check" title="Permanent link">&para;</a></h2>
-<p>Use this when: \
-- An application reports “topic not found” \
+<p>Use this when: /
+- An application reports “topic not found” /
 - You want to validate you are pointing to the correct environment/broker</p>
 <pre><code class="language-bash">kcat -b 198.18.5.101:9092 -L | grep -i topic
 </code></pre>
@@ -934,18 +934,18 @@
 <p>Send a single test message from the container to Kafka:</p>
 <pre><code class="language-bash">echo &quot;hello-from-cat8kv-task-1&quot; | kcat -b 198.18.5.101:9092 -t netops-test -P
 </code></pre>
-<p>This should run withut any output or error, the message is received by the broker \
-What this demonstrates: \
-- The router/container can publish events (logs/telemetry/test messages) \
+<p>This should run withut any output or error, the message is received by the broker /
+What this demonstrates: /
+- The router/container can publish events (logs/telemetry/test messages) /
 - The end-to-end path to Kafka is working</p>
 <hr />
 <h2 id="step-5-consume-messages-from-a-topic">Step 5: Consume messages from a topic<a class="headerlink" href="#step-5-consume-messages-from-a-topic" title="Permanent link">&para;</a></h2>
 <p>Start a consumer to verify that messages are arriving.</p>
 <pre><code class="language-bash">kcat -b 198.18.5.101:9092 -t netops-test -C
 </code></pre>
-<p>Notes: \
-- This command runs continuously. \
-- The message sent in the previous step can be seen here
+<p>Notes: /
+- This command runs continuously. /
+- The message sent in the previous step can be seen here /
 - Press <strong>Ctrl+C</strong> to stop the consumer.</p>
 <hr />
 <h2 id="troubleshooting-quick-tips">Troubleshooting quick tips<a class="headerlink" href="#troubleshooting-quick-tips" title="Permanent link">&para;</a></h2>

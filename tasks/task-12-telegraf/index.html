@@ -679,18 +679,7 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#page-index" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Page Index
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Page Index">
+    <nav class="md-nav" aria-label="Objective">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -799,18 +788,7 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#page-index" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Page Index
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Page Index">
+    <nav class="md-nav" aria-label="Objective">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -889,7 +867,7 @@
 <p><a href="../../">⬅ Back to Main Menu</a></p>
 <hr />
 <h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h2>
-<p>In this task, you deploy and extend a <strong>Telegraf-based monitoring probe</strong> running inside a container to demonstrate how <strong>modern telemetry pipelines</strong> can be built on edge devices.</p>
+<p>In this task, you deploy and extend a <strong>Telegraf-based monitoring probe</strong> running inside the swiss-knife container to demonstrate how <strong>modern telemetry pipelines</strong> can be built on edge devices.</p>
 <p>You will:</p>
 <ul>
 <li>Collect <strong>container self-metrics</strong> (CPU, memory, disk, network)</li>
@@ -900,7 +878,6 @@
 </ul>
 <p>This task is divided into <strong>two continuous parts</strong> using the <strong>same Telegraf container</strong>.</p>
 <hr />
-<h2 id="page-index">Page Index<a class="headerlink" href="#page-index" title="Permanent link">&para;</a></h2>
 <h3 id="part-1-container-service-monitoring">Part 1 – Container &amp; Service Monitoring<a class="headerlink" href="#part-1-container-service-monitoring" title="Permanent link">&para;</a></h3>
 <ul>
 <li><a href="#lab-architecture">Lab Architecture</a></li>
@@ -936,7 +913,7 @@
 <li>Polls routers using SNMP</li>
 <li>Exposes <code>/metrics</code> on port <code>9273</code></li>
 <li>
-<p><strong>Management Node</strong></p>
+<p><strong>Mgmt Ubuntu 1 Node</strong></p>
 </li>
 <li>
 <p>Prometheus (scrapes metrics)</p>
@@ -978,7 +955,7 @@ All inputs and outputs are defined under <code>telegraf.d</code>.</p>
 <hr />
 <h2 id="step-3-create-lab-configuration-container-ping-http">Step 3: Create Lab Configuration (Container, Ping, HTTP)<a class="headerlink" href="#step-3-create-lab-configuration-container-ping-http" title="Permanent link">&para;</a></h2>
 <p>Edit the lab configuration file:</p>
-<pre><code class="language-bash">vi /etc/telegraf/telegraf.d/lab.conf
+<pre><code class="language-bash">nano /etc/telegraf/telegraf.d/lab.conf
 </code></pre>
 <h3 id="labconf"><code>lab.conf</code><a class="headerlink" href="#labconf" title="Permanent link">&para;</a></h3>
 <pre><code class="language-toml">[agent]
@@ -1046,16 +1023,34 @@ All inputs and outputs are defined under <code>telegraf.d</code>.</p>
   --config-directory /etc/telegraf/telegraf.d \
   --test | head
 </code></pre>
-<h3 id="expected-result">Expected Result<a class="headerlink" href="#expected-result" title="Permanent link">&para;</a></h3>
+<p><strong>Verify the following in the output:</strong></p>
 <ul>
-<li>No errors</li>
-<li>Both config files are loaded</li>
-<li>Inputs loaded: <code>cpu disk http_response mem net ping</code></li>
-<li>Sample metrics are generated</li>
+<li>✔️ <strong>Both configs are loaded</strong></li>
+</ul>
+<p><code>Loading config: /etc/telegraf/telegraf.conf
+  Loading config: /etc/telegraf/telegraf.d/lab.conf</code></p>
+<ul>
+<li>✔️ <strong>Telegraf starts without errors</strong></li>
+</ul>
+<p><code>Starting Telegraf 1.x.x</code></p>
+<ul>
+<li>✔️ <strong>Expected inputs are loaded</strong></li>
+</ul>
+<p><code>Loaded inputs: cpu disk http_response mem net ping</code></p>
+<ul>
+<li>✔️ <strong>Host tag is present</strong></li>
+</ul>
+<p><code>Tags enabled: host=swiss-knife-monitor</code></p>
+<ul>
+<li>
+<p>✔️ <strong>Metrics are printed after the log lines</strong></p>
+</li>
+<li>
+<p>You should see <code>mem</code>, <code>cpu</code>, <code>disk</code>, and <code>net</code> measurements with numeric values.</p>
+</li>
 </ul>
 <blockquote>
-<p><strong>Note:</strong>
-<code>W! Outputs are not used in testing mode!</code> is expected.</p>
+<p>⚠️ A warning about <code>outputs not used in testing mode</code> is <strong>expected</strong> and can be ignored.</p>
 </blockquote>
 <hr />
 <h2 id="step-5-start-telegraf">Step 5: Start Telegraf<a class="headerlink" href="#step-5-start-telegraf" title="Permanent link">&para;</a></h2>
@@ -1069,11 +1064,33 @@ http://198.18.101.5:9273/metrics</p>
 <hr />
 <h2 id="step-6-verify-metrics-from-lab-ubuntu-node">Step 6: Verify Metrics from LAB Ubuntu Node<a class="headerlink" href="#step-6-verify-metrics-from-lab-ubuntu-node" title="Permanent link">&para;</a></h2>
 <p>From the <strong>LAB Ubuntu node</strong>:</p>
-<pre><code class="language-bash">curl http://198.18.101.5:9273/metrics | head
+<pre><code class="language-bash">curl -s http://198.18.101.5:9273/metrics | head
 </code></pre>
+<p><strong>Verify the following:</strong></p>
+<ul>
+<li>✔️ Output starts with Prometheus metadata:</li>
+</ul>
+<p><code># HELP cpu_usage_guest Telegraf collected metric
+  # TYPE cpu_usage_guest gauge</code></p>
+<ul>
+<li>✔️ Metrics include the expected host label:</li>
+</ul>
+<p><code>host="swiss-knife-monitor"</code></p>
+<ul>
+<li>✔️ Numeric values are returned (not empty output)</li>
+</ul>
 <p>Verify Prometheus targets:</p>
 <pre><code class="language-bash">curl http://198.18.5.101:9090/api/v1/targets
 </code></pre>
+<p><strong>Verify the following under <code>activeTargets</code>:</strong></p>
+<ul>
+<li>✔️ Telegraf target shows <strong>UP</strong> status:</li>
+</ul>
+<p><code>json
+  "job":"telegraf_containers",
+  "instance":"198.18.101.5:9273",
+  "health":"up",
+  "lastError":""</code></p>
 <hr />
 <h2 id="step-7-visualize-container-metrics-in-grafana">Step 7: Visualize Container Metrics in Grafana<a class="headerlink" href="#step-7-visualize-container-metrics-in-grafana" title="Permanent link">&para;</a></h2>
 <ol>
@@ -1093,11 +1110,12 @@ http://198.18.101.5:9273/metrics</p>
 <li>Container CPU and memory graphs update in real time</li>
 <li>Network RX/TX traffic is visible</li>
 <li>Ping and HTTP checks reflect reachability and availability</li>
+<li>Change time range to 5 min and give a few min for graphs to get populated</li>
 </ul>
 <h2 id="_1"><img alt="Example" src="../../images/self-telegraf.jpg" /><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <h1 id="part-2-router-monitoring-via-snmp_1">Part 2 – Router Monitoring via SNMP<a class="headerlink" href="#part-2-router-monitoring-via-snmp_1" title="Permanent link">&para;</a></h1>
 <h2 id="step-8-extend-telegraf-with-snmp-monitoring">Step 8: Extend Telegraf with SNMP Monitoring<a class="headerlink" href="#step-8-extend-telegraf-with-snmp-monitoring" title="Permanent link">&para;</a></h2>
-<p>Edit the existing lab configuration:</p>
+<p>Stop the telegraf process and edit the existing lab configuration:</p>
 <pre><code class="language-bash">nano /etc/telegraf/telegraf.d/lab.conf
 </code></pre>
 <p>Append the SNMP configuration <strong>at the end of the file</strong> (Cat8Kv-Task-1 / Task-2 / Task-3).</p>
@@ -1250,11 +1268,6 @@ http://198.18.101.5:9273/metrics</p>
   --config-directory /etc/telegraf/telegraf.d \
   --test | grep snmp
 </code></pre>
-<p>Start Telegraf in continuous mode:</p>
-<pre><code class="language-bash">telegraf \
-  --config /etc/telegraf/telegraf.conf \
-  --config-directory /etc/telegraf/telegraf.d
-</code></pre>
 <h3 id="expected-output">Expected Output<a class="headerlink" href="#expected-output" title="Permanent link">&para;</a></h3>
 <p>Metrics such as:</p>
 <ul>
@@ -1263,10 +1276,15 @@ http://198.18.101.5:9273/metrics</p>
 <li><code>snmp_cpu_5min</code></li>
 <li><code>snmp_mem_pool1_used</code></li>
 </ul>
+<p>Start Telegraf in continuous mode:</p>
+<pre><code class="language-bash">telegraf \
+  --config /etc/telegraf/telegraf.conf \
+  --config-directory /etc/telegraf/telegraf.d
+</code></pre>
 <hr />
 <h2 id="step-10-verify-snmp-metrics-export">Step 10: Verify SNMP Metrics Export<a class="headerlink" href="#step-10-verify-snmp-metrics-export" title="Permanent link">&para;</a></h2>
 <p>From the LAB Ubuntu node:</p>
-<pre><code class="language-bash">curl http://198.18.101.5:9273/metrics | grep snmp | head
+<pre><code class="language-bash">curl -s http://198.18.101.5:9273/metrics | grep snmp | head
 </code></pre>
 <p>Verify Prometheus ingestion:</p>
 <pre><code class="language-bash">curl http://198.18.5.101:9090/api/v1/series -d 'match[]=snmp_cpu_5min'
@@ -1280,7 +1298,7 @@ http://198.18.101.5:9273/metrics</p>
 <pre><code class="language-text">Dashboards → Cat8Kv SNMP via Telegraf
 </code></pre>
 <ol>
-<li>Select router from the <strong>router dropdown</strong> (e.g. <code>198.18.7.11</code>)</li>
+<li>Select router from the <strong>router dropdown</strong> (e.g. <code>198.18.6.11</code>)</li>
 </ol>
 <h3 id="expected-results">Expected Results<a class="headerlink" href="#expected-results" title="Permanent link">&para;</a></h3>
 <ul>
