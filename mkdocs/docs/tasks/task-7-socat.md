@@ -85,7 +85,7 @@ Incoming TCP connections are accepted and payloads are printed to the terminal.
 
 ### Objective
 
-Forward traffic from a local TCP port to a remote service while logging connection and payload details.
+Forward traffic from a local TCP port to a remote service while logging connection and payload details. \
 We will SSH on port 9000 to the container's IP which will be redirected on port 22 to the router (cat8Kv-task-1) IP
 
 ### Command (Cat8Kv-task-1 > container)

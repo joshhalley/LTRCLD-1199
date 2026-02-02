@@ -397,10 +397,10 @@ Hostname: cvkxxxxxxxxxxxxxxxx
 
 ## Summary
 
-✔ Pulled and packaged `hello-app` as an IOS XE TAR
-✔ Uploaded the application TAR to router flash
-✔ Deployed Cisco Virtual Kubelet into Kubernetes
-✔ Scheduled a pod to the C8Kv node (`cat8kv-node`)
+✔ Pulled and packaged `hello-app` as an IOS XE TAR /
+✔ Uploaded the application TAR to router flash /
+✔ Deployed Cisco Virtual Kubelet into Kubernetes /
+✔ Scheduled a pod to the C8Kv node (`cat8kv-node`) /
 ✔ Validated application reachability from the lab server
 
 ---

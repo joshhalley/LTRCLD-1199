@@ -284,6 +284,11 @@ What to look for:
 * DNS resolution + connect success
 * Steady download progress
 * File saved locally (good for throughput / path validation)
+* Delete the file to make sure we have space for future tasks
+
+```bash
+rm 100MB.bin
+```
 
 ---
 
@@ -305,24 +310,7 @@ Use case:
 
 ---
 
-### 10.3 Resume a download — `-c`
-
-```bash
-wget -c wget https://releases.ubuntu.com/22.04/ubuntu-22.04.5-live-server-amd64.iso
-```
-
-What `-c` does:
-
-* If the download is interrupted, rerunning the same command **continues from where it stopped**
-* Useful for:
-
-  * unstable links
-  * failover testing
-  * validating SD-WAN / routing policy changes during transfer
-
----
-
-### 10.4 Force IPv4 vs IPv6 — `-4` / `-6`
+### 10.3 Force IPv4 vs IPv6 — `-4` / `-6`
 
 IPv4 forced :
 

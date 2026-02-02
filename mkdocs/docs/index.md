@@ -8,8 +8,6 @@ Welcome to **LTRCLD-1199**, a hands-on lab for deploying and operating container
 
 ---
 
-## Index
-
 ### Lab Overview
 - [Lab Objectives](#lab-objectives)
 - [Prerequisites](#prerequisites)
@@ -36,8 +34,7 @@ Welcome to **LTRCLD-1199**, a hands-on lab for deploying and operating container
 
 By the end of this lab, you will be able to:
 
-- Deploy a containerized tool on C8Kv using App-Hosting
-- Use SCP and MD5 verification to safely transfer images
+- Deploy a containerized tool on C8Kv using App-Hosting via CLI
 - Automate app-hosting configuration with Terraform
 - Integrate C8Kv into a Kubernetes environment using KIND and virtual kubelet
 - Validate that tools are running and accessible for troubleshooting work
@@ -57,6 +54,8 @@ To get the most value from this lab, you should be familiar with:
 
 ## Lab Topology
 
+Participant do not need access to Ubuntu Mgmt 1, Ubuntu Mgmt 2 and Infra Cat8Kv to execute this lab
+
 ![Lab Topology](images/topology.jpg)
 
 ---
@@ -67,7 +66,7 @@ Use the following information to access the lab devices via OOB
 
 | Name         | IP            | Username       | Password   |
 |--------------|---------------|----------------|------------|
-| Ubuntu LAB   | 198.18.1.100  | dcloud           | C1sco12345 |
+| Ubuntu LAB   | 198.18.1.100  | dcloud         | C1sco12345 |
 | cat8Kv-task-1| 198.18.1.11   | admin          | C1sco12345 |
 | cat8Kv-task-2| 198.18.2.12   | admin          | C1sco12345 |
 | cat8Kv-task-3| 198.18.2.13   | admin          | C1sco12345 |
