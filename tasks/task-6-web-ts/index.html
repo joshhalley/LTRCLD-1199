@@ -840,21 +840,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#103-resume-a-download-c" class="md-nav__link">
+  <a href="#103-force-ipv4-vs-ipv6-4-6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.3 Resume a download — -c
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#104-force-ipv4-vs-ipv6-4-6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.4 Force IPv4 vs IPv6 — -4 / -6
+        10.3 Force IPv4 vs IPv6 — -4 / -6
       
     </span>
   </a>
@@ -1495,21 +1484,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#103-resume-a-download-c" class="md-nav__link">
+  <a href="#103-force-ipv4-vs-ipv6-4-6" class="md-nav__link">
     <span class="md-ellipsis">
       
-        10.3 Resume a download — -c
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#104-force-ipv4-vs-ipv6-4-6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        10.4 Force IPv4 vs IPv6 — -4 / -6
+        10.3 Force IPv4 vs IPv6 — -4 / -6
       
     </span>
   </a>
@@ -1867,7 +1845,10 @@ curl -v https://1.1.1.1 --resolve example.com:443:1.1.1.1
 <li>DNS resolution + connect success</li>
 <li>Steady download progress</li>
 <li>File saved locally (good for throughput / path validation)</li>
+<li>Delete the file to make sure we have space for future tasks</li>
 </ul>
+<pre><code class="language-bash">rm 100MB.bin
+</code></pre>
 <hr />
 <h3 id="102-headers-existence-check-only-spider">10.2 Headers / existence check only - <code>--spider</code><a class="headerlink" href="#102-headers-existence-check-only-spider" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">wget --spider https://www.google.com
@@ -1883,23 +1864,7 @@ curl -v https://1.1.1.1 --resolve example.com:443:1.1.1.1
 <li>Quick “is it up?” check without pulling content (great in automation and troubleshooting)</li>
 </ul>
 <hr />
-<h3 id="103-resume-a-download-c">10.3 Resume a download — <code>-c</code><a class="headerlink" href="#103-resume-a-download-c" title="Permanent link">&para;</a></h3>
-<pre><code class="language-bash">wget -c wget https://releases.ubuntu.com/22.04/ubuntu-22.04.5-live-server-amd64.iso
-</code></pre>
-<p>What <code>-c</code> does:</p>
-<ul>
-<li>If the download is interrupted, rerunning the same command <strong>continues from where it stopped</strong></li>
-<li>
-<p>Useful for:</p>
-</li>
-<li>
-<p>unstable links</p>
-</li>
-<li>failover testing</li>
-<li>validating SD-WAN / routing policy changes during transfer</li>
-</ul>
-<hr />
-<h3 id="104-force-ipv4-vs-ipv6-4-6">10.4 Force IPv4 vs IPv6 — <code>-4</code> / <code>-6</code><a class="headerlink" href="#104-force-ipv4-vs-ipv6-4-6" title="Permanent link">&para;</a></h3>
+<h3 id="103-force-ipv4-vs-ipv6-4-6">10.3 Force IPv4 vs IPv6 — <code>-4</code> / <code>-6</code><a class="headerlink" href="#103-force-ipv4-vs-ipv6-4-6" title="Permanent link">&para;</a></h3>
 <p>IPv4 forced :</p>
 <pre><code class="language-bash">wget -4 https://www.google.com
 </code></pre>
