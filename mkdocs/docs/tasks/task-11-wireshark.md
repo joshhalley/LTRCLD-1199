@@ -160,7 +160,7 @@ https://198.18.101.6:3001
 
 ## Step 6 – Start Packet Capture
 
-Select the capture interface (typically `eth0`) and apply the following **display filter**: /
+Select the capture interface (typically `eth0`) and apply the following **display filter**: \
 If copy paste doesn't work than type the below filter text
 
 ```text
