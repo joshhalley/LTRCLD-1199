@@ -1240,8 +1240,10 @@ By default, it does not have the required Linux capabilities inside the containe
 </ol>
 <hr />
 <h2 id="step-6-start-packet-capture">Step 6 – Start Packet Capture<a class="headerlink" href="#step-6-start-packet-capture" title="Permanent link">&para;</a></h2>
-<p>Select the capture interface (typically <code>eth0</code>) and apply the following <strong>display filter</strong>: \
-If copy paste doesn't work than type the below filter text</p>
+<ul>
+<li>Select the capture interface (typically <code>eth0</code>) and apply the following <strong>display filter</strong>:</li>
+<li>If copy paste doesn't work than type the below filter text</li>
+</ul>
 <pre><code class="language-text">(!(ip.src == 198.18.9.20)) &amp;&amp; !(ip.dst == 198.18.9.20)
 </code></pre>
 <h3 id="explanation_2">Explanation<a class="headerlink" href="#explanation_2" title="Permanent link">&para;</a></h3>
