@@ -6,7 +6,7 @@
 
 ## Objective
 
-In this task, you deploy and extend a **Telegraf-based monitoring probe** running inside a container to demonstrate how **modern telemetry pipelines** can be built on edge devices.
+In this task, you deploy and extend a **Telegraf-based monitoring probe** running inside the swiss-knife container to demonstrate how **modern telemetry pipelines** can be built on edge devices.
 
 You will:
 
@@ -19,8 +19,6 @@ You will:
 This task is divided into **two continuous parts** using the **same Telegraf container**.
 
 ---
-
-## Page Index
 
 ### Part 1 – Container & Service Monitoring
 
@@ -55,7 +53,7 @@ This task is divided into **two continuous parts** using the **same Telegraf con
   * Executes ICMP and HTTP probes
   * Polls routers using SNMP
   * Exposes `/metrics` on port `9273`
-* **Management Node**
+* **Mgmt Ubuntu 1 Node**
 
   * Prometheus (scrapes metrics)
   * Grafana (visualization)
@@ -111,7 +109,7 @@ All inputs and outputs are defined under `telegraf.d`.
 Edit the lab configuration file:
 
 ```bash
-vi /etc/telegraf/telegraf.d/lab.conf
+nano /etc/telegraf/telegraf.d/lab.conf
 ```
 
 ### `lab.conf`
@@ -187,16 +185,38 @@ telegraf \
   --config-directory /etc/telegraf/telegraf.d \
   --test | head
 ```
+**Verify the following in the output:**
 
-### Expected Result
+* ✔️ **Both configs are loaded**
 
-* No errors
-* Both config files are loaded
-* Inputs loaded: `cpu disk http_response mem net ping`
-* Sample metrics are generated
+  ```
+  Loading config: /etc/telegraf/telegraf.conf
+  Loading config: /etc/telegraf/telegraf.d/lab.conf
+  ```
 
-> **Note:**
-> `W! Outputs are not used in testing mode!` is expected.
+* ✔️ **Telegraf starts without errors**
+
+  ```
+  Starting Telegraf 1.x.x
+  ```
+
+* ✔️ **Expected inputs are loaded**
+
+  ```
+  Loaded inputs: cpu disk http_response mem net ping
+  ```
+
+* ✔️ **Host tag is present**
+
+  ```
+  Tags enabled: host=swiss-knife-monitor
+  ```
+
+* ✔️ **Metrics are printed after the log lines**
+
+  * You should see `mem`, `cpu`, `disk`, and `net` measurements with numeric values.
+
+> ⚠️ A warning about `outputs not used in testing mode` is **expected** and can be ignored.
 
 ---
 
@@ -221,14 +241,42 @@ http://198.18.101.5:9273/metrics
 From the **LAB Ubuntu node**:
 
 ```bash
-curl http://198.18.101.5:9273/metrics | head
+curl -s http://198.18.101.5:9273/metrics | head
 ```
+
+**Verify the following:**
+
+* ✔️ Output starts with Prometheus metadata:
+
+  ```
+  # HELP cpu_usage_guest Telegraf collected metric
+  # TYPE cpu_usage_guest gauge
+  ```
+
+* ✔️ Metrics include the expected host label:
+
+  ```
+  host="swiss-knife-monitor"
+  ```
+
+* ✔️ Numeric values are returned (not empty output)
+
 
 Verify Prometheus targets:
 
 ```bash
 curl http://198.18.5.101:9090/api/v1/targets
 ```
+**Verify the following under `activeTargets`:**
+
+* ✔️ Telegraf target shows **UP** status:
+
+  ```json
+  "job":"telegraf_containers",
+  "instance":"198.18.101.5:9273",
+  "health":"up",
+  "lastError":""
+  ```
 
 ---
 
@@ -254,6 +302,7 @@ Dashboards → Swiss-Knife Telegraf Lab
 * Container CPU and memory graphs update in real time
 * Network RX/TX traffic is visible
 * Ping and HTTP checks reflect reachability and availability
+* Change time range to 5 min and give a few min for graphs to get populated
 
 ![Example](../images/self-telegraf.jpg)
 ---
@@ -262,7 +311,7 @@ Dashboards → Swiss-Knife Telegraf Lab
 
 ## Step 8: Extend Telegraf with SNMP Monitoring
 
-Edit the existing lab configuration:
+Stop the telegraf process and edit the existing lab configuration:
 
 ```bash
 nano /etc/telegraf/telegraf.d/lab.conf
@@ -424,15 +473,6 @@ telegraf \
   --config-directory /etc/telegraf/telegraf.d \
   --test | grep snmp
 ```
-
-Start Telegraf in continuous mode:
-
-```bash
-telegraf \
-  --config /etc/telegraf/telegraf.conf \
-  --config-directory /etc/telegraf/telegraf.d
-```
-
 ### Expected Output
 
 Metrics such as:
@@ -442,6 +482,13 @@ Metrics such as:
 * `snmp_cpu_5min`
 * `snmp_mem_pool1_used`
 
+Start Telegraf in continuous mode:
+
+```bash
+telegraf \
+  --config /etc/telegraf/telegraf.conf \
+  --config-directory /etc/telegraf/telegraf.d
+```
 ---
 
 ## Step 10: Verify SNMP Metrics Export
@@ -449,7 +496,7 @@ Metrics such as:
 From the LAB Ubuntu node:
 
 ```bash
-curl http://198.18.101.5:9273/metrics | grep snmp | head
+curl -s http://198.18.101.5:9273/metrics | grep snmp | head
 ```
 
 Verify Prometheus ingestion:
@@ -469,7 +516,7 @@ curl http://198.18.5.101:9090/api/v1/series -d 'match[]=snmp_cpu_5min'
 Dashboards → Cat8Kv SNMP via Telegraf
 ```
 
-3. Select router from the **router dropdown** (e.g. `198.18.7.11`)
+3. Select router from the **router dropdown** (e.g. `198.18.6.11`)
 
 ### Expected Results
 

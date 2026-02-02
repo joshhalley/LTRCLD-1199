@@ -144,15 +144,15 @@ From your workstation:
 
 1. RDP into the Windows VM:
 
-   ```
-   198.18.9.20
-   ```
+```bash
+RDP 198.18.1.20
+```
 
 2. Open a browser and access:
 
-   ```
-   https://198.18.101.6:3001
-   ```
+```bash
+https://198.18.101.6:3001
+```
 
 3. Launch **Wireshark** from the web desktop.
 
@@ -160,7 +160,8 @@ From your workstation:
 
 ## Step 6 – Start Packet Capture
 
-Select the capture interface (typically `eth0`) and apply the following **display filter**:
+Select the capture interface (typically `eth0`) and apply the following **display filter**: /
+If copy paste doesn't work than type the below filter text
 
 ```text
 (!(ip.src == 198.18.9.20)) && !(ip.dst == 198.18.9.20)

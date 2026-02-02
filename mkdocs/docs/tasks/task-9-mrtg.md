@@ -9,7 +9,7 @@
 - [Step 1: Enable SNMP on All Routers (Task-1/2/3)](#step-1-enable-snmp-on-all-routers-task-123)
 - [Step 2: Connect to the Container and Verify SNMP](#step-2-connect-to-the-container-and-verify-snmp)
 - [Step 3: Create MRTG Config Files](#step-3-create-mrtg-config-files)
-- [Step 4: Router MRTG Targets (Clean Names, No Spaces)](#step-4-router-mrtg-targets-clean-names-no-spaces)
+- [Step 4: Router MRTG Targets](#step-4-router-mrtg-targets)
 - [Step 5: Initialize MRTG and Generate Graphs](#step-5-initialize-mrtg-and-generate-graphs)
 - [Step 6: Start Web Server (lighttpd)](#step-6-start-web-server-lighttpd)
 - [Step 7: Enable Continuous Polling (Cron every 5 minutes)](#step-7-enable-continuous-polling-cron-every-5-minutes)
@@ -56,7 +56,9 @@ write memory
 
 ---
 
-## Step 2: Connect to the Container and Verify SNMP
+## Step 2: Connect to the MRTG Container and Verify SNMP
+
+On `cat8Kv-task-3`:
 
 ```text
 app-hosting connect appid mrtg session /bin/bash
@@ -91,7 +93,7 @@ Include: /opt/mrtg/routers/r3.cfg
 
 ---
 
-## Step 4: Router MRTG Targets (Clean Names, No Spaces)
+## Step 4: Router MRTG Targets
 
 ✅ Naming rules used below:
 
@@ -272,7 +274,7 @@ Edit crontab:
 crontab -e
 ```
 
-Add:
+Insert, save and exit :
 
 ```cron
 */5 * * * * /usr/bin/mrtg /opt/mrtg/mrtg.cfg --logging /opt/mrtg/mrtg.log
