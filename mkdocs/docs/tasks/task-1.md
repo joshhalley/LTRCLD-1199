@@ -40,31 +40,31 @@ The process includes:
     * This image will be used to create a TAR file for router deployment
 
 ```bash
-curl -s http://198.18.5.101:5000/v2/_catalog
+curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
 ```
 Sample output
 
 ```bash
-dcloud@ubuntu-lab:~$ curl -s http://198.18.5.101:5000/v2/_catalog
+dcloud@ubuntu-lab:~$ curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
 {"repositories":["hello-app","mrtg","swiss-knife-alpine","wireshark"]}
 ```
 
 ```bash
-sudo docker pull 198.18.5.101:5000/swiss-knife-alpine:latest
+sudo docker pull containers.dmz.cisco.com:5000/swiss-knife-alpine:latest
 ```
 ```bash
-sudo docker pull 198.18.5.101:5000/mrtg:latest
+sudo docker pull containers.dmz.cisco.com:5000/mrtg:latest
 ```
 
 Verify the image was downloaded:
 
 ```bash
 dcloud@ubuntu-lab:~$ sudo docker images
-REPOSITORY                             TAG       IMAGE ID       CREATED       SIZE
-198.18.5.101:5000/swiss-knife-alpine   latest    987b29fae1f2   12 days ago   396MB
-198.18.5.101:5000/mrtg                 latest    a5b113ce6bff   2 weeks ago   132MB
-registry                               2         26b2eb03618e   2 years ago   25.4MB
-dcloud@ubuntu-lab:~$ 
+REPOSITORY                                         TAG       IMAGE ID       CREATED       SIZE
+containers.dmz.cisco.com:5000/swiss-knife-alpine   latest    987b29fae1f2   2 weeks ago   396MB
+containers.dmz.cisco.com:5000/mrtg                 latest    a5b113ce6bff   2 weeks ago   132MB
+registry                                           2         26b2eb03618e   2 years ago   25.4MB
+dcloud@ubuntu-lab:~$
 ```
 ---
 
@@ -74,11 +74,11 @@ dcloud@ubuntu-lab:~$
     * This file will be transferred to the router
 
 ```bash
-sudo docker save 198.18.5.101:5000/swiss-knife-alpine:latest -o swiss-knife-alpine.tar
+sudo docker save containers.dmz.cisco.com:5000/swiss-knife-alpine:latest -o swiss-knife-alpine.tar
 ```
 
 ```bash
-sudo docker save 198.18.5.101:5000/mrtg:latest -o mrtg.tar
+sudo docker save containers.dmz.cisco.com:5000/mrtg:latest -o mrtg.tar
 ```
 
 Verify the TAR file exists:
@@ -113,6 +113,14 @@ Verify the file on the router:
 dir bootflash: | include swiss-knife-alpine.tar
 ```
 
+The file output should look like this: 
+
+```bash
+cat8Kv-task-1#dir bootflash: | include swiss-knife-alpine.tar
+13      -rw-        400191488   Feb 3 2026 13:57:13 +00:00  swiss-knife-alpine.tar
+cat8Kv-task-1#
+```
+
 ---
 
 ## Step 4: SCP File to cat8Kv-task-3
@@ -137,6 +145,7 @@ Verify the file on the router:
 ```bash
 dir bootflash: | include mrtg.tar
 ```
+
 ---
 
 ## Step 5: App-Hosting Configuration on cat8kv-task-1

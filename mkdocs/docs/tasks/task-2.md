@@ -98,14 +98,14 @@ Once these checks succeed, proceed to deployning the APP via Terraform.
 * In this task we will deploy 2 containers in cat8Kv-task-2, wireshark and swiss_knife (pulled in task 1)
 
 ```bash
-curl -s http://198.18.5.101:5000/v2/_catalog
+curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
 ```
 
 **Sample Ouptut**
 {"repositories":["mrtg","swiss-knife-alpine","telegraf-alpine","wireshark"]}
 
 ```bash
-sudo docker pull 198.18.5.101:5000/wireshark:latest
+sudo docker pull containers.dmz.cisco.com:5000/wireshark:latest
 ```
 
 Validate the download:
@@ -122,7 +122,7 @@ sudo docker images
 * This is the image format required for IOS-XE app hosting
 
 ```bash
-sudo docker save 198.18.5.101:5000/wireshark:latest -o wireshark.tar
+sudo docker save containers.dmz.cisco.com:5000/wireshark:latest -o wireshark.tar
 ```
 
 Verify the TAR file exists:
@@ -380,7 +380,7 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
 ## Step 12: Verify Deployment on the Router
 
-On the cat8Kv-task-2 router, verify the application and networking:
+On the cat8Kv-task-2 router (198.18.9.12), verify the application and networking:
 
 ```bash
 show app-hosting list

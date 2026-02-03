@@ -277,18 +277,19 @@ curl -v https://1.1.1.1 --resolve example.com:443:1.1.1.1
 ### 10.1 Basic download
 
 ```bash
-wget --no-check-certificate https://hel1-speed.hetzner.com/100MB.bin
+wget -O- --no-check-certificate https://hel1-speed.hetzner.com/100MB.bin | head -c 10485760 > 10MB.bin
+<hetzner.com/100MB.bin | head -c 10485760 > 10MB.bin
 ```
 
 What to look for:
 
 * DNS resolution + connect success
-* Steady download progress
+* Steady download progress (up to 10 Meg)
 * File saved locally (good for throughput / path validation)
 * Delete the file to make sure we have space for future tasks
 
 ```bash
-rm 100MB.bin
+rm 10MB.bin
 ```
 
 ---
