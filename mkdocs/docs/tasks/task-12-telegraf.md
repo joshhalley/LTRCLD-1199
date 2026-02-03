@@ -1,6 +1,6 @@
 # Task 12: Telegraf Monitoring with Prometheus Exporter
 
-[⬅ Back to Main Menu](../index.md)
+[⬅️ Back to Main Menu](../index.md)
 
 ---
 
@@ -48,17 +48,16 @@ This task is divided into **two continuous parts** using the **same Telegraf con
 ### Logical Components
 
 * **Telegraf Container (Swiss-Knife)**
-
   * Collects container metrics
   * Executes ICMP and HTTP probes
   * Polls routers using SNMP
   * Exposes `/metrics` on port `9273`
-* **Mgmt Ubuntu 1 Node**
 
+* **Mgmt Ubuntu 1 Node**
   * Prometheus (scrapes metrics)
   * Grafana (visualization)
-* **External Targets**
 
+* **External Targets**
   * Public IPs (ICMP)
   * Public / internal HTTP services
   * IOS-XE routers (SNMP)
@@ -99,8 +98,7 @@ cat > /etc/telegraf/telegraf.conf <<'EOF'
 EOF
 ```
 
-This file defines **global agent behavior** only.
-All inputs and outputs are defined under `telegraf.d`.
+This file defines **global agent behavior** only. All inputs and outputs are defined under `telegraf.d`.
 
 ---
 
@@ -187,32 +185,32 @@ telegraf \
 ```
 **Verify the following in the output:**
 
-* ✔️ **Both configs are loaded**
+* ✅ **Both configs are loaded**
 
   ```
   Loading config: /etc/telegraf/telegraf.conf
   Loading config: /etc/telegraf/telegraf.d/lab.conf
   ```
 
-* ✔️ **Telegraf starts without errors**
+* ✅ **Telegraf starts without errors**
 
   ```
   Starting Telegraf 1.x.x
   ```
 
-* ✔️ **Expected inputs are loaded**
+* ✅ **Expected inputs are loaded**
 
   ```
   Loaded inputs: cpu disk http_response mem net ping
   ```
 
-* ✔️ **Host tag is present**
+* ✅ **Host tag is present**
 
   ```
   Tags enabled: host=swiss-knife-monitor
   ```
 
-* ✔️ **Metrics are printed after the log lines**
+* ✅ **Metrics are printed after the log lines**
 
   * You should see `mem`, `cpu`, `disk`, and `net` measurements with numeric values.
 
@@ -230,9 +228,7 @@ telegraf \
   --config-directory /etc/telegraf/telegraf.d
 ```
 
-Metrics are now exposed at:
-http://198.18.101.5:9273/metrics
-
+Metrics are now exposed at: `http://198.18.101.5:9273/metrics`
 
 ---
 
@@ -246,20 +242,20 @@ curl -s http://198.18.101.5:9273/metrics | head
 
 **Verify the following:**
 
-* ✔️ Output starts with Prometheus metadata:
+* ✅ Output starts with Prometheus metadata:
 
   ```
   # HELP cpu_usage_guest Telegraf collected metric
   # TYPE cpu_usage_guest gauge
   ```
 
-* ✔️ Metrics include the expected host label:
+* ✅ Metrics include the expected host label:
 
   ```
   host="swiss-knife-monitor"
   ```
 
-* ✔️ Numeric values are returned (not empty output)
+* ✅ Numeric values are returned (not empty output)
 
 
 Verify Prometheus targets:
@@ -291,7 +287,7 @@ The above link can be opned directly from the LAB PC
 
 Login: `admin / C1sco12345`
 
-2. Navigate to:
+1. Navigate to:
 
 ```text
 Dashboards → Swiss-Knife Telegraf Lab
@@ -510,13 +506,13 @@ curl http://198.18.5.101:9090/api/v1/series -d 'match[]=snmp_cpu_5min'
 ## Step 11: Visualize Router Metrics in Grafana
 
 1. Open Grafana
-2. Navigate to:
+1. Navigate to:
 
 ```text
 Dashboards → Cat8Kv SNMP via Telegraf
 ```
 
-3. Select router from the **router dropdown** (e.g. `198.18.6.11`)
+1. Select router from the **router dropdown** (e.g. `198.18.6.11`)
 
 ### Expected Results
 
@@ -539,7 +535,7 @@ You have successfully completed this lab when:
 
 ---
 
-## Key Takeaway
+## Key Takeaways
 
 This task demonstrates how **traditional monitoring (SNMP/MRTG)** and **modern telemetry** can coexist by:
 
@@ -549,20 +545,8 @@ This task demonstrates how **traditional monitoring (SNMP/MRTG)** and **modern t
 
 ---
 
-## Summary
-
-In this task, you deployed and extended a **Telegraf monitoring container** to:
-
-* Monitor container health and services
-* Perform network reachability and availability checks
-* Collect router metrics using SNMP
-* Export all telemetry using a **Prometheus-native model**
-
 This forms the foundation for scalable, vendor-neutral observability on edge platforms.
 
 ---
 
-[⬅ Return to Main Menu](../index.md)
-
----
-
+[⬅️ Return to Main Menu](../index.md)

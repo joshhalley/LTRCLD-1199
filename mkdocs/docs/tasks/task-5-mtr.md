@@ -1,7 +1,6 @@
 # Task 5: MTR Path Analysis (My Traceroute)
 
-[⬅ Back to Main Menu](../index.md)
-
+[⬅️ Back to Main Menu](../index.md)
 ---
 
 ## Objective
@@ -186,6 +185,6 @@ HOST: swissknife                  Loss%   Snt   Last   Avg  Best  Wrst StDev
 
 ---
 
-[⬅ Return to Main Menu](../index.md)
+[⬅️ Return to Main Menu](../index.md)
 
 ---

@@ -1,8 +1,6 @@
-# Task 1: App-Hosting Deployment on IOS-XE (Manual)
+# Task 1: App-Hosting Manual Deployment on IOS-XE
 
 [⬅️ Back to Main Menu](../index.md)
-
-## Table of Contents
 
 ## Table of Contents
 
@@ -10,18 +8,18 @@
 - [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
 - [Step 3: SCP File to cat8Kv-task-1](#step-3-scp-file-to-cat8kv-task-1)
 - [Step 4: SCP File to cat8Kv-task-3](#step-4-scp-file-to-cat8kv-task-3)
-- [Step 5: App Hosting Configuration on cat8Kv-task-1](#step-5-app-hosting-configuration-on-cat8kv-task-1)
-- [Step 6: App Hosting Install on cat8Kv-task-1](#step-6-app-hosting-install-on-cat8kv-task-1)
-- [Step 7: App Hosting Activate on cat8Kv-task-1](#step-7-app-hosting-activate-on-cat8kv-task-1)
-- [Step 8: App Hosting Run on cat8Kv-task-1](#step-8-app-hosting-run-on-cat8kv-task-1)
-- [Step 9: App Hosting Configuration on cat8Kv-task-3](#step-9-app-hosting-configuration-on-cat8kv-task-3)
-- [Step 10: App Hosting Install on cat8Kv-task-3](#step-10-app-hosting-install-on-cat8kv-task-3)
-- [Step 11: App Hosting Activate on cat8Kv-task-3](#step-11-app-hosting-activate-on-cat8kv-task-3)
-- [Step 12: App Hosting Run on cat8Kv-task-3](#step-12-app-hosting-run-on-cat8kv-task-3)
+- [Step 5: App-Hosting Configuration on cat8Kv-task-1](#step-5-app-hosting-configuration-on-cat8kv-task-1)
+- [Step 6: App-Hosting Install on cat8Kv-task-1](#step-6-app-hosting-install-on-cat8kv-task-1)
+- [Step 7: App-Hosting Activate on cat8Kv-task-1](#step-7-app-hosting-activate-on-cat8kv-task-1)
+- [Step 8: App-Hosting Run on cat8Kv-task-1](#step-8-app-hosting-run-on-cat8kv-task-1)
+- [Step 9: App-Hosting Configuration on cat8Kv-task-3](#step-9-app-hosting-configuration-on-cat8kv-task-3)
+- [Step 10: App-Hosting Install on cat8Kv-task-3](#step-10-app-hosting-install-on-cat8kv-task-3)
+- [Step 11: App-Hosting Activate on cat8Kv-task-3](#step-11-app-hosting-activate-on-cat8kv-task-3)
+- [Step 12: App-Hosting Run on cat8Kv-task-3](#step-12-app-hosting-run-on-cat8kv-task-3)
 
 ---
 
-This task focuses on deploying a containerized troubleshooting application on a Cisco IOS-XE router using the **App Hosting** feature.
+This task focuses on deploying a containerized troubleshooting application on a **Cisco IOS-XE** router using the **App-Hosting** feature.
 
 The process includes:
 
@@ -30,7 +28,7 @@ The process includes:
 * Copying the image to the router using SCP
 * Installing and activating the application using App Hosting
 * Testing the deployed application
-* We will deploy 2 containers in this task
+* We will deploy two containers in this task
 
 ---
 
@@ -39,7 +37,7 @@ The process includes:
 * Login to the Lab Ubuntu (ssh 198.18.1.100)
 * Check the docker registry 
 * Pull the swiss-knife and mrtg image from a container registry
-* This image will be used to create a TAR file for router deployment
+    * This image will be used to create a TAR file for router deployment
 
 ```bash
 curl -s http://198.18.5.101:5000/v2/_catalog
@@ -51,7 +49,6 @@ dcloud@ubuntu-lab:~$ curl -s http://198.18.5.101:5000/v2/_catalog
 {"repositories":["hello-app","mrtg","swiss-knife-alpine","wireshark"]}
 ```
 
-
 ```bash
 sudo docker pull 198.18.5.101:5000/swiss-knife-alpine:latest
 ```
@@ -61,9 +58,6 @@ sudo docker pull 198.18.5.101:5000/mrtg:latest
 
 Verify the image was downloaded:
 
-```bash
-sudo docker images
-```
 ```bash
 dcloud@ubuntu-lab:~$ sudo docker images
 REPOSITORY                             TAG       IMAGE ID       CREATED       SIZE
@@ -77,7 +71,7 @@ dcloud@ubuntu-lab:~$
 ## Step 2: Create TAR Image from Docker
 
 * Convert the Docker image into a TAR archive
-* This file will be transferred to the router
+    * This file will be transferred to the router
 
 ```bash
 sudo docker save 198.18.5.101:5000/swiss-knife-alpine:latest -o swiss-knife-alpine.tar
@@ -86,7 +80,6 @@ sudo docker save 198.18.5.101:5000/swiss-knife-alpine:latest -o swiss-knife-alpi
 ```bash
 sudo docker save 198.18.5.101:5000/mrtg:latest -o mrtg.tar
 ```
-
 
 Verify the TAR file exists:
 
@@ -146,7 +139,7 @@ dir bootflash: | include mrtg.tar
 ```
 ---
 
-## Step 5: App Hosting Configuration on cat8kv-task-1
+## Step 5: App-Hosting Configuration on cat8kv-task-1
 
 * Login to cat8Kv-task-1 using 198.18.1.11
 * Enable IOx application framework 
@@ -180,7 +173,7 @@ show run | sec app-hosting
 
 ---
 
-## Step 6: App Hosting Install on cat8kv-task-1
+## Step 6: App-Hosting Install on cat8kv-task-1
 
 * Install the application from the TAR file
 * This step extracts and prepares the container
@@ -189,23 +182,29 @@ show run | sec app-hosting
 ```bash
 app-hosting install appid swiss_knife package bootflash:swiss-knife-alpine.tar
 ```
+
 In case the following error is seen, 
+
 ```text
 ioxman: app-hosting: Failed to install swiss_knife: App signature validation is required. App signature file package.cert or package.sign not found in package
 ```
-Enable and disable app hosting signature verification and run the install command again
+
+Enable and disable App-Hosting signature verification and run the install command again.
 
 ```bash
 conf t
 app-hosting signed-verification
 end
 ```
+
 *Jan 13 12:00:22.429: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification enabled successfully
+
 ```bash
 conf t
 no app-hosting signed-verification
 end
 ```
+
 *Jan 13 12:00:35.447: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification disabled successfully
 
 Validate installation:
@@ -233,7 +232,7 @@ show app-hosting list
 
 ---
 
-## Step 8: App Hosting Run on cat8kv-task-1
+## Step 8: App-Hosting Run on cat8kv-task-1
 
 * Start the container application
 
@@ -255,7 +254,7 @@ app-hosting connect appid swiss_knife session /bin/bash
 
 ---
 
-## Step 9: App Hosting Configuration on cat8kv-task-3
+## Step 9: App-Hosting Configuration on cat8kv-task-3
 
 * Login to cat8Kv-task-3 using 198.18.1.13
 * Enable IOx application framework 
@@ -289,7 +288,7 @@ show run | sec app-hosting
 
 ---
 
-## Step 10: App Hosting Install on cat8kv-task-3
+## Step 10: App-Hosting Install on cat8kv-task-3
 
 * Install the application from the TAR file
 * This step extracts and prepares the container
@@ -298,23 +297,28 @@ show run | sec app-hosting
 ```bash
 app-hosting install appid mrtg package bootflash:mrtg.tar
 ```
-In case the following error is seen, 
+In case the following error is seen,
+
 ```text
 ioxman: app-hosting: Failed to install swiss_knife: App signature validation is required. App signature file package.cert or package.sign not found in package
 ```
-Enable and disable app hosting signature verification and run the install command again
+
+Enable and disable app hosting signature verification and run the install command again.
 
 ```bash
 conf t
 app-hosting signed-verification
 end
 ```
+
 *Jan 13 12:00:22.429: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification enabled successfully
+
 ```bash
 conf t
 no app-hosting signed-verification
 end
 ```
+
 *Jan 13 12:00:35.447: %IM-6-VERIFICATION_MSG: R0/0: ioxman: app-hosting: App signature verification disabled successfully
 
 Validate installation:
@@ -325,7 +329,7 @@ show app-hosting detail appid mrtg
 
 ---
 
-## Step 11: App Hosting Activate on cat8kv-task-3
+## Step 11: App-Hosting Activate on cat8kv-task-3
 
 * Activate the application
 * Makes it ready to start
@@ -342,7 +346,7 @@ show app-hosting list
 
 ---
 
-## Step 12: App Hosting Run on cat8kv-task-3
+## Step 12: App-Hosting Run on cat8kv-task-3
 
 * Start the container application
 

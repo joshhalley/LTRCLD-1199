@@ -4,6 +4,7 @@
 ### 🔧 Swiss-Knife Container (Primary Troubleshooting Toolkit)
 
 The **Swiss-Knife container** is the **core operational tool** in this lab.
+
 It bundles a wide range of commonly used CLI utilities into a **single lightweight Alpine-based image**, allowing engineers to perform most troubleshooting tasks **without deploying multiple containers**.
 
 **Typical use cases**
@@ -27,9 +28,10 @@ It bundles a wide range of commonly used CLI utilities into a **single lightweig
 
 > **Design philosophy:** One container, many tools – optimized for **fast troubleshooting and reduced operational overhead**.
 
-In our lab this contianer is deployed on 2 routers 
-Cat8Kv-task-1 with IP 198.18.100.5
-Cat8Kv-task-2 with IP 198.18.101.5
+In our lab the contianer is deployed on two routers:
+
+- Cat8Kv-task-1 with IP 198.18.100.5
+- Cat8Kv-task-2 with IP 198.18.101.5
 
 ---
 
@@ -38,6 +40,7 @@ Cat8Kv-task-2 with IP 198.18.101.5
 ![Image](images/wireshark.jpg)
 
 The **Wireshark container** is used for **advanced packet-level visibility**.
+
 It is deployed as a **dedicated analysis tool**, receiving mirrored traffic (e.g. ERSPAN) from the router and decoding it using Wireshark’s rich protocol dissectors.
 
 **Typical use cases**
@@ -48,8 +51,9 @@ It is deployed as a **dedicated analysis tool**, receiving mirrored traffic (e.g
 
 > **Why separate?** Packet analysis requires elevated capabilities and a focused runtime. Keeping Wireshark isolated avoids unnecessary overhead in the Swiss-Knife container.
 
-In our lab this contianer is deployed on 1 router
-Cat8Kv-task-2 with IP 198.18.101.6
+In our lab this contianer is deployed on one router:
+
+- Cat8Kv-task-2 with IP 198.18.101.6
 
 ---
 
@@ -74,8 +78,9 @@ The **MRTG container** provides **classic SNMP polling and graphing**, ideal for
 
 > **Note:** MRTG is intentionally kept separate from Telegraf-based telemetry to **demonstrate different monitoring models** side-by-side.
 
-In our lab this contianer is deployed on 1 router
-Cat8Kv-task-1 with IP 198.18.100.6
+In our lab this contianer is deployed on one router:
+
+- Cat8Kv-task-1 with IP 198.18.100.6
 
 ---
 

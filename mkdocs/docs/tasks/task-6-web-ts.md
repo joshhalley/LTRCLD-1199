@@ -20,9 +20,10 @@
 
 ---
 
-## 1) Basic Connectivity Test (GET)
+## 1. Basic Connectivity Test (GET)
 * Login to the Cat8Kv-Task-1 (ssh 198.18.1.11)
 * Connect to the swiss_knife container
+
 ```bash
 app-hosting connect appid swiss_knife session /bin/bash
 ```
@@ -42,7 +43,7 @@ curl https://www.google.com
 
 ---
 
-## 2) Headers Only (`-I`) — “Is the web service up?”
+## 2. Headers Only (`-I`) — “Is the web service up?”
 
 ```bash
 curl -I https://www.google.com
@@ -88,7 +89,7 @@ swissknife:/root#
 
 ---
 
-## 3) Verbose Mode (`-v`) — “Show me *what* fails and *where*”
+## 3. Verbose Mode (`-v`) — “Show me *what* fails and *where*”
 
 ```bash
 curl -v https://www.google.com
@@ -111,7 +112,7 @@ That’s a classic “no IPv6 routing” symptom in lab/enterprise networks.
 
 ---
 
-## 4) Force a Specific IP While Keeping the Hostname (`--resolve`)
+## 4. Force a Specific IP While Keeping the Hostname (`--resolve`)
 
 ```bash
 curl -v https://8.8.8.8 --resolve www.google.com:443:8.8.8.8
@@ -135,7 +136,7 @@ curl -v https://8.8.8.8 --resolve www.google.com:443:8.8.8.8
 
 ---
 
-## 5) Test a Specific Port
+## 5. Test a Specific Port
 
 ### 5.1 Internal service example (Non 80 or 443 port)
 
@@ -153,7 +154,7 @@ This is a perfect lab example of:
 
 ---
 
-## 6) About `-k` (Insecure TLS)
+## 6. About `-k` (Insecure TLS)
 
 You used:
 
@@ -184,7 +185,7 @@ curl -vk https://example.com:8443
 
 ---
 
-## 7) Application Timing (Great for “slow app” complaints)
+## 7. Application Timing (Great for “slow app” complaints)
 
 Command you ran:
 
@@ -221,7 +222,7 @@ Total: 0.088797
 
 ---
 
-## 8) API Calls 
+## 8. API Calls 
 
 ### 8.1 Simple GET that returns JSON
 
@@ -249,7 +250,7 @@ From the output notice that, **httpbin is echoing back exactly what it received*
 
 ---
 
-## 9) Recommended “Quick Checks” (Copy/Paste)
+## 9. Recommended “Quick Checks” (Copy/Paste)
 
 ```bash
 # 1) Is HTTPS reachable (headers only)?
@@ -267,7 +268,7 @@ curl -v https://1.1.1.1 --resolve example.com:443:1.1.1.1
 
 ---
 
-## 10) `wget` — File Download + Availability Checks
+## 10. `wget` — File Download + Availability Checks
 
 `wget` is great when you want to **download files**, **validate reachability**, or **test stability** (resume support).
 
@@ -337,7 +338,7 @@ Use case:
 
 ---
 
-## 11) HTTPie – API Calls
+## 11. HTTPie – API Calls
 
 * HTTPie does the same job as curl.
 * It presents the request and response in a more human-readable format (JSON-first, cleaner defaults).
@@ -392,7 +393,7 @@ http --verify=no POST https://httpbin.org/post user=test pass=test123
 * httpbin will echo your payload back in the response as JSON (similar idea to curl’s `data/json` echo).
 
 ---
-## 12) Comparing curl, wget, and httpie
+## 12. Comparing curl, wget, and httpie
 
 | Tool   | Best For                          |
 | ------ | --------------------------------- |
@@ -401,7 +402,7 @@ http --verify=no POST https://httpbin.org/post user=test pass=test123
 | httpie | APIs, JSON, readability           |
 
 ---
-## 13) Tool Selection Cheat Sheet
+## 13. Tool Selection Cheat Sheet
 
 | Question                   | Tool   |
 | -------------------------- | ------ |

@@ -4,9 +4,9 @@
 
 kcat is a lightweight CLI tool to validate **Kafka connectivity, topics, and message flow** without needing to install a full Kafka client stack on the router.
 
-**Lab context** /
-- Kafka Broker is running on **Mgmt Ubuntu 1** (`198.18.5.101:9092`) /
-- You will run kcat from the **Swiss-Knife container** on `cat8Kv-task-1`
+**Lab context** 
+- Kafka Broker is running on **Mgmt Ubuntu 1** (`198.18.5.101:9092`)
+- You will run kcat from the **Swiss-Knife container** on **cat8Kv-task-1**
 
 ---
 
@@ -23,7 +23,7 @@ kcat is a lightweight CLI tool to validate **Kafka connectivity, topics, and mes
 
 ## Step 1: Connect to the Swiss-Knife container
 
-On `cat8Kv-task-1`:
+On **cat8Kv-task-1**:
 
 ```bash
 app-hosting connect appid swiss_knife session /bin/bash
@@ -75,9 +75,10 @@ Send a single test message from the container to Kafka:
 echo "hello-from-cat8kv-task-1" | kcat -b 198.18.5.101:9092 -t netops-test -P
 ```
 
-This should run withut any output or error, the message is received by the broker /
-What this demonstrates: /
-- The router/container can publish events (logs/telemetry/test messages) /
+This should run withut any output or error, the message is received by the broker
+What this demonstrates:
+
+- The router/container can publish events (logs/telemetry/test messages)
 - The end-to-end path to Kafka is working
 
 ---
@@ -90,7 +91,7 @@ Start a consumer to verify that messages are arriving.
 kcat -b 198.18.5.101:9092 -t netops-test -C
 ```
 
-Notes: /
+**Notes:**
 - This command runs continuously. /
 - The message sent in the previous step can be seen here /
 - Press **Ctrl+C** to stop the consumer.

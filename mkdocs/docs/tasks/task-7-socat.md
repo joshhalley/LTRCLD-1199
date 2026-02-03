@@ -13,7 +13,8 @@
 
 ---
 
-`socat` is a versatile data-transfer utility that can relay traffic between sockets, files, and processes.  
+`socat` is a versatile data-transfer utility that can relay traffic between sockets, files, and processes.
+
 In this lab, `socat` is used to validate connectivity, simulate services, proxy traffic, generate traffic, transfer files, and inspect application flows running inside containers.
 
 Here’s a **clean, lab-ready section** you can drop **immediately after the intro**.
@@ -37,7 +38,7 @@ Each container is deployed on a separate **Catalyst 8000v (C8Kv)** router using 
 
 ### Step 1: SSH to both the Routers directly from the PC
 
-Connect to the cat8kv-task-1 and cat8kv-task-2 hosting the swiss knife container.
+Connect to the **cat8kv-task-1** and **cat8kv-task-2** hosting the swiss knife container.
 
 ### Step 2: Access the Swiss-Knife Container
 
@@ -65,6 +66,7 @@ You will now be inside the Swiss-Knife container and can run `socat` commands di
 Start a lightweight TCP service to receive and display incoming data.
 
 ### Command (Listener > Cat8Kv-task-1 > container)
+
 ```bash
 socat -v TCP-LISTEN:8080,reuseaddr,fork STDOUT
 ```
@@ -85,8 +87,9 @@ Incoming TCP connections are accepted and payloads are printed to the terminal.
 
 ### Objective
 
-Forward traffic from a local TCP port to a remote service while logging connection and payload details. \
-We will SSH on port 9000 to the container's IP which will be redirected on port 22 to the router (cat8Kv-task-1) IP
+Forward traffic from a local TCP port to a remote service while logging connection and payload details.
+
+We will SSH on port 9000 to the container's IP which will be redirected on port 22 to the router (cat8Kv-task-1) IP.
 
 ### Command (Cat8Kv-task-1 > container)
 
@@ -105,7 +108,7 @@ socat -d -d -v -x TCP-LISTEN:9000,reuseaddr,fork TCP:198.18.100.1:22
 ```bash
 ssh -p 9000 admin@198.18.100.5
 ```
-Give router's password
+Provide the router's password when prompted.
 
 ### Expected Result
 

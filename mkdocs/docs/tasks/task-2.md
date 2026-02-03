@@ -32,7 +32,7 @@ You will:
 * Convert it to a TAR package
 * Transfer it to the router using SCP
 * Review and use an existing Terraform project
-* Deploy the app-hosting configuration via Terraform
+* Deploy the App-Hosting configuration via Terraform
 * Verify the container is running on the C8Kv
 * Test the installed tools
 
@@ -40,6 +40,7 @@ You will:
 ## Prerequisites: Router Preparation
 
 Before starting **Task-2**, the C8000v router must be prepared for **RESTCONF** access and **IOX App-Hosting**.
+
 Terraform uses RESTCONF APIs to manage App-Hosting resources, and the lab container images are **unsigned**, so signature verification must be disabled.
 
 Run the following commands on the **cat8Kv-task-2** SSH 198.18.1.12:
@@ -99,7 +100,8 @@ Once these checks succeed, proceed to deployning the APP via Terraform.
 ```bash
 curl -s http://198.18.5.101:5000/v2/_catalog
 ```
-Sample Ouptut
+
+**Sample Ouptut**
 {"repositories":["mrtg","swiss-knife-alpine","telegraf-alpine","wireshark"]}
 
 ```bash
@@ -116,8 +118,8 @@ sudo docker images
 
 ## Step 2: Create TAR Image from Docker
 
-• Convert the Docker image to a TAR package
-• This is the image format required for IOS-XE app hosting
+* Convert the Docker image to a TAR package
+* This is the image format required for IOS-XE app hosting
 
 ```bash
 sudo docker save 198.18.5.101:5000/wireshark:latest -o wireshark.tar
@@ -174,7 +176,7 @@ dir bootflash: | include tar
 
 ## Step 5: Verify Tool Versions
 
-Terraform and Go are already installed on the Lab Ubuntu (SSH 198.18.1.100)
+**Terraform** and **Go** are already installed on the Lab Ubuntu (SSH 198.18.1.100)
 Verify the versions before proceeding.
 
 ### Verify Terraform Version

@@ -14,7 +14,7 @@
 
 ---
 
-These tools answer two very specific questions:
+The listed tools answer two very specific questions:
 
 - **fping** → *Is the network path stable and fast?*
 - **dig** → *Is DNS resolving correctly and consistently?*
@@ -34,8 +34,10 @@ Think of fping as:
 ---
 
 ### 1. Basic reachability test
+
 * Login to the Cat8Kv-Task-1 (ssh 198.18.1.11)
 * Connect to the swiss_knife container
+
 ```bash
 app-hosting connect appid swiss_knife session /bin/bash
 ```
@@ -219,11 +221,11 @@ nmap -F 198.18.101.6
 
 ---
 
-**Summary**
+**Key Takeways**
 
-> Use **fping** to validate the *path*.
-> Use **dig** to validate the *name resolution*.
-> Use **nmap** to discover, not to troubleshoot application logic.
+- ✅ Use **fping** to validate the *path*.
+- ✅ Use **dig** to validate the *name resolution*.
+- ✅ Use **nmap** to discover, not to troubleshoot application logic.
 
 ---
 

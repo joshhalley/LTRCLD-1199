@@ -18,6 +18,7 @@
 ---
 
 In this task, you will use **Wireshark running inside a container** to perform **live packet capture** from a remote router interface using **ERSPAN**.
+
 This demonstrates how App-Hosting on Cisco edge devices can be used for **real-time traffic visibility** without deploying external probes.
 
 ---
@@ -65,21 +66,17 @@ getcap /usr/bin/dumpcap
 
 ### Explanation
 
-* `sudo -i`
-  Switches to root inside the container.
+* `sudo -i` # Switches to root inside the container.
 
-* `which dumpcap`
-  Confirms the location of the packet capture binary.
+* `which dumpcap` # Confirms the location of the packet capture binary.
 
-* `setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap`
-  Grants packet capture permissions without running Wireshark as root.
+* `setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap` # Grants packet capture permissions without running Wireshark as root.
 
-* `getcap /usr/bin/dumpcap`
-  Verifies that the permissions are applied correctly.
+* `getcap /usr/bin/dumpcap` # Verifies that the permissions are applied correctly.
 
 Expected output:
 
-```
+```bash
 /usr/bin/dumpcap = cap_net_admin,cap_net_raw+eip
 ```
 
@@ -148,13 +145,13 @@ From your workstation:
 RDP 198.18.1.20
 ```
 
-2. Open a browser and access:
+1. Open a browser and access:
 
 ```bash
 https://198.18.101.6:3001
 ```
 
-3. Launch **Wireshark** from the web desktop.
+1. Launch **Wireshark** from the web desktop.
 
 ---
 
@@ -201,10 +198,10 @@ This confirms successful **remote live packet capture** using ERSPAN.
 
 ## What You Have Demonstrated
 
-✔ Wireshark running as a container on a Cisco edge device
-✔ Secure, browser-based packet analysis
-✔ ERSPAN-based traffic mirroring
-✔ Live troubleshooting without external probes
+- ✅ Wireshark running as a container on a Cisco edge device
+- ✅ Secure, browser-based packet analysis
+- ✅ ERSPAN-based traffic mirroring
+- ✅ Live troubleshooting without external probes
 
 This approach is ideal for **on-demand troubleshooting**, **remote operations**, and **lab environments** where deploying physical taps or SPAN ports is not feasible.
 
