@@ -31,7 +31,7 @@ You will run:
 | cat8Kv-task-1 | Client | swiss_knife | Connects to `198.18.101.5` |
 | cat8Kv-task-2 | Server | swiss_knife | Listens on `198.18.101.5`  |
 
-> Update the IP address if your server-side container uses a different value.
+**Note:** Update the IP address if your server-side container uses a different value.
 
 ---
 
@@ -54,7 +54,6 @@ iperf3 -s
 * Output shows: `Server listening on 5201`
 * Server displays connection statistics when tests run
 * If no connection is seen:
-
   * Verify IP reachability between containers
   * Confirm no ACL, NAT, or firewall blocks TCP/5201
 
@@ -62,13 +61,13 @@ iperf3 -s
 
 ## 3. TCP Throughput Tests (cat8Kv-task-1)
 
-3.1 Connect to the Swiss-Knife container:
+### 3.1 Connect to the Swiss-Knife container:
 
 ```bash
 app-hosting connect appid swiss_knife session /bin/bash
 ```
 
-3.2 Basic TCP throughput (client → server):
+### 3.2 Basic TCP throughput (client → server):
 
 ```bash
 iperf3 -c 198.18.101.5
@@ -81,7 +80,7 @@ iperf3 -c 198.18.101.5
 
 ---
 
-3.3 Reverse direction throughput (server → client):
+### 3.3 Reverse direction throughput (server → client):
 
 ```bash
 iperf3 -c 198.18.101.5 -R
@@ -98,7 +97,7 @@ iperf3 -c 198.18.101.5 -R
 
 ---
 
-3.4 Parallel TCP streams:
+### 3.4 Parallel TCP streams:
 
 ```bash
 iperf3 -c 198.18.101.5 -P 5
@@ -114,13 +113,13 @@ iperf3 -c 198.18.101.5 -P 5
 
 ---
 
-3.5 Short-duration TCP test:
+### 3.5 Short-duration TCP test:
 
 ```bash
 iperf3 -c 198.18.101.5 -t 5
 ```
 
-3.6 Long-duration TCP test:
+### 3.6 Long-duration TCP test:
 
 ```bash
 iperf3 -c 198.18.101.5 -t 60
@@ -130,7 +129,6 @@ iperf3 -c 198.18.101.5 -t 60
 
 * Throughput consistency over time
 * Degradation over long runs may indicate:
-
   * Traffic shaping
   * Buffer exhaustion
   * Sustained CPU load
@@ -139,7 +137,7 @@ iperf3 -c 198.18.101.5 -t 60
 
 ## 4. UDP Performance and Loss Tests
 
-4.1 UDP test at 100 Mbps:
+### 4.1 UDP test at 100 Mbps:
 
 ```bash
 iperf3 -c 198.18.101.5 -u -b 100M
@@ -152,19 +150,19 @@ iperf3 -c 198.18.101.5 -u -b 100M
 
 ---
 
-4.2 UDP test at 50 Mbps with 1400-byte packets:
+### 4.2 UDP test at 50 Mbps with 1400-byte packets:
 
 ```bash
 iperf3 -c 198.18.101.5 -u -b 50M -l 1400
 ```
 
-4.3 UDP test at 50 Mbps with 1470-byte packets:
+### 4.3 UDP test at 50 Mbps with 1470-byte packets:
 
 ```bash
 iperf3 -c 198.18.101.5 -u -b 50M -l 1470
 ```
 
-4.4 UDP test at 50 Mbps with 1510-byte packets:
+### 4.4 UDP test at 50 Mbps with 1510-byte packets:
 
 ```bash
 iperf3 -c 198.18.101.5 -u -b 50M -l 1510
@@ -179,19 +177,19 @@ iperf3 -c 198.18.101.5 -u -b 50M -l 1510
 
 ## 5. JSON Output and Automation
 
-5.1 Run iPerf3 with JSON output:
+### 5.1 Run iPerf3 with JSON output:
 
 ```bash
 iperf3 -c 198.18.101.5 -J
 ```
 
-5.2 Short-duration JSON output:
+### 5.2 Short-duration JSON output:
 
 ```bash
 iperf3 -c 198.18.101.5 -t 5 -J
 ```
 
-5.3 Extract received throughput using `jq`:
+### 5.3 Extract received throughput using `jq`:
 
 ```bash
 iperf3 -c 198.18.101.5 -t 5 -J | jq '.end.sum_received.bits_per_second'
@@ -250,11 +248,11 @@ iperf3 -c 198.18.101.5 -t 10 -J > iperf_result.json
 By completing this task, you should be able to:
 
 1. Validate TCP throughput between C8Kv-hosted containers
-2. Identify directional asymmetry in the data path
-3. Demonstrate the impact of parallel flows
-4. Measure UDP loss and jitter
-5. Detect MTU mismatches using packet-size variation
-6. Generate machine-readable performance metrics
+1. Identify directional asymmetry in the data path
+1. Demonstrate the impact of parallel flows
+1. Measure UDP loss and jitter
+1. Detect MTU mismatches using packet-size variation
+1. Generate machine-readable performance metrics
 
 ---
 
@@ -312,19 +310,19 @@ Connecting to host 198.18.101.5, port 5201
    * Throughput then stabilizes around **230–245 Mbps**
    * This is typical TCP behavior during congestion window ramp-up
 
-2. **Retransmissions detected**
+1. **Retransmissions detected**
 
    * `81` retransmissions observed early in the test
    * Indicates minor packet loss or buffer pressure in the path
    * After stabilization, retransmissions stop
 
-3. **Congestion window adjustment**
+1. **Congestion window adjustment**
 
    * `Cwnd` reduces from **1.75 MB → ~1.24 MB**
    * TCP adapts to perceived network capacity
    * Resulting in steady, sustainable throughput
 
-4. **Sender vs Receiver throughput**
+1. **Sender vs Receiver throughput**
 
    * Sender: **260 Mbps**
    * Receiver: **257 Mbps**

@@ -24,10 +24,9 @@
 * Use the **monitoring container mrtg** on **Cat8Kv-Task-3**
 * Enable **SNMP** on all routers
 * Generate **MRTG graphs** for:
-
-* Interface traffic (GigabitEthernet5 and GigabitEthernet6)
-* CPU (5-min)
-* Memory pool usage
+  * Interface traffic (GigabitEthernet5 and GigabitEthernet6)
+  * CPU (5-min)
+  * Memory pool usage
 
 Graphs are served via a lightweight web server on the container.
 
@@ -44,7 +43,7 @@ Graphs are served via a lightweight web server on the container.
 
 Run on **each router**:
 
-```text
+```bash
 conf t
  snmp-server community public RO
  snmp ifmib ifindex persist
@@ -58,7 +57,7 @@ write memory
 
 ## Step 2: Connect to the MRTG Container and Verify SNMP
 
-On `cat8Kv-task-3`:
+On **cat8Kv-task-3**:
 
 ```text
 app-hosting connect appid mrtg session /bin/bash
@@ -95,7 +94,7 @@ Include: /opt/mrtg/routers/r3.cfg
 
 ## Step 4: Router MRTG Targets
 
-✅ Naming rules used below:
+Naming rules used below:
 
 * No spaces in target IDs
 * Consistent format: `Cat8Kv_TaskX_<Metric>`
@@ -329,7 +328,7 @@ Example:
 
 ---
 
-## 📈 Optional Traffic Generation with iPerf3 (Observation Step)
+## Optional Traffic Generation with iPerf3 (Observation Step)
 
 To make the MRTG graphs more meaningful, we will now **generate traffic between routers** and observe the impact on the interface graphs.
 
@@ -360,13 +359,13 @@ In the iPerf3 task:
 After traffic generation:
 
 1. Wait **5–10 minutes** (to allow multiple MRTG polling cycles)
-2. Refresh the MRTG web page:
+1. Refresh the MRTG web page:
 
 ```text
 http://198.18.102.5:8080/index.html
 ```
 
-3. Observe:
+1. Observe:
 
    * Increased **inbound/outbound traffic** on:
 
@@ -379,11 +378,9 @@ http://198.18.102.5:8080/index.html
 
 ---
 
-### Key Takeaway
+### Key Takeaways
 
-> MRTG provides a **historical, trend-based view** of network behavior, making it ideal for validating **traffic patterns over time**, rather than instantaneous troubleshooting.
-
-This concludes the MRTG monitoring lab.
+MRTG provides a **historical, trend-based view** of network behavior, making it ideal for validating **traffic patterns over time**, rather than instantaneous troubleshooting.
 
 ---
 

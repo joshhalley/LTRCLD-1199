@@ -1,14 +1,16 @@
 # Task 3: Kubernetes App Hosting using Virtual Kubelet
 
-[⬅ Back to Main Menu](../index.md)
+[⬅️ Back to Main Menu](../index.md)
 
 ---
 
 ## Objective
 
-In this task, you will deploy a **containerized application on a Cisco Catalyst 8000V (C8Kv)** router using **Kubernetes** and **Cisco Virtual Kubelet**.
+In this task, you will deploy a **containerized application on a Cisco Catalyst 8000V (C8Kv)** router using **Kubernetes** and the **Cisco Virtual Kubelet Provider**.
 
-The Kubernetes cluster is **already running**. You will:
+The Kubernetes cluster is **already running**.
+
+You will:
 
 - Validate Kubernetes readiness
 - Prepare the router for IOx app-hosting
@@ -21,12 +23,12 @@ The Kubernetes cluster is **already running**. You will:
 ## Table of Contents
 
 1. [Kubernetes Cluster Validation](#1-kubernetes-cluster-validation)  
-2. [Container Registry Verification](#2-container-registry-verification)  
-3. [Router Preparation (cat8kv-task-3)](#3-router-preparation-cat8kv-task-3)  
-4. [Build and Upload hello-app Image](#4-build-and-upload-hello-app-image)  
-5. [Create Kubernetes Manifests](#5-create-kubernetes-manifests)  
-6. [Deploy Virtual Kubelet and hello-app](#6-deploy-virtual-kubelet-and-hello-app)  
-7. [Verification](#7-verification)  
+1. [Container Registry Verification](#2-container-registry-verification)  
+1. [Router Preparation (cat8kv-task-3)](#3-router-preparation-cat8kv-task-3)  
+1. [Build and Upload hello-app Image](#4-build-and-upload-hello-app-image)  
+1. [Create Kubernetes Manifests](#5-create-kubernetes-manifests)  
+1. [Deploy Virtual Kubelet and hello-app](#6-deploy-virtual-kubelet-and-hello-app)  
+1. [Verification](#7-verification)  
 
 ---
 
@@ -46,6 +48,8 @@ Expected:
 NAME         STATUS   ROLES           AGE   VERSION
 ubuntu-lab   Ready    control-plane   38h   v1.34.3+k3s1
 ```
+
+**Note:** The cluster Kubeconfig is available under ```~/.kube/config```
 
 ---
 
@@ -119,6 +123,7 @@ sudo docker pull containers.dmz.cisco.com:5000/hello-app:latest
 
 ```bash
 sudo docker save containers.dmz.cisco.com:5000/hello-app:latest -o hello-app.iosxe.tar
+
 sudo chmod 666 hello-app.iosxe.tar
 ```
 
@@ -366,7 +371,7 @@ iox-xe-hello-app-pod                     0/1     ContainerCreating   0          
 
 ```
 
-Expected output once container is deployed
+Expected output after successful deployment
 
 ```text
 dcloud@ubuntu-lab:~$ kubectl get pods -o wide -w
@@ -395,16 +400,15 @@ Hostname: cvkxxxxxxxxxxxxxxxx
 
 ---
 
-## Summary
-
-✔ Pulled and packaged `hello-app` as an IOS XE TAR /
-✔ Uploaded the application TAR to router flash /
-✔ Deployed Cisco Virtual Kubelet into Kubernetes /
-✔ Scheduled a pod to the C8Kv node (`cat8kv-node`) /
-✔ Validated application reachability from the lab server
+## Key Takeways
+- ✅  Pulled and packaged `hello-app` as an IOS XE TAR
+- ✅  Uploaded the application TAR to router flash
+- ✅  Deployed Cisco Virtual Kubelet into Kubernetes
+- ✅  Scheduled a pod to the C8Kv node (`cat8kv-node`)
+- ✅  Validated application reachability from the lab server
 
 ---
 
-[⬅ Back to Main Menu](../index.md)
+[⬅️ Return to Main Menu](../index.md)
 
 ```

@@ -4,7 +4,7 @@ Welcome to **LTRCLD-1199**, a hands-on lab for deploying and operating container
 
 - Native **App-Hosting**
 - **Terraform** (Infrastructure as Code)
-- **Kubernetes** (KIND + virtual kubelet)
+- **Kubernetes** (kind + Virtual Kubelet)
 
 ---
 
@@ -16,17 +16,17 @@ Welcome to **LTRCLD-1199**, a hands-on lab for deploying and operating container
 - [Container Details](containers.md)
 
 ### Lab Tasks
-- **Task 1**: [App-Hosting Deployment on IOS-XE (Manual)](tasks/task-1.md)
-- **Task 2**: [App-Hosting Automation with Terraform](tasks/task-2.md)
-- **Task 3**: [Kubernetes App Hosting using Virtual Kubelet](tasks/task-3.md)
-- **Task 4**: [Basic Network Validation (fping, dig, nmap)](tasks/task-4-basic.md)
-- **Task 5**: [MTR Path Analysis (My Traceroute)](tasks/task-5-mtr.md)
-- **Task 6**: [Web Testing & Troubleshooting (curl, wget, httpie)](tasks/task-6-web-ts.md)
-- **Task 7**: [socat Practical Use Cases](tasks/task-7-socat.md)
+- **Task 1**: [App-Hosting Manual Deployment on IOS-XE](tasks/task-1.md)
+- **Task 2**: [App-Hosting Automated Deployment with Terraform](tasks/task-2.md)
+- **Task 3**: [Kubernetes App-Hosting using Virtual Kubelet](tasks/task-3.md)
+- **Task 4**: [Network Validation (fping, dig, nmap)](tasks/task-4-basic.md)
+- **Task 5**: [MTR Path Analysis](tasks/task-5-mtr.md)
+- **Task 6**: [Web Testing & Troubleshooting](tasks/task-6-web-ts.md)
+- **Task 7**: [socat (SOcket CAT) Practical Use Cases](tasks/task-7-socat.md)
 - **Task 8**: [kcat (Kafka CAT) Connectivity & Message Flow](tasks/task-8-kcat.md)
 - **Task 9**: [MRTG Interface Monitoring](tasks/task-9-mrtg.md)
 - **Task 10**: [iPerf3 Network Performance Testing](tasks/task-10-iperf3.md)
-- **Task 11**: [Wireshark Live Packet Capture (ERSPAN)](tasks/task-11-wireshark.md)
+- **Task 11**: [Wireshark Live Packet Capture](tasks/task-11-wireshark.md)
 - **Task 12**: [Telegraf Monitoring with Prometheus Exporter](tasks/task-12-telegraf.md)
 ---
 
@@ -35,8 +35,8 @@ Welcome to **LTRCLD-1199**, a hands-on lab for deploying and operating container
 By the end of this lab, you will be able to:
 
 - Deploy a containerized tool on C8Kv using App-Hosting via CLI
-- Automate app-hosting configuration with Terraform
-- Integrate C8Kv into a Kubernetes environment using KIND and virtual kubelet
+- Automate App-Hosting configuration with Terraform
+- Integrate C8Kv into a Kubernetes environment using [kind](https://kind.sigs.k8s.io/) and [Virtual Kubelet](https://virtual-kubelet.io/)
 - Validate that tools are running and accessible for troubleshooting work
 
 ---
@@ -54,7 +54,7 @@ To get the most value from this lab, you should be familiar with:
 
 ## Lab Topology
 
-Participant do not need access to Ubuntu Mgmt 1, Ubuntu Mgmt 2 and Infra Cat8Kv to execute this lab
+Participants do not need access to the `Ubuntu Mgmt` 1, `Ubuntu Mgmt 2` and `Infra Cat8Kv` to execute this lab.
 
 ![Lab Topology](images/topology.jpg)
 
@@ -62,7 +62,7 @@ Participant do not need access to Ubuntu Mgmt 1, Ubuntu Mgmt 2 and Infra Cat8Kv 
 
 ## Device Access Out of Band (SSH + RDP)
 
-Use the following information to access the lab devices via OOB
+Use the following information to access the lab devices via Out-of-Band (OOB).
 
 | Name         | IP            | Username       | Password   |
 |--------------|---------------|----------------|------------|
@@ -84,7 +84,7 @@ Use the following information to access the lab devices via OOB
 
 * LAN IP is towards LAB Ubuntu
 * WAN IP is towards Mgmt Ubuntu, other Cat8Kvs and Internet
-* Container GW is the IP of the virtualportgroup interface, which will be default GW for all containers on that router
-* Container IPs will be part of respective GW subnet stating from .5
+* Container Gateway is the IP of the virtualportgroup interface, which will be default Gateway for all containers on that router
+* Container IPs will be part of respective Gateway subnet stating from .5
 
 ---

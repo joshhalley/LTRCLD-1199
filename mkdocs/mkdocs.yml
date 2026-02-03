@@ -11,18 +11,18 @@ nav:
   - Home: index.md
   - Container Details: containers.md
   - Lab Tasks:
-      - "Task 1 – App-Hosting Deployment (Manual)": tasks/task-1.md
-      - "Task 2 – App-Hosting Automation with Terraform": tasks/task-2.md
-      - "Task 3 – Kubernetes App Hosting using Virtual Kubelet": tasks/task-3.md
-      - "Task 4 – Basic Network Validation": tasks/task-4-basic.md
+      - "Task 1 – App-Hosting Manual Deployment on IOS-XE": tasks/task-1.md
+      - "Task 2 – App-Hosting Automated Deployment with Terraform": tasks/task-2.md
+      - "Task 3 – Kubernetes App-Hosting using Virtual Kubelet": tasks/task-3.md
+      - "Task 4 – Network Validation": tasks/task-4-basic.md
       - "Task 5 – MTR Path Analysis": tasks/task-5-mtr.md
       - "Task 6 – Web Testing & Troubleshooting": tasks/task-6-web-ts.md
-      - "Task 7 – socat Practical Use Cases": tasks/task-7-socat.md
-      - "Task 8 – kcat (Kafka CAT)": tasks/task-8-kcat.md
+      - "Task 7 – socat (SOcket CAT) Practical Use Cases": tasks/task-7-socat.md
+      - "Task 8 – kcat (Kafka CAT) Connectivity & Message Flow": tasks/task-8-kcat.md
       - "Task 9 – MRTG Interface Monitoring": tasks/task-9-mrtg.md
       - "Task 10 – iPerf3 Performance Testing": tasks/task-10-iperf3.md
       - "Task 11 – Wireshark Live Packet Capture": tasks/task-11-wireshark.md
-      - "Task 12 – Telegraf Monitoring": tasks/task-12-telegraf.md
+      - "Task 12 – Telegraf Monitoring with Prometheus Exporter": tasks/task-12-telegraf.md
 markdown_extensions:
   - admonition
   - toc:
