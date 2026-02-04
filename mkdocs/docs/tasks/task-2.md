@@ -102,7 +102,9 @@ curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
 ```
 
 **Sample Ouptut**
+```bash
 {"repositories":["mrtg","swiss-knife-alpine","telegraf-alpine","wireshark"]}
+```
 
 ```bash
 sudo docker pull containers.dmz.cisco.com:5000/wireshark:latest

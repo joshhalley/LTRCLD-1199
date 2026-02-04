@@ -313,7 +313,8 @@ Stop the telegraf process and edit the existing lab configuration:
 nano /etc/telegraf/telegraf.d/lab.conf
 ```
 
-Append the SNMP configuration **at the end of the file** (Cat8Kv-Task-1 / Task-2 / Task-3).
+Append the below SNMP configuration **at the end of the file** /
+This will poll CPU, Interface and Memory for all 3 Cat8Kv routers
 
 ```toml
 ###############################################################################
