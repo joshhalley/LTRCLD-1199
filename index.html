@@ -432,7 +432,7 @@
   <span class="md-ellipsis">
     
   
-    Task 1 – App-Hosting Deployment (Manual)
+    Task 1 – App-Hosting Manual Deployment on IOS-XE
   
 
     
@@ -460,7 +460,7 @@
   <span class="md-ellipsis">
     
   
-    Task 2 – App-Hosting Automation with Terraform
+    Task 2 – App-Hosting Automated Deployment with Terraform
   
 
     
@@ -488,7 +488,7 @@
   <span class="md-ellipsis">
     
   
-    Task 3 – Kubernetes App Hosting using Virtual Kubelet
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
   
 
     
@@ -516,7 +516,7 @@
   <span class="md-ellipsis">
     
   
-    Task 4 – Basic Network Validation
+    Task 4 – Network Validation
   
 
     
@@ -600,7 +600,7 @@
   <span class="md-ellipsis">
     
   
-    Task 7 – socat Practical Use Cases
+    Task 7 – socat (SOcket CAT) Practical Use Cases
   
 
     
@@ -628,7 +628,7 @@
   <span class="md-ellipsis">
     
   
-    Task 8 – kcat (Kafka CAT)
+    Task 8 – kcat (Kafka CAT) Connectivity & Message Flow
   
 
     
@@ -740,7 +740,7 @@
   <span class="md-ellipsis">
     
   
-    Task 12 – Telegraf Monitoring
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
   
 
     
@@ -886,7 +886,7 @@
 <ul>
 <li>Native <strong>App-Hosting</strong></li>
 <li><strong>Terraform</strong> (Infrastructure as Code)</li>
-<li><strong>Kubernetes</strong> (KIND + virtual kubelet)</li>
+<li><strong>Kubernetes</strong> (kind + Virtual Kubelet)</li>
 </ul>
 <hr />
 <h3 id="lab-overview">Lab Overview<a class="headerlink" href="#lab-overview" title="Permanent link">&para;</a></h3>
@@ -899,17 +899,17 @@
 </ul>
 <h3 id="lab-tasks">Lab Tasks<a class="headerlink" href="#lab-tasks" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Task 1</strong>: <a href="tasks/task-1/">App-Hosting Deployment on IOS-XE (Manual)</a></li>
-<li><strong>Task 2</strong>: <a href="tasks/task-2/">App-Hosting Automation with Terraform</a></li>
-<li><strong>Task 3</strong>: <a href="tasks/task-3/">Kubernetes App Hosting using Virtual Kubelet</a></li>
-<li><strong>Task 4</strong>: <a href="tasks/task-4-basic/">Basic Network Validation (fping, dig, nmap)</a></li>
-<li><strong>Task 5</strong>: <a href="tasks/task-5-mtr/">MTR Path Analysis (My Traceroute)</a></li>
-<li><strong>Task 6</strong>: <a href="tasks/task-6-web-ts/">Web Testing &amp; Troubleshooting (curl, wget, httpie)</a></li>
-<li><strong>Task 7</strong>: <a href="tasks/task-7-socat/">socat Practical Use Cases</a></li>
+<li><strong>Task 1</strong>: <a href="tasks/task-1/">App-Hosting Manual Deployment on IOS-XE</a></li>
+<li><strong>Task 2</strong>: <a href="tasks/task-2/">App-Hosting Automated Deployment with Terraform</a></li>
+<li><strong>Task 3</strong>: <a href="tasks/task-3/">Kubernetes App-Hosting using Virtual Kubelet</a></li>
+<li><strong>Task 4</strong>: <a href="tasks/task-4-basic/">Network Validation (fping, dig, nmap)</a></li>
+<li><strong>Task 5</strong>: <a href="tasks/task-5-mtr/">MTR Path Analysis</a></li>
+<li><strong>Task 6</strong>: <a href="tasks/task-6-web-ts/">Web Testing &amp; Troubleshooting</a></li>
+<li><strong>Task 7</strong>: <a href="tasks/task-7-socat/">socat (SOcket CAT) Practical Use Cases</a></li>
 <li><strong>Task 8</strong>: <a href="tasks/task-8-kcat/">kcat (Kafka CAT) Connectivity &amp; Message Flow</a></li>
 <li><strong>Task 9</strong>: <a href="tasks/task-9-mrtg/">MRTG Interface Monitoring</a></li>
 <li><strong>Task 10</strong>: <a href="tasks/task-10-iperf3/">iPerf3 Network Performance Testing</a></li>
-<li><strong>Task 11</strong>: <a href="tasks/task-11-wireshark/">Wireshark Live Packet Capture (ERSPAN)</a></li>
+<li><strong>Task 11</strong>: <a href="tasks/task-11-wireshark/">Wireshark Live Packet Capture</a></li>
 <li><strong>Task 12</strong>: <a href="tasks/task-12-telegraf/">Telegraf Monitoring with Prometheus Exporter</a></li>
 </ul>
 <hr />
@@ -917,8 +917,8 @@
 <p>By the end of this lab, you will be able to:</p>
 <ul>
 <li>Deploy a containerized tool on C8Kv using App-Hosting via CLI</li>
-<li>Automate app-hosting configuration with Terraform</li>
-<li>Integrate C8Kv into a Kubernetes environment using KIND and virtual kubelet</li>
+<li>Automate App-Hosting configuration with Terraform</li>
+<li>Integrate C8Kv into a Kubernetes environment using <a href="https://kind.sigs.k8s.io/">kind</a> and <a href="https://virtual-kubelet.io/">Virtual Kubelet</a></li>
 <li>Validate that tools are running and accessible for troubleshooting work</li>
 </ul>
 <hr />
@@ -932,11 +932,11 @@
 </ul>
 <hr />
 <h2 id="lab-topology">Lab Topology<a class="headerlink" href="#lab-topology" title="Permanent link">&para;</a></h2>
-<p>Participant do not need access to Ubuntu Mgmt 1, Ubuntu Mgmt 2 and Infra Cat8Kv to execute this lab</p>
+<p>Participants do not need access to the <code>Ubuntu Mgmt</code> 1, <code>Ubuntu Mgmt 2</code> and <code>Infra Cat8Kv</code> to execute this lab.</p>
 <p><img alt="Lab Topology" src="images/topology.jpg" /></p>
 <hr />
 <h2 id="device-access-out-of-band-ssh-rdp">Device Access Out of Band (SSH + RDP)<a class="headerlink" href="#device-access-out-of-band-ssh-rdp" title="Permanent link">&para;</a></h2>
-<p>Use the following information to access the lab devices via OOB</p>
+<p>Use the following information to access the lab devices via Out-of-Band (OOB).</p>
 <table>
 <thead>
 <tr>
@@ -1014,8 +1014,8 @@
 <ul>
 <li>LAN IP is towards LAB Ubuntu</li>
 <li>WAN IP is towards Mgmt Ubuntu, other Cat8Kvs and Internet</li>
-<li>Container GW is the IP of the virtualportgroup interface, which will be default GW for all containers on that router</li>
-<li>Container IPs will be part of respective GW subnet stating from .5</li>
+<li>Container Gateway is the IP of the virtualportgroup interface, which will be default Gateway for all containers on that router</li>
+<li>Container IPs will be part of respective Gateway subnet stating from .5</li>
 </ul>
 <hr />
 

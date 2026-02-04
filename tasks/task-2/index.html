@@ -29,7 +29,7 @@
     
     
       
-        <title>Task 2 – App-Hosting Automation with Terraform - LTRCLD-1199 – Containers on IOS-XE</title>
+        <title>Task 2 – App-Hosting Automated Deployment with Terraform - LTRCLD-1199 – Containers on IOS-XE</title>
       
     
     
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Task 2 – App-Hosting Automation with Terraform
+              Task 2 – App-Hosting Automated Deployment with Terraform
             
           </span>
         </div>
@@ -312,7 +312,7 @@
   <span class="md-ellipsis">
     
   
-    Task 1 – App-Hosting Deployment (Manual)
+    Task 1 – App-Hosting Manual Deployment on IOS-XE
   
 
     
@@ -349,7 +349,7 @@
   <span class="md-ellipsis">
     
   
-    Task 2 – App-Hosting Automation with Terraform
+    Task 2 – App-Hosting Automated Deployment with Terraform
   
 
     
@@ -367,7 +367,7 @@
   <span class="md-ellipsis">
     
   
-    Task 2 – App-Hosting Automation with Terraform
+    Task 2 – App-Hosting Automated Deployment with Terraform
   
 
     
@@ -641,7 +641,7 @@
   <span class="md-ellipsis">
     
   
-    Task 3 – Kubernetes App Hosting using Virtual Kubelet
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
   
 
     
@@ -669,7 +669,7 @@
   <span class="md-ellipsis">
     
   
-    Task 4 – Basic Network Validation
+    Task 4 – Network Validation
   
 
     
@@ -753,7 +753,7 @@
   <span class="md-ellipsis">
     
   
-    Task 7 – socat Practical Use Cases
+    Task 7 – socat (SOcket CAT) Practical Use Cases
   
 
     
@@ -781,7 +781,7 @@
   <span class="md-ellipsis">
     
   
-    Task 8 – kcat (Kafka CAT)
+    Task 8 – kcat (Kafka CAT) Connectivity & Message Flow
   
 
     
@@ -893,7 +893,7 @@
   <span class="md-ellipsis">
     
   
-    Task 12 – Telegraf Monitoring
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
   
 
     
@@ -1213,14 +1213,14 @@
 <li>Convert it to a TAR package</li>
 <li>Transfer it to the router using SCP</li>
 <li>Review and use an existing Terraform project</li>
-<li>Deploy the app-hosting configuration via Terraform</li>
+<li>Deploy the App-Hosting configuration via Terraform</li>
 <li>Verify the container is running on the C8Kv</li>
 <li>Test the installed tools</li>
 </ul>
 <hr />
 <h2 id="prerequisites-router-preparation">Prerequisites: Router Preparation<a class="headerlink" href="#prerequisites-router-preparation" title="Permanent link">&para;</a></h2>
-<p>Before starting <strong>Task-2</strong>, the C8000v router must be prepared for <strong>RESTCONF</strong> access and <strong>IOX App-Hosting</strong>.
-Terraform uses RESTCONF APIs to manage App-Hosting resources, and the lab container images are <strong>unsigned</strong>, so signature verification must be disabled.</p>
+<p>Before starting <strong>Task-2</strong>, the C8000v router must be prepared for <strong>RESTCONF</strong> access and <strong>IOX App-Hosting</strong>.</p>
+<p>Terraform uses RESTCONF APIs to manage App-Hosting resources, and the lab container images are <strong>unsigned</strong>, so signature verification must be disabled.</p>
 <p>Run the following commands on the <strong>cat8Kv-task-2</strong> SSH 198.18.1.12:</p>
 <pre><code class="language-ios">conf t
 !
@@ -1261,19 +1261,21 @@ https://198.18.9.12/restconf/data/Cisco-IOS-XE-native:native/iox
 <li>This image will be used to create a TAR file for router deployment</li>
 <li>In this task we will deploy 2 containers in cat8Kv-task-2, wireshark and swiss_knife (pulled in task 1)</li>
 </ul>
-<pre><code class="language-bash">curl -s http://198.18.5.101:5000/v2/_catalog
+<pre><code class="language-bash">curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
 </code></pre>
-<p _repositories_:_mrtg_swiss-knife-alpine_telegraf-alpine_wireshark_="&quot;repositories&quot;:[&quot;mrtg&quot;,&quot;swiss-knife-alpine&quot;,&quot;telegraf-alpine&quot;,&quot;wireshark&quot;]">Sample Ouptut</p>
-<pre><code class="language-bash">sudo docker pull 198.18.5.101:5000/wireshark:latest
+<p _repositories_:_mrtg_swiss-knife-alpine_telegraf-alpine_wireshark_="&quot;repositories&quot;:[&quot;mrtg&quot;,&quot;swiss-knife-alpine&quot;,&quot;telegraf-alpine&quot;,&quot;wireshark&quot;]"><strong>Sample Ouptut</strong></p>
+<pre><code class="language-bash">sudo docker pull containers.dmz.cisco.com:5000/wireshark:latest
 </code></pre>
 <p>Validate the download:</p>
 <pre><code class="language-bash">sudo docker images
 </code></pre>
 <hr />
 <h2 id="step-2-create-tar-image-from-docker">Step 2: Create TAR Image from Docker<a class="headerlink" href="#step-2-create-tar-image-from-docker" title="Permanent link">&para;</a></h2>
-<p>• Convert the Docker image to a TAR package
-• This is the image format required for IOS-XE app hosting</p>
-<pre><code class="language-bash">sudo docker save 198.18.5.101:5000/wireshark:latest -o wireshark.tar
+<ul>
+<li>Convert the Docker image to a TAR package</li>
+<li>This is the image format required for IOS-XE app hosting</li>
+</ul>
+<pre><code class="language-bash">sudo docker save containers.dmz.cisco.com:5000/wireshark:latest -o wireshark.tar
 </code></pre>
 <p>Verify the TAR file exists:</p>
 <pre><code class="language-bash">ls -lh wireshark.tar
@@ -1310,7 +1312,7 @@ end
 <pre><code class="language-bash">dir bootflash: | include tar
 </code></pre>
 <h2 id="step-5-verify-tool-versions">Step 5: Verify Tool Versions<a class="headerlink" href="#step-5-verify-tool-versions" title="Permanent link">&para;</a></h2>
-<p>Terraform and Go are already installed on the Lab Ubuntu (SSH 198.18.1.100)
+<p><strong>Terraform</strong> and <strong>Go</strong> are already installed on the Lab Ubuntu (SSH 198.18.1.100)
 Verify the versions before proceeding.</p>
 <h3 id="verify-terraform-version">Verify Terraform Version<a class="headerlink" href="#verify-terraform-version" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">terraform version
@@ -1441,7 +1443,7 @@ resource &quot;ciscoapphosting_app&quot; &quot;swiss_knife&quot; {
 </code></pre>
 <hr />
 <h2 id="step-12-verify-deployment-on-the-router">Step 12: Verify Deployment on the Router<a class="headerlink" href="#step-12-verify-deployment-on-the-router" title="Permanent link">&para;</a></h2>
-<p>On the cat8Kv-task-2 router, verify the application and networking:</p>
+<p>On the cat8Kv-task-2 router (198.18.9.12), verify the application and networking:</p>
 <pre><code class="language-bash">show app-hosting list
 show run interface VirtualPortGroup0
 show run | section ospf

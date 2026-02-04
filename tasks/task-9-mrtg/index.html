@@ -312,7 +312,7 @@
   <span class="md-ellipsis">
     
   
-    Task 1 – App-Hosting Deployment (Manual)
+    Task 1 – App-Hosting Manual Deployment on IOS-XE
   
 
     
@@ -340,7 +340,7 @@
   <span class="md-ellipsis">
     
   
-    Task 2 – App-Hosting Automation with Terraform
+    Task 2 – App-Hosting Automated Deployment with Terraform
   
 
     
@@ -368,7 +368,7 @@
   <span class="md-ellipsis">
     
   
-    Task 3 – Kubernetes App Hosting using Virtual Kubelet
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
   
 
     
@@ -396,7 +396,7 @@
   <span class="md-ellipsis">
     
   
-    Task 4 – Basic Network Validation
+    Task 4 – Network Validation
   
 
     
@@ -480,7 +480,7 @@
   <span class="md-ellipsis">
     
   
-    Task 7 – socat Practical Use Cases
+    Task 7 – socat (SOcket CAT) Practical Use Cases
   
 
     
@@ -508,7 +508,7 @@
   <span class="md-ellipsis">
     
   
-    Task 8 – kcat (Kafka CAT)
+    Task 8 – kcat (Kafka CAT) Connectivity & Message Flow
   
 
     
@@ -797,12 +797,12 @@
   <a href="#optional-traffic-generation-with-iperf3-observation-step" class="md-nav__link">
     <span class="md-ellipsis">
       
-        📈 Optional Traffic Generation with iPerf3 (Observation Step)
+        Optional Traffic Generation with iPerf3 (Observation Step)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="📈 Optional Traffic Generation with iPerf3 (Observation Step)">
+    <nav class="md-nav" aria-label="Optional Traffic Generation with iPerf3 (Observation Step)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -839,10 +839,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#key-takeaway" class="md-nav__link">
+  <a href="#key-takeaways" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Takeaway
+        Key Takeaways
       
     </span>
   </a>
@@ -933,7 +933,7 @@
   <span class="md-ellipsis">
     
   
-    Task 12 – Telegraf Monitoring
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
   
 
     
@@ -1189,12 +1189,12 @@
   <a href="#optional-traffic-generation-with-iperf3-observation-step" class="md-nav__link">
     <span class="md-ellipsis">
       
-        📈 Optional Traffic Generation with iPerf3 (Observation Step)
+        Optional Traffic Generation with iPerf3 (Observation Step)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="📈 Optional Traffic Generation with iPerf3 (Observation Step)">
+    <nav class="md-nav" aria-label="Optional Traffic Generation with iPerf3 (Observation Step)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1231,10 +1231,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#key-takeaway" class="md-nav__link">
+  <a href="#key-takeaways" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Takeaway
+        Key Takeaways
       
     </span>
   </a>
@@ -1285,12 +1285,8 @@
 <ul>
 <li>Use the <strong>monitoring container mrtg</strong> on <strong>Cat8Kv-Task-3</strong></li>
 <li>Enable <strong>SNMP</strong> on all routers</li>
-<li>
-<p>Generate <strong>MRTG graphs</strong> for:</p>
-</li>
-<li>
-<p>Interface traffic (GigabitEthernet5 and GigabitEthernet6)</p>
-</li>
+<li>Generate <strong>MRTG graphs</strong> for:</li>
+<li>Interface traffic (GigabitEthernet5 and GigabitEthernet6)</li>
 <li>CPU (5-min)</li>
 <li>Memory pool usage</li>
 </ul>
@@ -1304,7 +1300,7 @@
 <hr />
 <h2 id="step-1-enable-snmp-on-all-routers-task-123">Step 1: Enable SNMP on All Routers (Task-1/2/3)<a class="headerlink" href="#step-1-enable-snmp-on-all-routers-task-123" title="Permanent link">&para;</a></h2>
 <p>Run on <strong>each router</strong>:</p>
-<pre><code class="language-text">conf t
+<pre><code class="language-bash">conf t
  snmp-server community public RO
  snmp ifmib ifindex persist
 end
@@ -1315,7 +1311,7 @@ write memory
 </blockquote>
 <hr />
 <h2 id="step-2-connect-to-the-mrtg-container-and-verify-snmp">Step 2: Connect to the MRTG Container and Verify SNMP<a class="headerlink" href="#step-2-connect-to-the-mrtg-container-and-verify-snmp" title="Permanent link">&para;</a></h2>
-<p>On <code>cat8Kv-task-3</code>:</p>
+<p>On <strong>cat8Kv-task-3</strong>:</p>
 <pre><code class="language-text">app-hosting connect appid mrtg session /bin/bash
 </code></pre>
 <p>Test SNMP:</p>
@@ -1337,7 +1333,7 @@ Include: /opt/mrtg/routers/r3.cfg
 </code></pre>
 <hr />
 <h2 id="step-4-router-mrtg-targets">Step 4: Router MRTG Targets<a class="headerlink" href="#step-4-router-mrtg-targets" title="Permanent link">&para;</a></h2>
-<p>✅ Naming rules used below:</p>
+<p>Naming rules used below:</p>
 <ul>
 <li>No spaces in target IDs</li>
 <li>Consistent format: <code>Cat8Kv_TaskX_&lt;Metric&gt;</code></li>
@@ -1508,7 +1504,7 @@ crontab -l
 <li><code>ifDescr.3 = GigabitEthernet6</code></li>
 </ul>
 <hr />
-<h2 id="optional-traffic-generation-with-iperf3-observation-step">📈 Optional Traffic Generation with iPerf3 (Observation Step)<a class="headerlink" href="#optional-traffic-generation-with-iperf3-observation-step" title="Permanent link">&para;</a></h2>
+<h2 id="optional-traffic-generation-with-iperf3-observation-step">Optional Traffic Generation with iPerf3 (Observation Step)<a class="headerlink" href="#optional-traffic-generation-with-iperf3-observation-step" title="Permanent link">&para;</a></h2>
 <p>To make the MRTG graphs more meaningful, we will now <strong>generate traffic between routers</strong> and observe the impact on the interface graphs.</p>
 <h3 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h3>
 <ul>
@@ -1557,11 +1553,8 @@ crontab -l
 </li>
 </ol>
 <hr />
-<h3 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">&para;</a></h3>
-<blockquote>
+<h3 id="key-takeaways">Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permanent link">&para;</a></h3>
 <p>MRTG provides a <strong>historical, trend-based view</strong> of network behavior, making it ideal for validating <strong>traffic patterns over time</strong>, rather than instantaneous troubleshooting.</p>
-</blockquote>
-<p>This concludes the MRTG monitoring lab.</p>
 <hr />
 <p><a href="../../">⬅️ Return to Main Menu</a></p>
 

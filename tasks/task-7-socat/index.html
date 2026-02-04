@@ -29,7 +29,7 @@
     
     
       
-        <title>Task 7 – socat Practical Use Cases - LTRCLD-1199 – Containers on IOS-XE</title>
+        <title>Task 7 – socat (SOcket CAT) Practical Use Cases - LTRCLD-1199 – Containers on IOS-XE</title>
       
     
     
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Task 7 – socat Practical Use Cases
+              Task 7 – socat (SOcket CAT) Practical Use Cases
             
           </span>
         </div>
@@ -312,7 +312,7 @@
   <span class="md-ellipsis">
     
   
-    Task 1 – App-Hosting Deployment (Manual)
+    Task 1 – App-Hosting Manual Deployment on IOS-XE
   
 
     
@@ -340,7 +340,7 @@
   <span class="md-ellipsis">
     
   
-    Task 2 – App-Hosting Automation with Terraform
+    Task 2 – App-Hosting Automated Deployment with Terraform
   
 
     
@@ -368,7 +368,7 @@
   <span class="md-ellipsis">
     
   
-    Task 3 – Kubernetes App Hosting using Virtual Kubelet
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
   
 
     
@@ -396,7 +396,7 @@
   <span class="md-ellipsis">
     
   
-    Task 4 – Basic Network Validation
+    Task 4 – Network Validation
   
 
     
@@ -489,7 +489,7 @@
   <span class="md-ellipsis">
     
   
-    Task 7 – socat Practical Use Cases
+    Task 7 – socat (SOcket CAT) Practical Use Cases
   
 
     
@@ -507,7 +507,7 @@
   <span class="md-ellipsis">
     
   
-    Task 7 – socat Practical Use Cases
+    Task 7 – socat (SOcket CAT) Practical Use Cases
   
 
     
@@ -987,7 +987,7 @@
   <span class="md-ellipsis">
     
   
-    Task 8 – kcat (Kafka CAT)
+    Task 8 – kcat (Kafka CAT) Connectivity & Message Flow
   
 
     
@@ -1099,7 +1099,7 @@
   <span class="md-ellipsis">
     
   
-    Task 12 – Telegraf Monitoring
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
   
 
     
@@ -1607,8 +1607,8 @@
 <li><a href="#use-case-5-inline-traffic-inspection-using-two-router-containers">Use Case 5: Inline Traffic Inspection Using Two Router Containers</a></li>
 </ul>
 <hr />
-<p><code>socat</code> is a versatile data-transfer utility that can relay traffic between sockets, files, and processes.<br />
-In this lab, <code>socat</code> is used to validate connectivity, simulate services, proxy traffic, generate traffic, transfer files, and inspect application flows running inside containers.</p>
+<p><code>socat</code> is a versatile data-transfer utility that can relay traffic between sockets, files, and processes.</p>
+<p>In this lab, <code>socat</code> is used to validate connectivity, simulate services, proxy traffic, generate traffic, transfer files, and inspect application flows running inside containers.</p>
 <p>Here’s a <strong>clean, lab-ready section</strong> you can drop <strong>immediately after the intro</strong>.
 It’s written in the same neutral, instructional tone you’ve been using elsewhere.</p>
 <hr />
@@ -1639,7 +1639,7 @@ Each container is deployed on a separate <strong>Catalyst 8000v (C8Kv)</strong> 
 </table>
 <hr />
 <h3 id="step-1-ssh-to-both-the-routers-directly-from-the-pc">Step 1: SSH to both the Routers directly from the PC<a class="headerlink" href="#step-1-ssh-to-both-the-routers-directly-from-the-pc" title="Permanent link">&para;</a></h3>
-<p>Connect to the cat8kv-task-1 and cat8kv-task-2 hosting the swiss knife container.</p>
+<p>Connect to the <strong>cat8kv-task-1</strong> and <strong>cat8kv-task-2</strong> hosting the swiss knife container.</p>
 <h3 id="step-2-access-the-swiss-knife-container">Step 2: Access the Swiss-Knife Container<a class="headerlink" href="#step-2-access-the-swiss-knife-container" title="Permanent link">&para;</a></h3>
 <p>Once logged into the router CLI, connect to the container shell:</p>
 <pre><code class="language-bash">app-hosting connect appid swiss_knife session /bin/bash
@@ -1667,8 +1667,8 @@ Each container is deployed on a separate <strong>Catalyst 8000v (C8Kv)</strong> 
 <hr />
 <h2 id="use-case-2-tcp-port-forwarding-proxy-verbosedebug">Use Case 2: TCP Port Forwarding (Proxy) + Verbose/Debug<a class="headerlink" href="#use-case-2-tcp-port-forwarding-proxy-verbosedebug" title="Permanent link">&para;</a></h2>
 <h3 id="objective_1">Objective<a class="headerlink" href="#objective_1" title="Permanent link">&para;</a></h3>
-<p>Forward traffic from a local TCP port to a remote service while logging connection and payload details. \
-We will SSH on port 9000 to the container's IP which will be redirected on port 22 to the router (cat8Kv-task-1) IP</p>
+<p>Forward traffic from a local TCP port to a remote service while logging connection and payload details.</p>
+<p>We will SSH on port 9000 to the container's IP which will be redirected on port 22 to the router (cat8Kv-task-1) IP.</p>
 <h3 id="command-cat8kv-task-1-container">Command (Cat8Kv-task-1 &gt; container)<a class="headerlink" href="#command-cat8kv-task-1-container" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">socat -d -d -v TCP-LISTEN:9000,reuseaddr,fork TCP:198.18.100.1:22
 </code></pre>
@@ -1678,7 +1678,7 @@ We will SSH on port 9000 to the container's IP which will be redirected on port 
 <h3 id="test-lab-ubuntu">Test (Lab Ubuntu)<a class="headerlink" href="#test-lab-ubuntu" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">ssh -p 9000 admin@198.18.100.5
 </code></pre>
-<p>Give router's password</p>
+<p>Provide the router's password when prompted.</p>
 <h3 id="expected-result_1">Expected Result<a class="headerlink" href="#expected-result_1" title="Permanent link">&para;</a></h3>
 <p>Traffic received on port <code>9000</code> on the swiss_knife is forwarded to the cat8Kv-task-1 router on port 22, while <code>socat</code> logs connection lifecycle and payloads.</p>
 <hr />

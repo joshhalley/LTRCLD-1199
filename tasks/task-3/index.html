@@ -29,7 +29,7 @@
     
     
       
-        <title>Task 3 – Kubernetes App Hosting using Virtual Kubelet - LTRCLD-1199 – Containers on IOS-XE</title>
+        <title>Task 3 – Kubernetes App-Hosting using Virtual Kubelet - LTRCLD-1199 – Containers on IOS-XE</title>
       
     
     
@@ -106,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Task 3 – Kubernetes App Hosting using Virtual Kubelet
+              Task 3 – Kubernetes App-Hosting using Virtual Kubelet
             
           </span>
         </div>
@@ -312,7 +312,7 @@
   <span class="md-ellipsis">
     
   
-    Task 1 – App-Hosting Deployment (Manual)
+    Task 1 – App-Hosting Manual Deployment on IOS-XE
   
 
     
@@ -340,7 +340,7 @@
   <span class="md-ellipsis">
     
   
-    Task 2 – App-Hosting Automation with Terraform
+    Task 2 – App-Hosting Automated Deployment with Terraform
   
 
     
@@ -377,7 +377,7 @@
   <span class="md-ellipsis">
     
   
-    Task 3 – Kubernetes App Hosting using Virtual Kubelet
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
   
 
     
@@ -395,7 +395,7 @@
   <span class="md-ellipsis">
     
   
-    Task 3 – Kubernetes App Hosting using Virtual Kubelet
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
   
 
     
@@ -637,10 +637,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
+  <a href="#key-takeways" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Summary
+        Key Takeways
       
     </span>
   </a>
@@ -670,7 +670,7 @@
   <span class="md-ellipsis">
     
   
-    Task 4 – Basic Network Validation
+    Task 4 – Network Validation
   
 
     
@@ -754,7 +754,7 @@
   <span class="md-ellipsis">
     
   
-    Task 7 – socat Practical Use Cases
+    Task 7 – socat (SOcket CAT) Practical Use Cases
   
 
     
@@ -782,7 +782,7 @@
   <span class="md-ellipsis">
     
   
-    Task 8 – kcat (Kafka CAT)
+    Task 8 – kcat (Kafka CAT) Connectivity & Message Flow
   
 
     
@@ -894,7 +894,7 @@
   <span class="md-ellipsis">
     
   
-    Task 12 – Telegraf Monitoring
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
   
 
     
@@ -1158,10 +1158,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
+  <a href="#key-takeways" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Summary
+        Key Takeways
       
     </span>
   </a>
@@ -1186,11 +1186,12 @@
 
 
 <h1 id="task-3-kubernetes-app-hosting-using-virtual-kubelet">Task 3: Kubernetes App Hosting using Virtual Kubelet<a class="headerlink" href="#task-3-kubernetes-app-hosting-using-virtual-kubelet" title="Permanent link">&para;</a></h1>
-<p><a href="../../">⬅ Back to Main Menu</a></p>
+<p><a href="../../">⬅️ Back to Main Menu</a></p>
 <hr />
 <h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h2>
-<p>In this task, you will deploy a <strong>containerized application on a Cisco Catalyst 8000V (C8Kv)</strong> router using <strong>Kubernetes</strong> and <strong>Cisco Virtual Kubelet</strong>.</p>
-<p>The Kubernetes cluster is <strong>already running</strong>. You will:</p>
+<p>In this task, you will deploy a <strong>containerized application on a Cisco Catalyst 8000V (C8Kv)</strong> router using <strong>Kubernetes</strong> and the <strong>Cisco Virtual Kubelet Provider</strong>.</p>
+<p>The Kubernetes cluster is <strong>already running</strong>.</p>
+<p>You will:</p>
 <ul>
 <li>Validate Kubernetes readiness</li>
 <li>Prepare the router for IOx app-hosting</li>
@@ -1221,6 +1222,7 @@
 <pre><code class="language-text">NAME         STATUS   ROLES           AGE   VERSION
 ubuntu-lab   Ready    control-plane   38h   v1.34.3+k3s1
 </code></pre>
+<p><strong>Note:</strong> The cluster Kubeconfig is available under <code>~/.kube/config</code></p>
 <hr />
 <h2 id="2-container-registry-verification">2. Container Registry Verification<a class="headerlink" href="#2-container-registry-verification" title="Permanent link">&para;</a></h2>
 <p>Confirm required repositories exist:</p>
@@ -1262,6 +1264,7 @@ end
 <hr />
 <h3 id="42-save-as-ios-xe-tar">4.2 Save as IOS XE TAR<a class="headerlink" href="#42-save-as-ios-xe-tar" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">sudo docker save containers.dmz.cisco.com:5000/hello-app:latest -o hello-app.iosxe.tar
+
 sudo chmod 666 hello-app.iosxe.tar
 </code></pre>
 <hr />
@@ -1452,7 +1455,7 @@ iox-xe-hello-app-pod                     0/1     ContainerCreating   0          
 iox-xe-hello-app-pod                     0/1     ContainerCreating   0          34s   198.18.102.175   cat8kv-node   &lt;none&gt;           &lt;none&gt;
 
 </code></pre>
-<p>Expected output once container is deployed</p>
+<p>Expected output after successful deployment</p>
 <pre><code class="language-text">dcloud@ubuntu-lab:~$ kubectl get pods -o wide -w
 NAME                                     READY   STATUS    RESTARTS   AGE     IP               NODE          NOMINATED NODE   READINESS GATES
 cisco-virtual-kubelet-7b58bd86db-mvnr2   1/1     Running   0          8m9s    10.0.0.61        ubuntu-lab    &lt;none&gt;           &lt;none&gt;
@@ -1469,14 +1472,16 @@ Version: 1.0.0
 Hostname: cvkxxxxxxxxxxxxxxxx
 </code></pre>
 <hr />
-<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
-<p>✔ Pulled and packaged <code>hello-app</code> as an IOS XE TAR /
-✔ Uploaded the application TAR to router flash /
-✔ Deployed Cisco Virtual Kubelet into Kubernetes /
-✔ Scheduled a pod to the C8Kv node (<code>cat8kv-node</code>) /
-✔ Validated application reachability from the lab server</p>
+<h2 id="key-takeways">Key Takeways<a class="headerlink" href="#key-takeways" title="Permanent link">&para;</a></h2>
+<ul>
+<li>✅  Pulled and packaged <code>hello-app</code> as an IOS XE TAR</li>
+<li>✅  Uploaded the application TAR to router flash</li>
+<li>✅  Deployed Cisco Virtual Kubelet into Kubernetes</li>
+<li>✅  Scheduled a pod to the C8Kv node (<code>cat8kv-node</code>)</li>
+<li>✅  Validated application reachability from the lab server</li>
+</ul>
 <hr />
-<p><a href="../../">⬅ Back to Main Menu</a></p>
+<p><a href="../../">⬅️ Return to Main Menu</a></p>
 <p>```</p>
 
 

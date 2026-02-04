@@ -312,7 +312,7 @@
   <span class="md-ellipsis">
     
   
-    Task 1 – App-Hosting Deployment (Manual)
+    Task 1 – App-Hosting Manual Deployment on IOS-XE
   
 
     
@@ -340,7 +340,7 @@
   <span class="md-ellipsis">
     
   
-    Task 2 – App-Hosting Automation with Terraform
+    Task 2 – App-Hosting Automated Deployment with Terraform
   
 
     
@@ -368,7 +368,7 @@
   <span class="md-ellipsis">
     
   
-    Task 3 – Kubernetes App Hosting using Virtual Kubelet
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
   
 
     
@@ -396,7 +396,7 @@
   <span class="md-ellipsis">
     
   
-    Task 4 – Basic Network Validation
+    Task 4 – Network Validation
   
 
     
@@ -480,7 +480,7 @@
   <span class="md-ellipsis">
     
   
-    Task 7 – socat Practical Use Cases
+    Task 7 – socat (SOcket CAT) Practical Use Cases
   
 
     
@@ -508,7 +508,7 @@
   <span class="md-ellipsis">
     
   
-    Task 8 – kcat (Kafka CAT)
+    Task 8 – kcat (Kafka CAT) Connectivity & Message Flow
   
 
     
@@ -861,7 +861,7 @@
   <span class="md-ellipsis">
     
   
-    Task 12 – Telegraf Monitoring
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
   
 
     
@@ -1135,8 +1135,8 @@
 <li><a href="#what-you-have-demonstrated">What You Have Demonstrated</a></li>
 </ul>
 <hr />
-<p>In this task, you will use <strong>Wireshark running inside a container</strong> to perform <strong>live packet capture</strong> from a remote router interface using <strong>ERSPAN</strong>.
-This demonstrates how App-Hosting on Cisco edge devices can be used for <strong>real-time traffic visibility</strong> without deploying external probes.</p>
+<p>In this task, you will use <strong>Wireshark running inside a container</strong> to perform <strong>live packet capture</strong> from a remote router interface using <strong>ERSPAN</strong>.</p>
+<p>This demonstrates how App-Hosting on Cisco edge devices can be used for <strong>real-time traffic visibility</strong> without deploying external probes.</p>
 <hr />
 <h2 id="task-overview">Task Overview<a class="headerlink" href="#task-overview" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1167,24 +1167,20 @@ By default, it does not have the required Linux capabilities inside the containe
 <h3 id="explanation">Explanation<a class="headerlink" href="#explanation" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
-<p><code>sudo -i</code>
-  Switches to root inside the container.</p>
+<p><code>sudo -i</code> # Switches to root inside the container.</p>
 </li>
 <li>
-<p><code>which dumpcap</code>
-  Confirms the location of the packet capture binary.</p>
+<p><code>which dumpcap</code> # Confirms the location of the packet capture binary.</p>
 </li>
 <li>
-<p><code>setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap</code>
-  Grants packet capture permissions without running Wireshark as root.</p>
+<p><code>setcap cap_net_raw,cap_net_admin=eip /usr/bin/dumpcap</code> # Grants packet capture permissions without running Wireshark as root.</p>
 </li>
 <li>
-<p><code>getcap /usr/bin/dumpcap</code>
-  Verifies that the permissions are applied correctly.</p>
+<p><code>getcap /usr/bin/dumpcap</code> # Verifies that the permissions are applied correctly.</p>
 </li>
 </ul>
 <p>Expected output:</p>
-<pre><code>/usr/bin/dumpcap = cap_net_admin,cap_net_raw+eip
+<pre><code class="language-bash">/usr/bin/dumpcap = cap_net_admin,cap_net_raw+eip
 </code></pre>
 <hr />
 <h2 id="step-3-restart-the-wireshark-application">Step 3 – Restart the Wireshark Application<a class="headerlink" href="#step-3-restart-the-wireshark-application" title="Permanent link">&para;</a></h2>
@@ -1266,10 +1262,12 @@ By default, it does not have the required Linux capabilities inside the containe
 <p>This confirms successful <strong>remote live packet capture</strong> using ERSPAN.</p>
 <hr />
 <h2 id="what-you-have-demonstrated">What You Have Demonstrated<a class="headerlink" href="#what-you-have-demonstrated" title="Permanent link">&para;</a></h2>
-<p>✔ Wireshark running as a container on a Cisco edge device
-✔ Secure, browser-based packet analysis
-✔ ERSPAN-based traffic mirroring
-✔ Live troubleshooting without external probes</p>
+<ul>
+<li>✅ Wireshark running as a container on a Cisco edge device</li>
+<li>✅ Secure, browser-based packet analysis</li>
+<li>✅ ERSPAN-based traffic mirroring</li>
+<li>✅ Live troubleshooting without external probes</li>
+</ul>
 <p>This approach is ideal for <strong>on-demand troubleshooting</strong>, <strong>remote operations</strong>, and <strong>lab environments</strong> where deploying physical taps or SPAN ports is not feasible.</p>
 <hr />
 <p><a href="../../">⬅️ Return to Main Menu</a></p>

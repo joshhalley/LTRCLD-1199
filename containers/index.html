@@ -414,7 +414,7 @@
   <span class="md-ellipsis">
     
   
-    Task 1 – App-Hosting Deployment (Manual)
+    Task 1 – App-Hosting Manual Deployment on IOS-XE
   
 
     
@@ -442,7 +442,7 @@
   <span class="md-ellipsis">
     
   
-    Task 2 – App-Hosting Automation with Terraform
+    Task 2 – App-Hosting Automated Deployment with Terraform
   
 
     
@@ -470,7 +470,7 @@
   <span class="md-ellipsis">
     
   
-    Task 3 – Kubernetes App Hosting using Virtual Kubelet
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
   
 
     
@@ -498,7 +498,7 @@
   <span class="md-ellipsis">
     
   
-    Task 4 – Basic Network Validation
+    Task 4 – Network Validation
   
 
     
@@ -582,7 +582,7 @@
   <span class="md-ellipsis">
     
   
-    Task 7 – socat Practical Use Cases
+    Task 7 – socat (SOcket CAT) Practical Use Cases
   
 
     
@@ -610,7 +610,7 @@
   <span class="md-ellipsis">
     
   
-    Task 8 – kcat (Kafka CAT)
+    Task 8 – kcat (Kafka CAT) Connectivity & Message Flow
   
 
     
@@ -722,7 +722,7 @@
   <span class="md-ellipsis">
     
   
-    Task 12 – Telegraf Monitoring
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
   
 
     
@@ -849,8 +849,8 @@
 
 <h2 id="container-details-lab-appendix">📦 Container Details (Lab Appendix)<a class="headerlink" href="#container-details-lab-appendix" title="Permanent link">&para;</a></h2>
 <h3 id="swiss-knife-container-primary-troubleshooting-toolkit">🔧 Swiss-Knife Container (Primary Troubleshooting Toolkit)<a class="headerlink" href="#swiss-knife-container-primary-troubleshooting-toolkit" title="Permanent link">&para;</a></h3>
-<p>The <strong>Swiss-Knife container</strong> is the <strong>core operational tool</strong> in this lab.
-It bundles a wide range of commonly used CLI utilities into a <strong>single lightweight Alpine-based image</strong>, allowing engineers to perform most troubleshooting tasks <strong>without deploying multiple containers</strong>.</p>
+<p>The <strong>Swiss-Knife container</strong> is the <strong>core operational tool</strong> in this lab.</p>
+<p>It bundles a wide range of commonly used CLI utilities into a <strong>single lightweight Alpine-based image</strong>, allowing engineers to perform most troubleshooting tasks <strong>without deploying multiple containers</strong>.</p>
 <p><strong>Typical use cases</strong></p>
 <ul>
 <li>Connectivity and reachability validation</li>
@@ -873,14 +873,16 @@ It bundles a wide range of commonly used CLI utilities into a <strong>single lig
 <blockquote>
 <p><strong>Design philosophy:</strong> One container, many tools – optimized for <strong>fast troubleshooting and reduced operational overhead</strong>.</p>
 </blockquote>
-<p>In our lab this contianer is deployed on 2 routers 
-Cat8Kv-task-1 with IP 198.18.100.5
-Cat8Kv-task-2 with IP 198.18.101.5</p>
+<p>In our lab the contianer is deployed on two routers:</p>
+<ul>
+<li>Cat8Kv-task-1 with IP 198.18.100.5</li>
+<li>Cat8Kv-task-2 with IP 198.18.101.5</li>
+</ul>
 <hr />
 <h3 id="wireshark-container-deep-packet-inspection">🦈 Wireshark Container (Deep Packet Inspection)<a class="headerlink" href="#wireshark-container-deep-packet-inspection" title="Permanent link">&para;</a></h3>
 <p><img alt="Image" src="../images/wireshark.jpg" /></p>
-<p>The <strong>Wireshark container</strong> is used for <strong>advanced packet-level visibility</strong>.
-It is deployed as a <strong>dedicated analysis tool</strong>, receiving mirrored traffic (e.g. ERSPAN) from the router and decoding it using Wireshark’s rich protocol dissectors.</p>
+<p>The <strong>Wireshark container</strong> is used for <strong>advanced packet-level visibility</strong>.</p>
+<p>It is deployed as a <strong>dedicated analysis tool</strong>, receiving mirrored traffic (e.g. ERSPAN) from the router and decoding it using Wireshark’s rich protocol dissectors.</p>
 <p><strong>Typical use cases</strong></p>
 <ul>
 <li>ERSPAN-based traffic analysis</li>
@@ -890,8 +892,10 @@ It is deployed as a <strong>dedicated analysis tool</strong>, receiving mirrored
 <blockquote>
 <p><strong>Why separate?</strong> Packet analysis requires elevated capabilities and a focused runtime. Keeping Wireshark isolated avoids unnecessary overhead in the Swiss-Knife container.</p>
 </blockquote>
-<p>In our lab this contianer is deployed on 1 router
-Cat8Kv-task-2 with IP 198.18.101.6</p>
+<p>In our lab this contianer is deployed on one router:</p>
+<ul>
+<li>Cat8Kv-task-2 with IP 198.18.101.6</li>
+</ul>
 <hr />
 <h3 id="mrtg-container-snmp-based-monitoring">📈 MRTG Container (SNMP-Based Monitoring)<a class="headerlink" href="#mrtg-container-snmp-based-monitoring" title="Permanent link">&para;</a></h3>
 <p><img alt="Image" src="https://oss.oetiker.ch/mrtg/192.33.92.249_fa4_1-day.png" /></p>
@@ -912,8 +916,10 @@ Cat8Kv-task-2 with IP 198.18.101.6</p>
 <blockquote>
 <p><strong>Note:</strong> MRTG is intentionally kept separate from Telegraf-based telemetry to <strong>demonstrate different monitoring models</strong> side-by-side.</p>
 </blockquote>
-<p>In our lab this contianer is deployed on 1 router
-Cat8Kv-task-1 with IP 198.18.100.6</p>
+<p>In our lab this contianer is deployed on one router:</p>
+<ul>
+<li>Cat8Kv-task-1 with IP 198.18.100.6</li>
+</ul>
 <hr />
 <h3 id="summary">🧩 Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
 <table>

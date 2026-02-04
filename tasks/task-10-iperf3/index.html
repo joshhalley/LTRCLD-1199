@@ -312,7 +312,7 @@
   <span class="md-ellipsis">
     
   
-    Task 1 – App-Hosting Deployment (Manual)
+    Task 1 – App-Hosting Manual Deployment on IOS-XE
   
 
     
@@ -340,7 +340,7 @@
   <span class="md-ellipsis">
     
   
-    Task 2 – App-Hosting Automation with Terraform
+    Task 2 – App-Hosting Automated Deployment with Terraform
   
 
     
@@ -368,7 +368,7 @@
   <span class="md-ellipsis">
     
   
-    Task 3 – Kubernetes App Hosting using Virtual Kubelet
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
   
 
     
@@ -396,7 +396,7 @@
   <span class="md-ellipsis">
     
   
-    Task 4 – Basic Network Validation
+    Task 4 – Network Validation
   
 
     
@@ -480,7 +480,7 @@
   <span class="md-ellipsis">
     
   
-    Task 7 – socat Practical Use Cases
+    Task 7 – socat (SOcket CAT) Practical Use Cases
   
 
     
@@ -508,7 +508,7 @@
   <span class="md-ellipsis">
     
   
-    Task 8 – kcat (Kafka CAT)
+    Task 8 – kcat (Kafka CAT) Connectivity & Message Flow
   
 
     
@@ -679,10 +679,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#31-connect-to-the-swiss-knife-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Connect to the Swiss-Knife container:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-basic-tcp-throughput-client-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Basic TCP throughput (client → server):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#what-to-verify_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         What to verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-reverse-direction-throughput-server-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Reverse direction throughput (server → client):
       
     </span>
   </a>
@@ -701,10 +734,43 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#34-parallel-tcp-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Parallel TCP streams:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#what-to-verify_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         What to verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-short-duration-tcp-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Short-duration TCP test:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-long-duration-tcp-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Long-duration TCP test:
       
     </span>
   </a>
@@ -740,10 +806,54 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#41-udp-test-at-100-mbps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 UDP test at 100 Mbps:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#what-to-verify_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         What to verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-udp-test-at-50-mbps-with-1400-byte-packets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 UDP test at 50 Mbps with 1400-byte packets:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-udp-test-at-50-mbps-with-1470-byte-packets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 UDP test at 50 Mbps with 1470-byte packets:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-udp-test-at-50-mbps-with-1510-byte-packets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 UDP test at 50 Mbps with 1510-byte packets:
       
     </span>
   </a>
@@ -777,6 +887,39 @@
   
     <nav class="md-nav" aria-label="5. JSON Output and Automation">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-run-iperf3-with-json-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Run iPerf3 with JSON output:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-short-duration-json-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Short-duration JSON output:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-extract-received-throughput-using-jq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Extract received throughput using jq:
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#what-to-verify_7" class="md-nav__link">
@@ -989,7 +1132,7 @@
   <span class="md-ellipsis">
     
   
-    Task 12 – Telegraf Monitoring
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
   
 
     
@@ -1099,10 +1242,43 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#31-connect-to-the-swiss-knife-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Connect to the Swiss-Knife container:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-basic-tcp-throughput-client-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Basic TCP throughput (client → server):
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#what-to-verify_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         What to verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-reverse-direction-throughput-server-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Reverse direction throughput (server → client):
       
     </span>
   </a>
@@ -1121,10 +1297,43 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#34-parallel-tcp-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Parallel TCP streams:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#what-to-verify_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         What to verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-short-duration-tcp-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Short-duration TCP test:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-long-duration-tcp-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Long-duration TCP test:
       
     </span>
   </a>
@@ -1160,10 +1369,54 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#41-udp-test-at-100-mbps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 UDP test at 100 Mbps:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#what-to-verify_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         What to verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-udp-test-at-50-mbps-with-1400-byte-packets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 UDP test at 50 Mbps with 1400-byte packets:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-udp-test-at-50-mbps-with-1470-byte-packets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 UDP test at 50 Mbps with 1470-byte packets:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-udp-test-at-50-mbps-with-1510-byte-packets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 UDP test at 50 Mbps with 1510-byte packets:
       
     </span>
   </a>
@@ -1197,6 +1450,39 @@
   
     <nav class="md-nav" aria-label="5. JSON Output and Automation">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-run-iperf3-with-json-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Run iPerf3 with JSON output:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-short-duration-json-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Short-duration JSON output:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-extract-received-throughput-using-jq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Extract received throughput using jq:
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#what-to-verify_7" class="md-nav__link">
@@ -1420,9 +1706,7 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>Update the IP address if your server-side container uses a different value.</p>
-</blockquote>
+<p><strong>Note:</strong> Update the IP address if your server-side container uses a different value.</p>
 <hr />
 <h2 id="2-start-iperf3-server-cat8kv-task-2">2. Start iPerf3 Server (cat8Kv-task-2)<a class="headerlink" href="#2-start-iperf3-server-cat8kv-task-2" title="Permanent link">&para;</a></h2>
 <p>2.1 Connect to the Swiss-Knife container:</p>
@@ -1435,20 +1719,16 @@
 <ul>
 <li>Output shows: <code>Server listening on 5201</code></li>
 <li>Server displays connection statistics when tests run</li>
-<li>
-<p>If no connection is seen:</p>
-</li>
-<li>
-<p>Verify IP reachability between containers</p>
-</li>
+<li>If no connection is seen:</li>
+<li>Verify IP reachability between containers</li>
 <li>Confirm no ACL, NAT, or firewall blocks TCP/5201</li>
 </ul>
 <hr />
 <h2 id="3-tcp-throughput-tests-cat8kv-task-1">3. TCP Throughput Tests (cat8Kv-task-1)<a class="headerlink" href="#3-tcp-throughput-tests-cat8kv-task-1" title="Permanent link">&para;</a></h2>
-<p>3.1 Connect to the Swiss-Knife container:</p>
+<h3 id="31-connect-to-the-swiss-knife-container">3.1 Connect to the Swiss-Knife container:<a class="headerlink" href="#31-connect-to-the-swiss-knife-container" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">app-hosting connect appid swiss_knife session /bin/bash
 </code></pre>
-<p>3.2 Basic TCP throughput (client → server):</p>
+<h3 id="32-basic-tcp-throughput-client-server">3.2 Basic TCP throughput (client → server):<a class="headerlink" href="#32-basic-tcp-throughput-client-server" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5
 </code></pre>
 <h3 id="what-to-verify_1">What to verify<a class="headerlink" href="#what-to-verify_1" title="Permanent link">&para;</a></h3>
@@ -1457,7 +1737,7 @@
 <li>This represents effective end-to-end performance</li>
 </ul>
 <hr />
-<p>3.3 Reverse direction throughput (server → client):</p>
+<h3 id="33-reverse-direction-throughput-server-client">3.3 Reverse direction throughput (server → client):<a class="headerlink" href="#33-reverse-direction-throughput-server-client" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5 -R
 </code></pre>
 <h3 id="what-to-verify_2">What to verify<a class="headerlink" href="#what-to-verify_2" title="Permanent link">&para;</a></h3>
@@ -1473,7 +1753,7 @@
 <li>Asymmetric routing</li>
 </ul>
 <hr />
-<p>3.4 Parallel TCP streams:</p>
+<h3 id="34-parallel-tcp-streams">3.4 Parallel TCP streams:<a class="headerlink" href="#34-parallel-tcp-streams" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5 -P 5
 </code></pre>
 <h3 id="what-to-verify_3">What to verify<a class="headerlink" href="#what-to-verify_3" title="Permanent link">&para;</a></h3>
@@ -1488,27 +1768,23 @@
 <li>Check congestion or drops in the path</li>
 </ul>
 <hr />
-<p>3.5 Short-duration TCP test:</p>
+<h3 id="35-short-duration-tcp-test">3.5 Short-duration TCP test:<a class="headerlink" href="#35-short-duration-tcp-test" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5 -t 5
 </code></pre>
-<p>3.6 Long-duration TCP test:</p>
+<h3 id="36-long-duration-tcp-test">3.6 Long-duration TCP test:<a class="headerlink" href="#36-long-duration-tcp-test" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5 -t 60
 </code></pre>
 <h3 id="what-to-verify_4">What to verify<a class="headerlink" href="#what-to-verify_4" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Throughput consistency over time</li>
-<li>
-<p>Degradation over long runs may indicate:</p>
-</li>
-<li>
-<p>Traffic shaping</p>
-</li>
+<li>Degradation over long runs may indicate:</li>
+<li>Traffic shaping</li>
 <li>Buffer exhaustion</li>
 <li>Sustained CPU load</li>
 </ul>
 <hr />
 <h2 id="4-udp-performance-and-loss-tests">4. UDP Performance and Loss Tests<a class="headerlink" href="#4-udp-performance-and-loss-tests" title="Permanent link">&para;</a></h2>
-<p>4.1 UDP test at 100 Mbps:</p>
+<h3 id="41-udp-test-at-100-mbps">4.1 UDP test at 100 Mbps:<a class="headerlink" href="#41-udp-test-at-100-mbps" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5 -u -b 100M
 </code></pre>
 <h3 id="what-to-verify_5">What to verify<a class="headerlink" href="#what-to-verify_5" title="Permanent link">&para;</a></h3>
@@ -1517,13 +1793,13 @@
 <li>Observe jitter and packet loss percentage</li>
 </ul>
 <hr />
-<p>4.2 UDP test at 50 Mbps with 1400-byte packets:</p>
+<h3 id="42-udp-test-at-50-mbps-with-1400-byte-packets">4.2 UDP test at 50 Mbps with 1400-byte packets:<a class="headerlink" href="#42-udp-test-at-50-mbps-with-1400-byte-packets" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5 -u -b 50M -l 1400
 </code></pre>
-<p>4.3 UDP test at 50 Mbps with 1470-byte packets:</p>
+<h3 id="43-udp-test-at-50-mbps-with-1470-byte-packets">4.3 UDP test at 50 Mbps with 1470-byte packets:<a class="headerlink" href="#43-udp-test-at-50-mbps-with-1470-byte-packets" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5 -u -b 50M -l 1470
 </code></pre>
-<p>4.4 UDP test at 50 Mbps with 1510-byte packets:</p>
+<h3 id="44-udp-test-at-50-mbps-with-1510-byte-packets">4.4 UDP test at 50 Mbps with 1510-byte packets:<a class="headerlink" href="#44-udp-test-at-50-mbps-with-1510-byte-packets" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5 -u -b 50M -l 1510
 </code></pre>
 <h3 id="what-to-verify_6">What to verify<a class="headerlink" href="#what-to-verify_6" title="Permanent link">&para;</a></h3>
@@ -1533,13 +1809,13 @@
 </ul>
 <hr />
 <h2 id="5-json-output-and-automation">5. JSON Output and Automation<a class="headerlink" href="#5-json-output-and-automation" title="Permanent link">&para;</a></h2>
-<p>5.1 Run iPerf3 with JSON output:</p>
+<h3 id="51-run-iperf3-with-json-output">5.1 Run iPerf3 with JSON output:<a class="headerlink" href="#51-run-iperf3-with-json-output" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5 -J
 </code></pre>
-<p>5.2 Short-duration JSON output:</p>
+<h3 id="52-short-duration-json-output">5.2 Short-duration JSON output:<a class="headerlink" href="#52-short-duration-json-output" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5 -t 5 -J
 </code></pre>
-<p>5.3 Extract received throughput using <code>jq</code>:</p>
+<h3 id="53-extract-received-throughput-using-jq">5.3 Extract received throughput using <code>jq</code>:<a class="headerlink" href="#53-extract-received-throughput-using-jq" title="Permanent link">&para;</a></h3>
 <pre><code class="language-bash">iperf3 -c 198.18.101.5 -t 5 -J | jq '.end.sum_received.bits_per_second'
 </code></pre>
 <h3 id="what-to-verify_7">What to verify<a class="headerlink" href="#what-to-verify_7" title="Permanent link">&para;</a></h3>

@@ -27,7 +27,7 @@
     
     
       
-        <title>Task 12 – Telegraf Monitoring - LTRCLD-1199 – Containers on IOS-XE</title>
+        <title>Task 12 – Telegraf Monitoring with Prometheus Exporter - LTRCLD-1199 – Containers on IOS-XE</title>
       
     
     
@@ -104,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Task 12 – Telegraf Monitoring
+              Task 12 – Telegraf Monitoring with Prometheus Exporter
             
           </span>
         </div>
@@ -310,7 +310,7 @@
   <span class="md-ellipsis">
     
   
-    Task 1 – App-Hosting Deployment (Manual)
+    Task 1 – App-Hosting Manual Deployment on IOS-XE
   
 
     
@@ -338,7 +338,7 @@
   <span class="md-ellipsis">
     
   
-    Task 2 – App-Hosting Automation with Terraform
+    Task 2 – App-Hosting Automated Deployment with Terraform
   
 
     
@@ -366,7 +366,7 @@
   <span class="md-ellipsis">
     
   
-    Task 3 – Kubernetes App Hosting using Virtual Kubelet
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
   
 
     
@@ -394,7 +394,7 @@
   <span class="md-ellipsis">
     
   
-    Task 4 – Basic Network Validation
+    Task 4 – Network Validation
   
 
     
@@ -478,7 +478,7 @@
   <span class="md-ellipsis">
     
   
-    Task 7 – socat Practical Use Cases
+    Task 7 – socat (SOcket CAT) Practical Use Cases
   
 
     
@@ -506,7 +506,7 @@
   <span class="md-ellipsis">
     
   
-    Task 8 – kcat (Kafka CAT)
+    Task 8 – kcat (Kafka CAT) Connectivity & Message Flow
   
 
     
@@ -627,7 +627,7 @@
   <span class="md-ellipsis">
     
   
-    Task 12 – Telegraf Monitoring
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
   
 
     
@@ -645,7 +645,7 @@
   <span class="md-ellipsis">
     
   
-    Task 12 – Telegraf Monitoring
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
   
 
     
@@ -864,7 +864,7 @@
 
 
 <h1 id="task-12-telegraf-monitoring-with-prometheus-exporter">Task 12: Telegraf Monitoring with Prometheus Exporter<a class="headerlink" href="#task-12-telegraf-monitoring-with-prometheus-exporter" title="Permanent link">&para;</a></h1>
-<p><a href="../../">⬅ Back to Main Menu</a></p>
+<p><a href="../../">⬅️ Back to Main Menu</a></p>
 <hr />
 <h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h2>
 <p>In this task, you deploy and extend a <strong>Telegraf-based monitoring probe</strong> running inside the swiss-knife container to demonstrate how <strong>modern telemetry pipelines</strong> can be built on edge devices.</p>
@@ -903,28 +903,24 @@
 <h2 id="lab-architecture">Lab Architecture<a class="headerlink" href="#lab-architecture" title="Permanent link">&para;</a></h2>
 <h3 id="logical-components">Logical Components<a class="headerlink" href="#logical-components" title="Permanent link">&para;</a></h3>
 <ul>
-<li>
-<p><strong>Telegraf Container (Swiss-Knife)</strong></p>
-</li>
-<li>
-<p>Collects container metrics</p>
-</li>
+<li><strong>Telegraf Container (Swiss-Knife)</strong></li>
+<li>Collects container metrics</li>
 <li>Executes ICMP and HTTP probes</li>
 <li>Polls routers using SNMP</li>
-<li>Exposes <code>/metrics</code> on port <code>9273</code></li>
+<li>
+<p>Exposes <code>/metrics</code> on port <code>9273</code></p>
+</li>
 <li>
 <p><strong>Mgmt Ubuntu 1 Node</strong></p>
 </li>
+<li>Prometheus (scrapes metrics)</li>
 <li>
-<p>Prometheus (scrapes metrics)</p>
+<p>Grafana (visualization)</p>
 </li>
-<li>Grafana (visualization)</li>
 <li>
 <p><strong>External Targets</strong></p>
 </li>
-<li>
-<p>Public IPs (ICMP)</p>
-</li>
+<li>Public IPs (ICMP)</li>
 <li>Public / internal HTTP services</li>
 <li>IOS-XE routers (SNMP)</li>
 </ul>
@@ -950,8 +946,7 @@ app-hosting connect appid swiss_knife session /bin/bash
   flush_interval = &quot;10s&quot;
 EOF
 </code></pre>
-<p>This file defines <strong>global agent behavior</strong> only.
-All inputs and outputs are defined under <code>telegraf.d</code>.</p>
+<p>This file defines <strong>global agent behavior</strong> only. All inputs and outputs are defined under <code>telegraf.d</code>.</p>
 <hr />
 <h2 id="step-3-create-lab-configuration-container-ping-http">Step 3: Create Lab Configuration (Container, Ping, HTTP)<a class="headerlink" href="#step-3-create-lab-configuration-container-ping-http" title="Permanent link">&para;</a></h2>
 <p>Edit the lab configuration file:</p>
@@ -1025,25 +1020,25 @@ All inputs and outputs are defined under <code>telegraf.d</code>.</p>
 </code></pre>
 <p><strong>Verify the following in the output:</strong></p>
 <ul>
-<li>✔️ <strong>Both configs are loaded</strong></li>
+<li>✅ <strong>Both configs are loaded</strong></li>
 </ul>
 <p><code>Loading config: /etc/telegraf/telegraf.conf
   Loading config: /etc/telegraf/telegraf.d/lab.conf</code></p>
 <ul>
-<li>✔️ <strong>Telegraf starts without errors</strong></li>
+<li>✅ <strong>Telegraf starts without errors</strong></li>
 </ul>
 <p><code>Starting Telegraf 1.x.x</code></p>
 <ul>
-<li>✔️ <strong>Expected inputs are loaded</strong></li>
+<li>✅ <strong>Expected inputs are loaded</strong></li>
 </ul>
 <p><code>Loaded inputs: cpu disk http_response mem net ping</code></p>
 <ul>
-<li>✔️ <strong>Host tag is present</strong></li>
+<li>✅ <strong>Host tag is present</strong></li>
 </ul>
 <p><code>Tags enabled: host=swiss-knife-monitor</code></p>
 <ul>
 <li>
-<p>✔️ <strong>Metrics are printed after the log lines</strong></p>
+<p>✅ <strong>Metrics are printed after the log lines</strong></p>
 </li>
 <li>
 <p>You should see <code>mem</code>, <code>cpu</code>, <code>disk</code>, and <code>net</code> measurements with numeric values.</p>
@@ -1059,8 +1054,7 @@ All inputs and outputs are defined under <code>telegraf.d</code>.</p>
   --config /etc/telegraf/telegraf.conf \
   --config-directory /etc/telegraf/telegraf.d
 </code></pre>
-<p>Metrics are now exposed at:
-http://198.18.101.5:9273/metrics</p>
+<p>Metrics are now exposed at: <code>http://198.18.101.5:9273/metrics</code></p>
 <hr />
 <h2 id="step-6-verify-metrics-from-lab-ubuntu-node">Step 6: Verify Metrics from LAB Ubuntu Node<a class="headerlink" href="#step-6-verify-metrics-from-lab-ubuntu-node" title="Permanent link">&para;</a></h2>
 <p>From the <strong>LAB Ubuntu node</strong>:</p>
@@ -1068,16 +1062,16 @@ http://198.18.101.5:9273/metrics</p>
 </code></pre>
 <p><strong>Verify the following:</strong></p>
 <ul>
-<li>✔️ Output starts with Prometheus metadata:</li>
+<li>✅ Output starts with Prometheus metadata:</li>
 </ul>
 <p><code># HELP cpu_usage_guest Telegraf collected metric
   # TYPE cpu_usage_guest gauge</code></p>
 <ul>
-<li>✔️ Metrics include the expected host label:</li>
+<li>✅ Metrics include the expected host label:</li>
 </ul>
 <p><code>host="swiss-knife-monitor"</code></p>
 <ul>
-<li>✔️ Numeric values are returned (not empty output)</li>
+<li>✅ Numeric values are returned (not empty output)</li>
 </ul>
 <p>Verify Prometheus targets:</p>
 <pre><code class="language-bash">curl http://198.18.5.101:9090/api/v1/targets
@@ -1317,7 +1311,7 @@ http://198.18.101.5:9273/metrics</p>
 <li>Router metrics correlate with legacy MRTG behavior</li>
 </ul>
 <hr />
-<h2 id="key-takeaway">Key Takeaway<a class="headerlink" href="#key-takeaway" title="Permanent link">&para;</a></h2>
+<h2 id="key-takeaways">Key Takeaways<a class="headerlink" href="#key-takeaways" title="Permanent link">&para;</a></h2>
 <p>This task demonstrates how <strong>traditional monitoring (SNMP/MRTG)</strong> and <strong>modern telemetry</strong> can coexist by:</p>
 <ul>
 <li>Using a containerized probe at the edge</li>
@@ -1325,18 +1319,9 @@ http://198.18.101.5:9273/metrics</p>
 <li>Visualizing correlated infrastructure and application health</li>
 </ul>
 <hr />
-<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
-<p>In this task, you deployed and extended a <strong>Telegraf monitoring container</strong> to:</p>
-<ul>
-<li>Monitor container health and services</li>
-<li>Perform network reachability and availability checks</li>
-<li>Collect router metrics using SNMP</li>
-<li>Export all telemetry using a <strong>Prometheus-native model</strong></li>
-</ul>
 <p>This forms the foundation for scalable, vendor-neutral observability on edge platforms.</p>
 <hr />
-<p><a href="../../">⬅ Return to Main Menu</a></p>
-<hr />
+<p><a href="../../">⬅️ Return to Main Menu</a></p>
 
 
 
