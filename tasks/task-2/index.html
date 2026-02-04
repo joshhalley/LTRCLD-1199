@@ -1263,8 +1263,9 @@ https://198.18.9.12/restconf/data/Cisco-IOS-XE-native:native/iox
 </ul>
 <pre><code class="language-bash">curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
 </code></pre>
-<p><strong>Sample Ouptut</strong></p>
-<pre><code class="language-bash">{&quot;repositories&quot;:[&quot;mrtg&quot;,&quot;swiss-knife-alpine&quot;,&quot;telegraf-alpine&quot;,&quot;wireshark&quot;]}
+<p>Sample output</p>
+<pre><code class="language-bash">dcloud@ubuntu-lab:~$ curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
+{&quot;repositories&quot;:[&quot;hello-app&quot;,&quot;mrtg&quot;,&quot;swiss-knife-alpine&quot;,&quot;wireshark&quot;]}
 </code></pre>
 <pre><code class="language-bash">sudo docker pull containers.dmz.cisco.com:5000/wireshark:latest
 </code></pre>
