@@ -101,9 +101,11 @@ Once these checks succeed, proceed to deployning the APP via Terraform.
 curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
 ```
 
-**Sample Ouptut**
+Sample output
+
 ```bash
-{"repositories":["mrtg","swiss-knife-alpine","telegraf-alpine","wireshark"]}
+dcloud@ubuntu-lab:~$ curl -s https://containers.dmz.cisco.com:5000/v2/_catalog
+{"repositories":["hello-app","mrtg","swiss-knife-alpine","wireshark"]}
 ```
 
 ```bash
