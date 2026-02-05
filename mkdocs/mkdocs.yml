@@ -6,6 +6,7 @@ theme:
   name: material
   features:
     - content.code.copy
+    - navigation.expand
 
 nav:
   - Home: index.md
