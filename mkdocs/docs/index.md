@@ -28,6 +28,8 @@ Welcome to **LTRCLD-1199**, a hands-on lab for deploying and operating container
 - **Task 10**: [iPerf3 Network Performance Testing](tasks/task-10-iperf3.md)
 - **Task 11**: [Wireshark Live Packet Capture](tasks/task-11-wireshark.md)
 - **Task 12**: [Telegraf Monitoring with Prometheus Exporter](tasks/task-12-telegraf.md)
+- **Task 13**: [Deploy multiple hello-app using Virtual Kubelet](tasks/task-13-kubernetes.md)
+- **Task 14**: [Passwordless Access using SSH Keys](tasks/task-14-ssh-keys.md)
 ---
 
 ## Lab Objectives

@@ -1,4 +1,4 @@
-# Task 13: Deploy multiple hello-app on Cat8Kv using Virtual Kubelet
+# Task 13: Deploy multiple hello-app using Virtual Kubelet
 
 [⬅️ Back to Main Menu](../index.md)
 
