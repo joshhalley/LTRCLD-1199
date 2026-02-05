@@ -25,7 +25,7 @@
     
     
       
-        <title>Task 14 ssh keys - LTRCLD-1199 – Containers on IOS-XE</title>
+        <title>Task14: Passwordless Access using SSH Keys - LTRCLD-1199 – Containers on IOS-XE</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#step-1-create-ssh-key-on-ubuntu-as-dcloud" class="md-skip">
+        <a href="#task14-passwordless-access-using-ssh-keys" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Task 14 ssh keys
+              Task14: Passwordless Access using SSH Keys
             
           </span>
         </div>
@@ -652,6 +652,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -660,10 +662,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#step-1-create-ssh-key-on-ubuntu-as-dcloud" class="md-nav__link">
+  <a href="#table-of-contents" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1 — Create SSH key on Ubuntu (as dcloud)
+        Table of Contents
       
     </span>
   </a>
@@ -671,10 +673,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-copy-public-key-to-the-routers" class="md-nav__link">
+  <a href="#objective" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2 — Copy public key to the routers
+        Objective
       
     </span>
   </a>
@@ -682,10 +684,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-configure-ssh-key-on-the-all-the-3-cat8kv-routers-ios-xe" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3 — Configure SSH key on the all the 3 Cat8Kv routers (IOS-XE)
+        Prerequisites
       
     </span>
   </a>
@@ -693,10 +695,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-ensure-ssh-is-enabled-on-router" class="md-nav__link">
+  <a href="#step-1-create-ssh-key-on-ubuntu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4 — Ensure SSH is enabled on router
+        Step 1: Create SSH Key on Ubuntu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-copy-public-key-from-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Copy Public Key from Ubuntu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-configure-ssh-public-key-on-cat8kv-routers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Configure SSH Public Key on Cat8Kv Routers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-ensure-ssh-is-enabled-on-the-router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Ensure SSH is Enabled on the Router
       
     </span>
   </a>
@@ -707,7 +742,7 @@
   <a href="#step-5-ssh-from-ubuntu-using-the-key" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 5 — SSH from Ubuntu using the key
+        Step 5: SSH from Ubuntu using the Key
       
     </span>
   </a>
@@ -715,24 +750,58 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-6-simplify-with-ssh-config" class="md-nav__link">
+  <a href="#step-6-simplify-access-using-ssh-config" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 6 Simplify with SSH config
+        Step 6: Simplify Access using SSH Config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 6: Simplify Access using SSH Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sample Output
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#step-6-execute-commands-on-routers-directly-from-ubuntu" class="md-nav__link">
+  <a href="#step-7-execute-router-commands-directly-from-ubuntu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 6 Execute commands on routers directly from Ubuntu
+        Step 7: Execute Router Commands Directly from Ubuntu
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Step 7: Execute Router Commands Directly from Ubuntu">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-output_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sample Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -753,102 +822,139 @@
 
 
 
-  <h1>Task 14 ssh keys</h1>
-
-<h2 id="step-1-create-ssh-key-on-ubuntu-as-dcloud">Step 1 — Create SSH key on Ubuntu (as <code>dcloud</code>)<a class="headerlink" href="#step-1-create-ssh-key-on-ubuntu-as-dcloud" title="Permanent link">&para;</a></h2>
-<p>On the <strong>Ubuntu box</strong>:</p>
-<pre><code class="language-bash">su - dcloud
-ssh-keygen -t rsa -b 1024 -f ~/.ssh/c8kv_admin_key
-</code></pre>
-<p>Just press <strong>Enter</strong> for passphrase (or set one if you want).</p>
-<p>This creates:</p>
+<h1 id="task14-passwordless-access-using-ssh-keys">Task14: Passwordless Access using SSH Keys<a class="headerlink" href="#task14-passwordless-access-using-ssh-keys" title="Permanent link">&para;</a></h1>
+<p><a href="../../">⬅️ Back to Main Menu</a></p>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>~/.ssh/c8kv_admin_key</code>        (private)</li>
-<li><code>~/.ssh/c8kv_admin_key.pub</code>    (public)</li>
+<li><a href="#objective">Objective</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#step-1-create-ssh-key-on-ubuntu">Step 1: Create SSH Key on Ubuntu</a></li>
+<li><a href="#step-2-copy-public-key-from-ubuntu">Step 2: Copy Public Key from Ubuntu</a></li>
+<li><a href="#step-3-configure-ssh-public-key-on-cat8kv-routers">Step 3: Configure SSH Public Key on Cat8Kv Routers</a></li>
+<li><a href="#step-4-ensure-ssh-is-enabled-on-the-router">Step 4: Ensure SSH is Enabled on the Router</a></li>
+<li><a href="#step-5-ssh-from-ubuntu-using-the-key">Step 5: SSH from Ubuntu using the Key</a></li>
+<li><a href="#step-6-simplify-access-using-ssh-config">Step 6: Simplify Access using SSH Config</a></li>
+<li><a href="#step-7-execute-router-commands-directly-from-ubuntu">Step 7: Execute Router Commands Directly from Ubuntu</a></li>
 </ul>
 <hr />
-<h2 id="step-2-copy-public-key-to-the-routers">Step 2 — Copy <strong>public key</strong> to the routers<a class="headerlink" href="#step-2-copy-public-key-to-the-routers" title="Permanent link">&para;</a></h2>
-<p>Show the public key:</p>
+<h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h2>
+<p>In this task, you will configure <strong>passwordless SSH access</strong> from the <code>ubuntu-lab</code> host to multiple <strong>Catalyst 8000v (Cat8Kv)</strong> routers using <strong>SSH public key authentication</strong>. This enables secure, automation-friendly access without interactive password prompts.</p>
+<hr />
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Ubuntu host with user <code>dcloud</code></li>
+<li>SSH client installed (default on Ubuntu)</li>
+<li>Administrative access to Cat8Kv routers</li>
+</ul>
+<hr />
+<h2 id="step-1-create-ssh-key-on-ubuntu">Step 1: Create SSH Key on Ubuntu<a class="headerlink" href="#step-1-create-ssh-key-on-ubuntu" title="Permanent link">&para;</a></h2>
+<p>Log in to the Ubuntu system and switch to the <code>dcloud</code> user:</p>
+<pre><code class="language-bash">su - dcloud
+</code></pre>
+<p>Generate an RSA SSH key pair:</p>
+<pre><code class="language-bash">ssh-keygen -t rsa -b 1024 -f ~/.ssh/c8kv_admin_key
+</code></pre>
+<p>When prompted for a passphrase, press <strong>Enter</strong> to leave it empty (or set one if required).</p>
+<p>This creates the following files:</p>
+<ul>
+<li><code>~/.ssh/c8kv_admin_key</code> – <strong>Private key</strong></li>
+<li><code>~/.ssh/c8kv_admin_key.pub</code> – <strong>Public key</strong></li>
+</ul>
+<hr />
+<h2 id="step-2-copy-public-key-from-ubuntu">Step 2: Copy Public Key from Ubuntu<a class="headerlink" href="#step-2-copy-public-key-from-ubuntu" title="Permanent link">&para;</a></h2>
+<p>Display the public key:</p>
 <pre><code class="language-bash">cat ~/.ssh/c8kv_admin_key.pub
 </code></pre>
-<p>It will look like:</p>
-<pre><code>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQ... dcloud@ubuntu
+<p>Example output:</p>
+<pre><code class="language-text">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQ... dcloud@ubuntu
 </code></pre>
-<p>Copy <strong>the entire line</strong>.</p>
+<p>Copy the <strong>entire line</strong>, including <code>ssh-rsa</code> and the comment at the end.</p>
 <hr />
-<h2 id="step-3-configure-ssh-key-on-the-all-the-3-cat8kv-routers-ios-xe">Step 3 — Configure SSH key on the all the 3 Cat8Kv routers (IOS-XE)<a class="headerlink" href="#step-3-configure-ssh-key-on-the-all-the-3-cat8kv-routers-ios-xe" title="Permanent link">&para;</a></h2>
-<p>On the router CLI:</p>
+<h2 id="step-3-configure-ssh-public-key-on-cat8kv-routers">Step 3: Configure SSH Public Key on Cat8Kv Routers<a class="headerlink" href="#step-3-configure-ssh-public-key-on-cat8kv-routers" title="Permanent link">&para;</a></h2>
+<p>Repeat the following steps on <strong>all three Cat8Kv routers</strong>.</p>
+<p>From the router CLI:</p>
 <pre><code class="language-text">conf t
 ip ssh pubkey-chain
-username admin
-key-string
-&lt;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQ... dcloud@ubuntu&gt;
+ username admin
+  key-string
+   ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQ... dcloud@ubuntu
+  exit
+ exit
 end
 write memory
 </code></pre>
-<p>⚠️ Paste the key <strong>in one line</strong>, no line breaks.</p>
+<p>⚠️ <strong>Important:</strong></p>
+<ul>
+<li>Paste the key on <strong>one single line</strong></li>
+<li>Do <strong>not</strong> add line breaks or extra spaces</li>
+</ul>
 <hr />
-<h2 id="step-4-ensure-ssh-is-enabled-on-router">Step 4 — Ensure SSH is enabled on router<a class="headerlink" href="#step-4-ensure-ssh-is-enabled-on-router" title="Permanent link">&para;</a></h2>
-<p>Still on the router:</p>
+<h2 id="step-4-ensure-ssh-is-enabled-on-the-router">Step 4: Ensure SSH is Enabled on the Router<a class="headerlink" href="#step-4-ensure-ssh-is-enabled-on-the-router" title="Permanent link">&para;</a></h2>
+<p>Still on the router CLI, ensure SSH prerequisites are configured:</p>
 <pre><code class="language-text">conf t
 ip domain name dmz.cisco.com
 crypto key generate rsa modulus 2048
 ip ssh version 2
 end
 </code></pre>
+<blockquote>
+<p>If RSA keys already exist, the router may skip regeneration.</p>
+</blockquote>
 <hr />
-<h2 id="step-5-ssh-from-ubuntu-using-the-key">Step 5 — SSH from Ubuntu using the key<a class="headerlink" href="#step-5-ssh-from-ubuntu-using-the-key" title="Permanent link">&para;</a></h2>
-<p>From Ubuntu:</p>
+<h2 id="step-5-ssh-from-ubuntu-using-the-key">Step 5: SSH from Ubuntu using the Key<a class="headerlink" href="#step-5-ssh-from-ubuntu-using-the-key" title="Permanent link">&para;</a></h2>
+<p>From the Ubuntu host:</p>
 <pre><code class="language-bash">ssh -i ~/.ssh/c8kv_admin_key admin@198.18.6.11
 </code></pre>
-<p>You should log in <strong>without password</strong> 🎉</p>
+<p>You should log in <strong>without being prompted for a password</strong>.</p>
 <hr />
-<h2 id="step-6-simplify-with-ssh-config">Step 6 Simplify with SSH config<a class="headerlink" href="#step-6-simplify-with-ssh-config" title="Permanent link">&para;</a></h2>
-<p>On Ubuntu:</p>
+<h2 id="step-6-simplify-access-using-ssh-config">Step 6: Simplify Access using SSH Config<a class="headerlink" href="#step-6-simplify-access-using-ssh-config" title="Permanent link">&para;</a></h2>
+<p>To avoid specifying the key and IP address every time, configure SSH aliases.</p>
+<p>Edit the SSH config file:</p>
 <pre><code class="language-bash">nano ~/.ssh/config
 </code></pre>
-<p>Add:</p>
+<p>Add the following entries:</p>
 <pre><code class="language-text">Host c8kv-task-1
   HostName 198.18.6.11
   User admin
   IdentityFile ~/.ssh/c8kv_admin_key
+
 Host c8kv-task-2
   HostName 198.18.7.12
   User admin
   IdentityFile ~/.ssh/c8kv_admin_key
+
 Host c8kv-task-3
   HostName 198.18.8.13
   User admin
   IdentityFile ~/.ssh/c8kv_admin_key
 </code></pre>
-<p>Now connect with:</p>
+<p>Now connect using a simple command:</p>
 <pre><code class="language-bash">ssh c8kv-task-1
 </code></pre>
-<p>Sample Output</p>
-<pre><code class="language-bash">dcloud@ubuntu-lab:~$ ssh c8kv-task-2
-The authenticity of host '198.18.7.12 (198.18.7.12)' can't be established.
+<h3 id="sample-output">Sample Output<a class="headerlink" href="#sample-output" title="Permanent link">&para;</a></h3>
+<pre><code class="language-text">The authenticity of host '198.18.7.12 (198.18.7.12)' can't be established.
 RSA key fingerprint is SHA256:A0uoPV8ZDbz2G3l5jAB9+/lFI7sX9hDyVRvInE9Uiq0.
-This host key is known by the following other names/addresses:
-    ~/.ssh/known_hosts:1: [hashed name]
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 Warning: Permanently added '198.18.7.12' (RSA) to the list of known hosts.
 
 cat8Kv-task-2#
 </code></pre>
 <hr />
-<h2 id="step-6-execute-commands-on-routers-directly-from-ubuntu">Step 6 Execute commands on routers directly from Ubuntu<a class="headerlink" href="#step-6-execute-commands-on-routers-directly-from-ubuntu" title="Permanent link">&para;</a></h2>
+<h2 id="step-7-execute-router-commands-directly-from-ubuntu">Step 7: Execute Router Commands Directly from Ubuntu<a class="headerlink" href="#step-7-execute-router-commands-directly-from-ubuntu" title="Permanent link">&para;</a></h2>
+<p>You can now execute IOS-XE commands non-interactively from Ubuntu.</p>
+<p>Example:</p>
 <pre><code class="language-bash">ssh c8kv-task-1 show ip int brief
 </code></pre>
-<p>Sample Output</p>
-<pre><code class="language-bash">dcloud@ubuntu-lab:~$ ssh c8kv-task-1 show ip int brief
-
-
-Interface              IP-Address      OK? Method Status                Protocol
-GigabitEthernet4       198.18.1.11     YES NVRAM  up                    up      
-GigabitEthernet5       198.18.9.11     YES NVRAM  up                    up      
-GigabitEthernet6       198.18.6.11     YES NVRAM  up                    up      Connection to 198.18.6.11 closed by remote host.
+<h3 id="sample-output_1">Sample Output<a class="headerlink" href="#sample-output_1" title="Permanent link">&para;</a></h3>
+<pre><code class="language-text">Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet4       198.18.1.11     YES NVRAM  up                    up
+GigabitEthernet5       198.18.9.11     YES NVRAM  up                    up
+GigabitEthernet6       198.18.6.11     YES NVRAM  up                    up
+Connection to 198.18.6.11 closed by remote host.
 </code></pre>
 <hr />
+<p>✔️ At this point, passwordless SSH access is fully configured for all Cat8Kv routers, enabling fast CLI access and seamless automation from the Ubuntu host.</p>
 
 
 
