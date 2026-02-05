@@ -477,6 +477,7 @@ iox-xe-hello-app-pod-r3-2                 1/1    Running  0         198.18.102.1
 iox-xe-hello-app-pod-r3-3                 1/1    Running  0         198.18.102.182   cat8kv-node-r3    10h
 ```
 
+![Example](../images/k9s.jpg)
 ---
 
 ### 6.5 Useful k9s Shortcuts (Optional)
