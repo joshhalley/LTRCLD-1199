@@ -577,10 +577,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#53-file-02_vk_deployment_configyaml-vk-device-node-mapping" class="md-nav__link">
+  <a href="#53-file-02_vk_deployment_config-r3yaml-vk-device-node-mapping" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.3 File: 02_vk_deployment_config.yaml (VK Device + Node Mapping)
+        5.3 File: 02_vk_deployment_config-r3.yaml (VK Device + Node Mapping)
       
     </span>
   </a>
@@ -588,10 +588,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#54-file-03_vk_deploymentyaml-virtual-kubelet-deployment" class="md-nav__link">
+  <a href="#54-file-03_vk_deployment_r3yaml-virtual-kubelet-deployment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.4 File: 03_vk_deployment.yaml (Virtual Kubelet Deployment)
+        5.4 File: 03_vk_deployment_r3.yaml (Virtual Kubelet Deployment)
       
     </span>
   </a>
@@ -599,10 +599,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#55-file-04_vk_pod_hello-appyaml-hello-app-pod-on-c8kv" class="md-nav__link">
+  <a href="#55-file-04_vk_pod_hello-app-r3yaml-hello-app-pod-on-c8kv" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.5 File: 04_vk_pod_hello-app.yaml (hello-app Pod on C8Kv)
+        5.5 File: 04_vk_pod_hello-app-r3.yaml (hello-app Pod on C8Kv)
       
     </span>
   </a>
@@ -1098,10 +1098,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#53-file-02_vk_deployment_configyaml-vk-device-node-mapping" class="md-nav__link">
+  <a href="#53-file-02_vk_deployment_config-r3yaml-vk-device-node-mapping" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.3 File: 02_vk_deployment_config.yaml (VK Device + Node Mapping)
+        5.3 File: 02_vk_deployment_config-r3.yaml (VK Device + Node Mapping)
       
     </span>
   </a>
@@ -1109,10 +1109,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#54-file-03_vk_deploymentyaml-virtual-kubelet-deployment" class="md-nav__link">
+  <a href="#54-file-03_vk_deployment_r3yaml-virtual-kubelet-deployment" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.4 File: 03_vk_deployment.yaml (Virtual Kubelet Deployment)
+        5.4 File: 03_vk_deployment_r3.yaml (Virtual Kubelet Deployment)
       
     </span>
   </a>
@@ -1120,10 +1120,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#55-file-04_vk_pod_hello-appyaml-hello-app-pod-on-c8kv" class="md-nav__link">
+  <a href="#55-file-04_vk_pod_hello-app-r3yaml-hello-app-pod-on-c8kv" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.5 File: 04_vk_pod_hello-app.yaml (hello-app Pod on C8Kv)
+        5.5 File: 04_vk_pod_hello-app-r3.yaml (hello-app Pod on C8Kv)
       
     </span>
   </a>
@@ -1319,17 +1319,17 @@ EOF
 <pre><code class="language-text">configmap/remote-kubeconfig created
 </code></pre>
 <hr />
-<h3 id="53-file-02_vk_deployment_configyaml-vk-device-node-mapping">5.3 File: <code>02_vk_deployment_config.yaml</code> (VK Device + Node Mapping)<a class="headerlink" href="#53-file-02_vk_deployment_configyaml-vk-device-node-mapping" title="Permanent link">&para;</a></h3>
-<pre><code class="language-bash">cat &gt; 02_vk_deployment_config.yaml &lt;&lt; 'EOF'
+<h3 id="53-file-02_vk_deployment_config-r3yaml-vk-device-node-mapping">5.3 File: <code>02_vk_deployment_config-r3.yaml</code> (VK Device + Node Mapping)<a class="headerlink" href="#53-file-02_vk_deployment_config-r3yaml-vk-device-node-mapping" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">cat &gt; 02_vk_deployment_config_r3.yaml &lt;&lt; 'EOF'
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: vk-config
+  name: vk-config-r3
   namespace: default
 data:
   config.yaml: |
     device:
-      name: cat8kv-router
+      name: cat8kv-router-r3
       driver: XE
       address: &quot;198.18.8.13&quot;
       port: 443
@@ -1344,7 +1344,7 @@ data:
         defaultVRF: &quot;&quot;
 
     kubelet:
-      node_name: &quot;cat8kv-node&quot;
+      node_name: &quot;cat8kv-node-r3&quot;
       namespace: &quot;&quot;
       update_interval: &quot;30s&quot;
       os: &quot;Linux&quot;
@@ -1352,30 +1352,32 @@ data:
 EOF
 </code></pre>
 <p>Apply:</p>
-<pre><code class="language-bash">kubectl apply -f 02_vk_deployment_config.yaml
+<pre><code class="language-bash">kubectl apply -f 02_vk_deployment_config_r3.yaml
 </code></pre>
 <p>Expected:</p>
-<pre><code class="language-text">configmap/vk-config created
+<pre><code class="language-text">configmap/vk-config-r3 created
 </code></pre>
 <hr />
-<h3 id="54-file-03_vk_deploymentyaml-virtual-kubelet-deployment">5.4 File: <code>03_vk_deployment.yaml</code> (Virtual Kubelet Deployment)<a class="headerlink" href="#54-file-03_vk_deploymentyaml-virtual-kubelet-deployment" title="Permanent link">&para;</a></h3>
-<pre><code class="language-bash">cat &gt; 03_vk_deployment.yaml &lt;&lt; 'EOF'
+<h3 id="54-file-03_vk_deployment_r3yaml-virtual-kubelet-deployment">5.4 File: <code>03_vk_deployment_r3.yaml</code> (Virtual Kubelet Deployment)<a class="headerlink" href="#54-file-03_vk_deployment_r3yaml-virtual-kubelet-deployment" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">cat &gt; 03_vk_deployment-r3.yaml &lt;&lt; 'EOF'
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cisco-virtual-kubelet
+  name: cisco-virtual-kubelet-r3
   labels:
-    app: cisco-virtual-kubelet
+    app: cisco-virtual-kubelet-r3
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cisco-virtual-kubelet
+      app: cisco-virtual-kubelet-r3
   template:
     metadata:
       labels:
-        app: cisco-virtual-kubelet
+        app: cisco-virtual-kubelet-r3
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: ubuntu-lab
       containers:
       - name: virtual-kubelet
         image: containers.dmz.cisco.com:5000/cisco-virtual-kubelet:1.0.0
@@ -1398,45 +1400,45 @@ spec:
             path: &quot;kubeconfig.yaml&quot;
       - name: vk-config-storage
         configMap:
-          name: vk-config
+          name: vk-config-r3
           items:
           - key: &quot;config.yaml&quot;
             path: &quot;config.yaml&quot;
 EOF
 </code></pre>
 <p>Apply:</p>
-<pre><code class="language-bash">kubectl apply -f 03_vk_deployment.yaml
+<pre><code class="language-bash">kubectl apply -f 03_vk_deployment-r3.yaml
 </code></pre>
 <p>Expected:</p>
-<pre><code class="language-text">deployment.apps/cisco-virtual-kubelet created
+<pre><code class="language-text">deployment.apps/cisco-virtual-kubelet-r3 created
 </code></pre>
 <hr />
-<h3 id="55-file-04_vk_pod_hello-appyaml-hello-app-pod-on-c8kv">5.5 File: <code>04_vk_pod_hello-app.yaml</code> (hello-app Pod on C8Kv)<a class="headerlink" href="#55-file-04_vk_pod_hello-appyaml-hello-app-pod-on-c8kv" title="Permanent link">&para;</a></h3>
-<pre><code class="language-bash">cat &gt; 04_vk_pod_hello-app.yaml &lt;&lt; 'EOF'
+<h3 id="55-file-04_vk_pod_hello-app-r3yaml-hello-app-pod-on-c8kv">5.5 File: <code>04_vk_pod_hello-app-r3.yaml</code> (hello-app Pod on C8Kv)<a class="headerlink" href="#55-file-04_vk_pod_hello-app-r3yaml-hello-app-pod-on-c8kv" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">cat &gt; 04_vk_pod_hello-app-r3.yaml &lt;&lt; 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
-  name: iox-xe-hello-app-pod
+  name: iox-xe-hello-app-pod-r3-0
   namespace: default
 spec:
-  nodeName: cat8kv-node
+  nodeName: cat8kv-node-r3
   containers:
   - name: test-app
     image: flash:/hello-app.iosxe.tar
     resources:
       requests:
-        memory: &quot;64Mi&quot;
-        cpu: &quot;250m&quot;
+        memory: &quot;4Mi&quot;
+        cpu: &quot;50m&quot;
       limits:
-        memory: &quot;128Mi&quot;
-        cpu: &quot;500m&quot;
+        memory: &quot;8Mi&quot;
+        cpu: &quot;75m&quot;
 EOF
 </code></pre>
 <p>Apply:</p>
-<pre><code class="language-bash">kubectl apply -f 04_vk_pod_hello-app.yaml
+<pre><code class="language-bash">kubectl apply -f 04_vk_pod_hello-app-r3.yaml
 </code></pre>
 <p>Expected:</p>
-<pre><code class="language-text">pod/iox-xe-hello-app-pod created
+<pre><code class="language-text">pod/iox-xe-hello-app-pod-r3-0 created
 </code></pre>
 <hr />
 <h2 id="6-deploy-virtual-kubelet-and-hello-app">6. Deploy Virtual Kubelet and hello-app<a class="headerlink" href="#6-deploy-virtual-kubelet-and-hello-app" title="Permanent link">&para;</a></h2>
@@ -1447,19 +1449,19 @@ EOF
 <pre><code class="language-text">dcloud@ubuntu-lab:~$ kubectl get pods -o wide -w
 NAME                                     READY   STATUS              RESTARTS   AGE   IP          NODE          NOMINATED NODE   READINESS GATES
 cisco-virtual-kubelet-7b58bd86db-mvnr2   1/1     Running             0          54s   10.0.0.61   ubuntu-lab    &lt;none&gt;           &lt;none&gt;
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          8s    0.0.0.0     cat8kv-node   &lt;none&gt;           &lt;none&gt;
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          13s   0.0.0.0     cat8kv-node   &lt;none&gt;           &lt;none&gt;
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          18s   0.0.0.0     cat8kv-node   &lt;none&gt;           &lt;none&gt;
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          23s   198.18.102.175   cat8kv-node   &lt;none&gt;           &lt;none&gt;
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          28s   198.18.102.175   cat8kv-node   &lt;none&gt;           &lt;none&gt;
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          34s   198.18.102.175   cat8kv-node   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          8s    0.0.0.0     cat8kv-node-r3   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          13s   0.0.0.0     cat8kv-node-r3   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          18s   0.0.0.0     cat8kv-node-r3   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          23s   198.18.102.175   cat8kv-node-r3   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          28s   198.18.102.175   cat8kv-node-r3   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          34s   198.18.102.175   cat8kv-node-r3   &lt;none&gt;           &lt;none&gt;
 
 </code></pre>
 <p>Expected output after successful deployment</p>
 <pre><code class="language-text">dcloud@ubuntu-lab:~$ kubectl get pods -o wide -w
 NAME                                     READY   STATUS    RESTARTS   AGE     IP               NODE          NOMINATED NODE   READINESS GATES
 cisco-virtual-kubelet-7b58bd86db-mvnr2   1/1     Running   0          8m9s    10.0.0.61        ubuntu-lab    &lt;none&gt;           &lt;none&gt;
-iox-xe-hello-app-pod                     1/1     Running   0          7m23s   198.18.102.175   cat8kv-node   &lt;none&gt;           &lt;none&gt;
+iox-xe-hello-app-pod-r3-0                1/1     Running   0          7m23s   198.18.102.175   cat8kv-node-r3   &lt;none&gt;           &lt;none&gt;
 </code></pre>
 <hr />
 <h2 id="7-verification">7. Verification<a class="headerlink" href="#7-verification" title="Permanent link">&para;</a></h2>

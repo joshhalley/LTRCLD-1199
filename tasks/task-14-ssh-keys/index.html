@@ -1,0 +1,908 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Using Containers on Cisco Edge Devices to Turbocharge Troubleshooting">
+      
+      
+        <meta name="author" content="Cisco Live Lab">
+      
+      
+        <link rel="canonical" href="https://joshhalley.github.io/LTRCLD-1199/tasks/task-14-ssh-keys/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Task 14 ssh keys - LTRCLD-1199 – Containers on IOS-XE</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#step-1-create-ssh-key-on-ubuntu-as-dcloud" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LTRCLD-1199 – Containers on IOS-XE" class="md-header__button md-logo" aria-label="LTRCLD-1199 – Containers on IOS-XE" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LTRCLD-1199 – Containers on IOS-XE
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Task 14 ssh keys
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LTRCLD-1199 – Containers on IOS-XE" class="md-nav__button md-logo" aria-label="LTRCLD-1199 – Containers on IOS-XE" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LTRCLD-1199 – Containers on IOS-XE
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../containers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Container Details
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Tasks
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Lab Tasks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 1 – App-Hosting Manual Deployment on IOS-XE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 2 – App-Hosting Automated Deployment with Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-4-basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 4 – Network Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-5-mtr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 5 – MTR Path Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-6-web-ts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 6 – Web Testing & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-7-socat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 7 – socat (SOcket CAT) Practical Use Cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-8-kcat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 8 – kcat (Kafka CAT) Connectivity & Message Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-9-mrtg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 9 – MRTG Interface Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-10-iperf3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 10 – iPerf3 Performance Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-11-wireshark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 11 – Wireshark Live Packet Capture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-12-telegraf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-create-ssh-key-on-ubuntu-as-dcloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Create SSH key on Ubuntu (as dcloud)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-copy-public-key-to-the-routers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Copy public key to the routers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-configure-ssh-key-on-the-all-the-3-cat8kv-routers-ios-xe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Configure SSH key on the all the 3 Cat8Kv routers (IOS-XE)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-ensure-ssh-is-enabled-on-router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Ensure SSH is enabled on router
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-ssh-from-ubuntu-using-the-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — SSH from Ubuntu using the key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-simplify-with-ssh-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 Simplify with SSH config
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-execute-commands-on-routers-directly-from-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 Execute commands on routers directly from Ubuntu
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Task 14 ssh keys</h1>
+
+<h2 id="step-1-create-ssh-key-on-ubuntu-as-dcloud">Step 1 — Create SSH key on Ubuntu (as <code>dcloud</code>)<a class="headerlink" href="#step-1-create-ssh-key-on-ubuntu-as-dcloud" title="Permanent link">&para;</a></h2>
+<p>On the <strong>Ubuntu box</strong>:</p>
+<pre><code class="language-bash">su - dcloud
+ssh-keygen -t rsa -b 1024 -f ~/.ssh/c8kv_admin_key
+</code></pre>
+<p>Just press <strong>Enter</strong> for passphrase (or set one if you want).</p>
+<p>This creates:</p>
+<ul>
+<li><code>~/.ssh/c8kv_admin_key</code>        (private)</li>
+<li><code>~/.ssh/c8kv_admin_key.pub</code>    (public)</li>
+</ul>
+<hr />
+<h2 id="step-2-copy-public-key-to-the-routers">Step 2 — Copy <strong>public key</strong> to the routers<a class="headerlink" href="#step-2-copy-public-key-to-the-routers" title="Permanent link">&para;</a></h2>
+<p>Show the public key:</p>
+<pre><code class="language-bash">cat ~/.ssh/c8kv_admin_key.pub
+</code></pre>
+<p>It will look like:</p>
+<pre><code>ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQ... dcloud@ubuntu
+</code></pre>
+<p>Copy <strong>the entire line</strong>.</p>
+<hr />
+<h2 id="step-3-configure-ssh-key-on-the-all-the-3-cat8kv-routers-ios-xe">Step 3 — Configure SSH key on the all the 3 Cat8Kv routers (IOS-XE)<a class="headerlink" href="#step-3-configure-ssh-key-on-the-all-the-3-cat8kv-routers-ios-xe" title="Permanent link">&para;</a></h2>
+<p>On the router CLI:</p>
+<pre><code class="language-text">conf t
+ip ssh pubkey-chain
+username admin
+key-string
+&lt;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQ... dcloud@ubuntu&gt;
+end
+write memory
+</code></pre>
+<p>⚠️ Paste the key <strong>in one line</strong>, no line breaks.</p>
+<hr />
+<h2 id="step-4-ensure-ssh-is-enabled-on-router">Step 4 — Ensure SSH is enabled on router<a class="headerlink" href="#step-4-ensure-ssh-is-enabled-on-router" title="Permanent link">&para;</a></h2>
+<p>Still on the router:</p>
+<pre><code class="language-text">conf t
+ip domain name dmz.cisco.com
+crypto key generate rsa modulus 2048
+ip ssh version 2
+end
+</code></pre>
+<hr />
+<h2 id="step-5-ssh-from-ubuntu-using-the-key">Step 5 — SSH from Ubuntu using the key<a class="headerlink" href="#step-5-ssh-from-ubuntu-using-the-key" title="Permanent link">&para;</a></h2>
+<p>From Ubuntu:</p>
+<pre><code class="language-bash">ssh -i ~/.ssh/c8kv_admin_key admin@198.18.6.11
+</code></pre>
+<p>You should log in <strong>without password</strong> 🎉</p>
+<hr />
+<h2 id="step-6-simplify-with-ssh-config">Step 6 Simplify with SSH config<a class="headerlink" href="#step-6-simplify-with-ssh-config" title="Permanent link">&para;</a></h2>
+<p>On Ubuntu:</p>
+<pre><code class="language-bash">nano ~/.ssh/config
+</code></pre>
+<p>Add:</p>
+<pre><code class="language-text">Host c8kv-task-1
+  HostName 198.18.6.11
+  User admin
+  IdentityFile ~/.ssh/c8kv_admin_key
+Host c8kv-task-2
+  HostName 198.18.7.12
+  User admin
+  IdentityFile ~/.ssh/c8kv_admin_key
+Host c8kv-task-3
+  HostName 198.18.8.13
+  User admin
+  IdentityFile ~/.ssh/c8kv_admin_key
+</code></pre>
+<p>Now connect with:</p>
+<pre><code class="language-bash">ssh c8kv-task-1
+</code></pre>
+<p>Sample Output</p>
+<pre><code class="language-bash">dcloud@ubuntu-lab:~$ ssh c8kv-task-2
+The authenticity of host '198.18.7.12 (198.18.7.12)' can't be established.
+RSA key fingerprint is SHA256:A0uoPV8ZDbz2G3l5jAB9+/lFI7sX9hDyVRvInE9Uiq0.
+This host key is known by the following other names/addresses:
+    ~/.ssh/known_hosts:1: [hashed name]
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '198.18.7.12' (RSA) to the list of known hosts.
+
+cat8Kv-task-2#
+</code></pre>
+<hr />
+<h2 id="step-6-execute-commands-on-routers-directly-from-ubuntu">Step 6 Execute commands on routers directly from Ubuntu<a class="headerlink" href="#step-6-execute-commands-on-routers-directly-from-ubuntu" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">ssh c8kv-task-1 show ip int brief
+</code></pre>
+<p>Sample Output</p>
+<pre><code class="language-bash">dcloud@ubuntu-lab:~$ ssh c8kv-task-1 show ip int brief
+
+
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet4       198.18.1.11     YES NVRAM  up                    up      
+GigabitEthernet5       198.18.9.11     YES NVRAM  up                    up      
+GigabitEthernet6       198.18.6.11     YES NVRAM  up                    up      Connection to 198.18.6.11 closed by remote host.
+</code></pre>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

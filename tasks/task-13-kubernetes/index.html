@@ -1,0 +1,1397 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Using Containers on Cisco Edge Devices to Turbocharge Troubleshooting">
+      
+      
+        <meta name="author" content="Cisco Live Lab">
+      
+      
+        <link rel="canonical" href="https://joshhalley.github.io/LTRCLD-1199/tasks/task-13-kubernetes/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Task 13: Deploy multiple hello-app on Cat8Kv using Virtual Kubelet - LTRCLD-1199 – Containers on IOS-XE</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#task-13-deploy-multiple-hello-app-on-cat8kv-using-virtual-kubelet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="LTRCLD-1199 – Containers on IOS-XE" class="md-header__button md-logo" aria-label="LTRCLD-1199 – Containers on IOS-XE" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LTRCLD-1199 – Containers on IOS-XE
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Task 13: Deploy multiple hello-app on Cat8Kv using Virtual Kubelet
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LTRCLD-1199 – Containers on IOS-XE" class="md-nav__button md-logo" aria-label="LTRCLD-1199 – Containers on IOS-XE" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LTRCLD-1199 – Containers on IOS-XE
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../containers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Container Details
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Tasks
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Lab Tasks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 1 – App-Hosting Manual Deployment on IOS-XE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 2 – App-Hosting Automated Deployment with Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 3 – Kubernetes App-Hosting using Virtual Kubelet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-4-basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 4 – Network Validation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-5-mtr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 5 – MTR Path Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-6-web-ts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 6 – Web Testing & Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-7-socat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 7 – socat (SOcket CAT) Practical Use Cases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-8-kcat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 8 – kcat (Kafka CAT) Connectivity & Message Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-9-mrtg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 9 – MRTG Interface Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-10-iperf3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 10 – iPerf3 Performance Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-11-wireshark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 11 – Wireshark Live Packet Capture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-12-telegraf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 12 – Telegraf Monitoring with Prometheus Exporter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lab-topology-and-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab Topology and Components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-router-preparation-cat8kv-task-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Router Preparation (cat8kv-task-1)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 1: Router Preparation (cat8kv-task-1)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-router-access-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Router Access Details
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-dhcp-server-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 DHCP Server Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-enable-restconf-and-https-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Enable RESTCONF and HTTPS Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-upload-application-image-to-router-flash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Upload Application Image to Router Flash
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-kubernetes-manifests-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Kubernetes Manifests Preparation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-deploy-virtual-kubelet-on-cat8kv-task-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Deploy Virtual Kubelet on Cat8Kv-task-1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 3: Deploy Virtual Kubelet on Cat8Kv-task-1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-vk-device-and-node-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 VK Device and Node Mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-virtual-kubelet-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Virtual Kubelet Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-deploy-hello-app-pods-on-cat8kv-task-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Deploy hello-app Pods on Cat8Kv-task-1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-deploy-additional-hello-app-pods-on-cat8kv-task-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Deploy additional hello-app Pods on Cat8Kv-task-3
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-monitor-deployments-and-pods-using-k9s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Monitor Deployments and Pods using k9s
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 6: Monitor Deployments and Pods using k9s">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-launch-k9s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Launch k9s
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-verify-virtual-kubelet-deployments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Verify Virtual Kubelet Deployments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-verify-hello-app-pods-on-cat8kv-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Verify hello-app Pods on Cat8Kv Nodes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-sample-k9s-output-pods-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Sample k9s Output (Pods View)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-useful-k9s-shortcuts-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Useful k9s Shortcuts (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="task-13-deploy-multiple-hello-app-on-cat8kv-using-virtual-kubelet">Task 13: Deploy multiple hello-app on Cat8Kv using Virtual Kubelet<a class="headerlink" href="#task-13-deploy-multiple-hello-app-on-cat8kv-using-virtual-kubelet" title="Permanent link">&para;</a></h1>
+<p><a href="../../">⬅️ Back to Main Menu</a></p>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#objective">Objective</a></li>
+<li><a href="#lab-topology-and-components">Lab Topology and Components</a></li>
+<li>
+<p><a href="#step-1-router-preparation-cat8kv-task-1">Step 1: Router Preparation (cat8kv-task-1)</a></p>
+</li>
+<li>
+<p><a href="#11-router-access-details">1.1 Router Access Details</a></p>
+</li>
+<li><a href="#12-dhcp-server-configuration">1.2 DHCP Server Configuration</a></li>
+<li><a href="#13-enable-restconf-and-https-server">1.3 Enable RESTCONF and HTTPS Server</a></li>
+<li><a href="#14-upload-application-image-to-router-flash">1.4 Upload Application Image to Router Flash</a></li>
+<li><a href="#step-2-kubernetes-manifests-preparation">Step 2: Kubernetes Manifests Preparation</a></li>
+<li>
+<p><a href="#step-3-deploy-virtual-kubelet-on-cat8kv-task-1">Step 3: Deploy Virtual Kubelet on Cat8Kv-task-1</a></p>
+</li>
+<li>
+<p><a href="#31-vk-device-and-node-mapping">3.1 VK Device and Node Mapping</a></p>
+</li>
+<li><a href="#32-virtual-kubelet-deployment">3.2 Virtual Kubelet Deployment</a></li>
+<li><a href="#step-4-deploy-hello-app-pods-on-cat8kv-task-1">Step 4: Deploy hello-app Pods on Cat8Kv-task-1</a></li>
+<li><a href="#step-5-deploy-hello-app-pods-on-cat8kv-task-3">Step 5: Deploy hello-app Pods on Cat8Kv-task-3</a></li>
+</ul>
+<hr />
+<h2 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h2>
+<p>In this task, you will deploy multiple <strong>IOS-XE App Hosting applications</strong> on <strong>Catalyst 8000v (Cat8Kv)</strong> routers using <strong>Cisco Virtual Kubelet</strong>. Kubernetes Pods scheduled to Cat8Kv nodes are instantiated as native App Hosting containers on IOS-XE.</p>
+<hr />
+<h2 id="lab-topology-and-components">Lab Topology and Components<a class="headerlink" href="#lab-topology-and-components" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Kubernetes Node:</strong> <code>ubuntu-lab</code></li>
+<li><strong>Virtual Kubelet Provider:</strong> Cisco Virtual Kubelet</li>
+<li>
+<p><strong>Routers:</strong></p>
+</li>
+<li>
+<p><code>cat8kv-task-1</code> (R1)</p>
+</li>
+<li><code>cat8kv-task-3</code> (R3)</li>
+<li><strong>Application:</strong> <code>hello-app.iosxe.tar</code></li>
+</ul>
+<hr />
+<h2 id="step-1-router-preparation-cat8kv-task-1">Step 1: Router Preparation (cat8kv-task-1)<a class="headerlink" href="#step-1-router-preparation-cat8kv-task-1" title="Permanent link">&para;</a></h2>
+<h3 id="11-router-access-details">1.1 Router Access Details<a class="headerlink" href="#11-router-access-details" title="Permanent link">&para;</a></h3>
+<p><strong>Router:</strong> cat8kv-task-1
+<strong>Management IP:</strong> 198.18.1.11</p>
+<p>Login to the router using SSH:</p>
+<pre><code class="language-bash">ssh admin@198.18.1.11
+</code></pre>
+<hr />
+<h3 id="12-dhcp-server-configuration">1.2 DHCP Server Configuration<a class="headerlink" href="#12-dhcp-server-configuration" title="Permanent link">&para;</a></h3>
+<p>Configure DHCP to support App Hosting networking:</p>
+<pre><code class="language-text">conf t
+ip dhcp pool 198_18_100_0
+ network 198.18.100.0 255.255.255.0
+ default-router 198.18.100.1
+end
+</code></pre>
+<hr />
+<h3 id="13-enable-restconf-and-https-server">1.3 Enable RESTCONF and HTTPS Server<a class="headerlink" href="#13-enable-restconf-and-https-server" title="Permanent link">&para;</a></h3>
+<p>Enable RESTCONF and the secure HTTP server (required for Virtual Kubelet communication):</p>
+<pre><code class="language-text">conf t
+restconf
+ip http secure-server
+end
+</code></pre>
+<hr />
+<h3 id="14-upload-application-image-to-router-flash">1.4 Upload Application Image to Router Flash<a class="headerlink" href="#14-upload-application-image-to-router-flash" title="Permanent link">&para;</a></h3>
+<p>From <code>ubuntu-lab</code>, upload the application TAR file to router flash:</p>
+<pre><code class="language-bash">scp hello-app.iosxe.tar admin@198.18.1.11:/flash:/hello-app.iosxe.tar
+</code></pre>
+<hr />
+<h2 id="step-2-kubernetes-manifests-preparation">Step 2: Kubernetes Manifests Preparation<a class="headerlink" href="#step-2-kubernetes-manifests-preparation" title="Permanent link">&para;</a></h2>
+<p>All Kubernetes YAML files must be created on <strong>ubuntu-lab</strong> exactly as shown in the following steps.</p>
+<hr />
+<h2 id="step-3-deploy-virtual-kubelet-on-cat8kv-task-1">Step 3: Deploy Virtual Kubelet on Cat8Kv-task-1<a class="headerlink" href="#step-3-deploy-virtual-kubelet-on-cat8kv-task-1" title="Permanent link">&para;</a></h2>
+<h3 id="31-vk-device-and-node-mapping">3.1 VK Device and Node Mapping<a class="headerlink" href="#31-vk-device-and-node-mapping" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>02_vk_deployment_config_r1.yaml</code></p>
+<pre><code class="language-bash">cat &gt; 02_vk_deployment_config_r1.yaml &lt;&lt; 'EOF'
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vk-config-r1
+  namespace: default
+data:
+  config.yaml: |
+    device:
+      name: cat8kv-router-r1
+      driver: XE
+      address: &quot;198.18.6.11&quot;
+      port: 443
+      username: admin
+      password: C1sco12345
+      tls:
+        enabled: true
+        insecureSkipVerify: true
+      networking:
+        dhcpEnabled: true
+        virtualPortGroup: &quot;0&quot;
+        defaultVRF: &quot;&quot;
+
+    kubelet:
+      node_name: &quot;cat8kv-node-r1&quot;
+      namespace: &quot;&quot;
+      update_interval: &quot;30s&quot;
+      os: &quot;Linux&quot;
+      node_internal_ip: &quot;198.18.6.11&quot;
+EOF
+</code></pre>
+<p>Apply the configuration:</p>
+<pre><code class="language-bash">kubectl apply -f 02_vk_deployment_config_r1.yaml
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code class="language-text">configmap/vk-config-r1 created
+</code></pre>
+<hr />
+<h3 id="32-virtual-kubelet-deployment">3.2 Virtual Kubelet Deployment<a class="headerlink" href="#32-virtual-kubelet-deployment" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>03_vk_deployment-r1.yaml</code></p>
+<pre><code class="language-bash">cat &gt; 03_vk_deployment-r1.yaml &lt;&lt; 'EOF'
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cisco-virtual-kubelet-r1
+  namespace: default
+  labels:
+    app: cisco-virtual-kubelet-r1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cisco-virtual-kubelet-r1
+  template:
+    metadata:
+      labels:
+        app: cisco-virtual-kubelet-r1
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: ubuntu-lab
+      containers:
+      - name: virtual-kubelet
+        image: containers.dmz.cisco.com:5000/cisco-virtual-kubelet:1.0.0
+        env:
+        - name: KUBECONFIG
+          value: &quot;/etc/kubernetes/kubeconfig.yaml&quot;
+        volumeMounts:
+        - name: kubeconfig-storage
+          mountPath: &quot;/etc/kubernetes&quot;
+          readOnly: true
+        - name: vk-config-storage
+          mountPath: &quot;/etc/virtual-kubelet&quot;
+          readOnly: true
+      volumes:
+      - name: kubeconfig-storage
+        configMap:
+          name: remote-kubeconfig
+          items:
+          - key: &quot;config&quot;
+            path: &quot;kubeconfig.yaml&quot;
+      - name: vk-config-storage
+        configMap:
+          name: vk-config-r1
+          items:
+          - key: &quot;config.yaml&quot;
+            path: &quot;config.yaml&quot;
+EOF
+</code></pre>
+<p>Apply the deployment:</p>
+<pre><code class="language-bash">kubectl apply -f 03_vk_deployment-r1.yaml
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code class="language-text">deployment.apps/cisco-virtual-kubelet-r1 created
+</code></pre>
+<hr />
+<h2 id="step-4-deploy-hello-app-pods-on-cat8kv-task-1">Step 4: Deploy hello-app Pods on Cat8Kv-task-1<a class="headerlink" href="#step-4-deploy-hello-app-pods-on-cat8kv-task-1" title="Permanent link">&para;</a></h2>
+<p><strong>File:</strong> <code>04_vk_pod_hello-app-r1.yaml</code></p>
+<pre><code class="language-bash">cat &gt; 04_vk_pod_hello-app-r1.yaml &lt;&lt; 'EOF'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: iox-xe-hello-app-pod-r1-1
+  namespace: default
+spec:
+  nodeName: cat8kv-node-r1
+  containers:
+  - name: test-app
+    image: flash:/hello-app.iosxe.tar
+    resources:
+      requests:
+        memory: &quot;4Mi&quot;
+        cpu: &quot;50m&quot;
+      limits:
+        memory: &quot;8Mi&quot;
+        cpu: &quot;75m&quot;
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: iox-xe-hello-app-pod-r1-2
+  namespace: default
+spec:
+  nodeName: cat8kv-node-r1
+  containers:
+  - name: test-app
+    image: flash:/hello-app.iosxe.tar
+    resources:
+      requests:
+        memory: &quot;4Mi&quot;
+        cpu: &quot;50m&quot;
+      limits:
+        memory: &quot;8Mi&quot;
+        cpu: &quot;75m&quot;
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: iox-xe-hello-app-pod-r1-3
+  namespace: default
+spec:
+  nodeName: cat8kv-node-r1
+  containers:
+  - name: test-app
+    image: flash:/hello-app.iosxe.tar
+    resources:
+      requests:
+        memory: &quot;4Mi&quot;
+        cpu: &quot;50m&quot;
+      limits:
+        memory: &quot;8Mi&quot;
+        cpu: &quot;75m&quot;
+EOF
+</code></pre>
+<p>Apply the pods:</p>
+<pre><code class="language-bash">kubectl apply -f 04_vk_pod_hello-app-r1.yaml
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code class="language-text">pod/iox-xe-hello-app-pod-r1-1 created
+pod/iox-xe-hello-app-pod-r1-2 created
+pod/iox-xe-hello-app-pod-r1-3 created
+</code></pre>
+<hr />
+<h2 id="step-5-deploy-additional-hello-app-pods-on-cat8kv-task-3">Step 5: Deploy additional hello-app Pods on Cat8Kv-task-3<a class="headerlink" href="#step-5-deploy-additional-hello-app-pods-on-cat8kv-task-3" title="Permanent link">&para;</a></h2>
+<p>Update the file <code>04_vk_pod_hello-app-r3.yaml</code> with additional Pods targeting <strong>cat8kv-node-r3</strong>:</p>
+<pre><code class="language-bash">nano 04_vk_pod_hello-app-r3.yaml
+</code></pre>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: iox-xe-hello-app-pod-r3-1
+  namespace: default
+spec:
+  nodeName: cat8kv-node-r3
+  containers:
+  - name: test-app
+    image: flash:/hello-app.iosxe.tar
+    resources:
+      requests:
+        memory: &quot;4Mi&quot;
+        cpu: &quot;50m&quot;
+      limits:
+        memory: &quot;8Mi&quot;
+        cpu: &quot;75m&quot;
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: iox-xe-hello-app-pod-r3-2
+  namespace: default
+spec:
+  nodeName: cat8kv-node-r3
+  containers:
+  - name: test-app
+    image: flash:/hello-app.iosxe.tar
+    resources:
+      requests:
+        memory: &quot;4Mi&quot;
+        cpu: &quot;50m&quot;
+      limits:
+        memory: &quot;8Mi&quot;
+        cpu: &quot;75m&quot;
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: iox-xe-hello-app-pod-r3-3
+  namespace: default
+spec:
+  nodeName: cat8kv-node-r3
+  containers:
+  - name: test-app
+    image: flash:/hello-app.iosxe.tar
+    resources:
+      requests:
+        memory: &quot;4Mi&quot;
+        cpu: &quot;50m&quot;
+      limits:
+        memory: &quot;8Mi&quot;
+        cpu: &quot;75m&quot;
+</code></pre>
+<p>Apply the pods:</p>
+<pre><code class="language-bash">kubectl apply -f 04_vk_pod_hello-app-r3.yaml
+</code></pre>
+<p><strong>Expected Output:</strong></p>
+<pre><code class="language-text">pod/iox-xe-hello-app-pod-r3-1 created
+pod/iox-xe-hello-app-pod-r3-2 created
+pod/iox-xe-hello-app-pod-r3-3 created
+</code></pre>
+<hr />
+<h2 id="step-6-monitor-deployments-and-pods-using-k9s">Step 6: Monitor Deployments and Pods using k9s<a class="headerlink" href="#step-6-monitor-deployments-and-pods-using-k9s" title="Permanent link">&para;</a></h2>
+<p>In this step, you will use <strong>k9s</strong> to visually monitor the status of Virtual Kubelet deployments and IOS-XE App Hosting Pods mapped to Cat8Kv routers.</p>
+<p>This provides real-time visibility into:</p>
+<ul>
+<li>Virtual Kubelet health</li>
+<li>Pod scheduling to Cat8Kv nodes</li>
+<li>Pod runtime state and IP allocation</li>
+</ul>
+<hr />
+<h3 id="61-launch-k9s">6.1 Launch k9s<a class="headerlink" href="#61-launch-k9s" title="Permanent link">&para;</a></h3>
+<p>From <code>ubuntu-lab</code>, launch k9s:</p>
+<pre><code class="language-bash">k9s
+</code></pre>
+<p>Ensure the following context:</p>
+<ul>
+<li><strong>Cluster:</strong> default</li>
+<li><strong>Namespace:</strong> default</li>
+</ul>
+<p>If required, switch namespace inside k9s:</p>
+<pre><code class="language-text">:ns
+</code></pre>
+<p>Select <code>default</code>.</p>
+<hr />
+<h3 id="62-verify-virtual-kubelet-deployments">6.2 Verify Virtual Kubelet Deployments<a class="headerlink" href="#62-verify-virtual-kubelet-deployments" title="Permanent link">&para;</a></h3>
+<p>Inside k9s:</p>
+<ul>
+<li>Press <code>:deploy</code></li>
+<li>Verify the following deployments are in <strong>READY</strong> state:</li>
+</ul>
+<pre><code class="language-text">cisco-virtual-kubelet-r1
+cisco-virtual-kubelet-r2
+cisco-virtual-kubelet-r3
+</code></pre>
+<p>Each Virtual Kubelet should show:</p>
+<ul>
+<li><code>READY: 1/1</code></li>
+<li><code>STATUS: Running</code></li>
+<li>Scheduled on node: <code>ubuntu-lab</code></li>
+</ul>
+<hr />
+<h3 id="63-verify-hello-app-pods-on-cat8kv-nodes">6.3 Verify hello-app Pods on Cat8Kv Nodes<a class="headerlink" href="#63-verify-hello-app-pods-on-cat8kv-nodes" title="Permanent link">&para;</a></h3>
+<p>Inside k9s:</p>
+<ul>
+<li>Press <code>:po</code> to view Pods</li>
+<li>Confirm the following Pods are <strong>Running</strong> and mapped to Cat8Kv nodes:</li>
+</ul>
+<pre><code class="language-text">iox-xe-hello-app-pod-r1-*  → cat8kv-node-r1
+iox-xe-hello-app-pod-r2-*  → cat8kv-node-r2
+iox-xe-hello-app-pod-r3-*  → cat8kv-node-r3
+</code></pre>
+<p>Each Pod should display:</p>
+<ul>
+<li><code>READY: 1/1</code></li>
+<li><code>STATUS: Running</code></li>
+<li>A valid IP from the App Hosting DHCP pool</li>
+</ul>
+<hr />
+<h3 id="64-sample-k9s-output-pods-view">6.4 Sample k9s Output (Pods View)<a class="headerlink" href="#64-sample-k9s-output-pods-view" title="Permanent link">&para;</a></h3>
+<p>The following sample output shows Virtual Kubelet deployments and hello-app Pods running across Cat8Kv routers:</p>
+<pre><code class="language-text">NAME                                      READY  STATUS   RESTARTS  IP               NODE              AGE
+cisco-virtual-kubelet-r1-*                1/1    Running  0         10.0.0.155       ubuntu-lab        10h
+cisco-virtual-kubelet-r2-*                1/1    Running  4         10.0.0.107       ubuntu-lab        11h
+cisco-virtual-kubelet-r3-*                1/1    Running  0         10.0.0.232       ubuntu-lab        10h
+
+iox-xe-hello-app-pod-r1-1                 1/1    Running  0         198.18.100.4     cat8kv-node-r1    10h
+iox-xe-hello-app-pod-r1-2                 1/1    Running  0         198.18.100.2     cat8kv-node-r1    10h
+iox-xe-hello-app-pod-r1-3                 1/1    Running  0         198.18.100.3     cat8kv-node-r1    10h
+
+iox-xe-hello-app-pod-r2                   1/1    Running  0         198.18.101.2     cat8kv-node-r2    10h
+
+iox-xe-hello-app-pod-r3-1                 1/1    Running  0         198.18.102.180   cat8kv-node-r3    10h
+iox-xe-hello-app-pod-r3-2                 1/1    Running  0         198.18.102.197   cat8kv-node-r3    10h
+iox-xe-hello-app-pod-r3-3                 1/1    Running  0         198.18.102.182   cat8kv-node-r3    10h
+</code></pre>
+<hr />
+<h3 id="65-useful-k9s-shortcuts-optional">6.5 Useful k9s Shortcuts (Optional)<a class="headerlink" href="#65-useful-k9s-shortcuts-optional" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:po</code></td>
+<td>View Pods</td>
+</tr>
+<tr>
+<td><code>:deploy</code></td>
+<td>View Deployments</td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td>Describe selected resource</td>
+</tr>
+<tr>
+<td><code>l</code></td>
+<td>View logs</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>Open shell (if supported)</td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td>Quit k9s</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>✔️ At this point, you have end-to-end visibility of IOS-XE App Hosting workloads scheduled via Kubernetes and executed natively on Cat8Kv routers using Cisco Virtual Kubelet.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
