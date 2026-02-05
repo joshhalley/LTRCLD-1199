@@ -162,7 +162,7 @@ dir bootflash: | include tar
 
 ---
 
-## Step 3: SCP mrtg to Router
+## Step 3: SCP Wireshark to Router
 
 * Login to cat8Kv-task-2 using 198.18.1.12
 * Copy the TAR image from your lab ubuntu to the router

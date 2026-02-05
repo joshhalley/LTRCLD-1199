@@ -309,7 +309,7 @@ app-hosting install appid mrtg package bootflash:mrtg.tar
 In case the following error is seen,
 
 ```text
-ioxman: app-hosting: Failed to install swiss_knife: App signature validation is required. App signature file package.cert or package.sign not found in package
+ioxman: app-hosting: Failed to install mrtg: App signature validation is required. App signature file package.cert or package.sign not found in package
 ```
 
 Enable and disable app hosting signature verification and run the install command again.

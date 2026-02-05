@@ -422,6 +422,7 @@ Inside k9s:
 * Verify the following deployments are in **READY** state:
 
 ```text
+pod/iox-xe-hello-app-pod-r3-0 unchanged
 cisco-virtual-kubelet-r1
 cisco-virtual-kubelet-r2
 cisco-virtual-kubelet-r3
