@@ -198,19 +198,19 @@ configmap/remote-kubeconfig created
 
 ---
 
-### 5.3 File: `02_vk_deployment_config.yaml` (VK Device + Node Mapping)
+### 5.3 File: `02_vk_deployment_config-r3.yaml` (VK Device + Node Mapping)
 
 ```bash
-cat > 02_vk_deployment_config.yaml << 'EOF'
+cat > 02_vk_deployment_config_r3.yaml << 'EOF'
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: vk-config
+  name: vk-config-r3
   namespace: default
 data:
   config.yaml: |
     device:
-      name: cat8kv-router
+      name: cat8kv-router-r3
       driver: XE
       address: "198.18.8.13"
       port: 443
@@ -225,7 +225,7 @@ data:
         defaultVRF: ""
 
     kubelet:
-      node_name: "cat8kv-node"
+      node_name: "cat8kv-node-r3"
       namespace: ""
       update_interval: "30s"
       os: "Linux"
@@ -236,37 +236,39 @@ EOF
 Apply:
 
 ```bash
-kubectl apply -f 02_vk_deployment_config.yaml
+kubectl apply -f 02_vk_deployment_config_r3.yaml
 ```
 
 Expected:
 
 ```text
-configmap/vk-config created
+configmap/vk-config-r3 created
 ```
 
 ---
 
-### 5.4 File: `03_vk_deployment.yaml` (Virtual Kubelet Deployment)
+### 5.4 File: `03_vk_deployment_r3.yaml` (Virtual Kubelet Deployment)
 
 ```bash
-cat > 03_vk_deployment.yaml << 'EOF'
+cat > 03_vk_deployment-r3.yaml << 'EOF'
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cisco-virtual-kubelet
+  name: cisco-virtual-kubelet-r3
   labels:
-    app: cisco-virtual-kubelet
+    app: cisco-virtual-kubelet-r3
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cisco-virtual-kubelet
+      app: cisco-virtual-kubelet-r3
   template:
     metadata:
       labels:
-        app: cisco-virtual-kubelet
+        app: cisco-virtual-kubelet-r3
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: ubuntu-lab
       containers:
       - name: virtual-kubelet
         image: containers.dmz.cisco.com:5000/cisco-virtual-kubelet:1.0.0
@@ -289,7 +291,7 @@ spec:
             path: "kubeconfig.yaml"
       - name: vk-config-storage
         configMap:
-          name: vk-config
+          name: vk-config-r3
           items:
           - key: "config.yaml"
             path: "config.yaml"
@@ -299,51 +301,51 @@ EOF
 Apply:
 
 ```bash
-kubectl apply -f 03_vk_deployment.yaml
+kubectl apply -f 03_vk_deployment-r3.yaml
 ```
 
 Expected:
 
 ```text
-deployment.apps/cisco-virtual-kubelet created
+deployment.apps/cisco-virtual-kubelet-r3 created
 ```
 
 ---
 
-### 5.5 File: `04_vk_pod_hello-app.yaml` (hello-app Pod on C8Kv)
+### 5.5 File: `04_vk_pod_hello-app-r3.yaml` (hello-app Pod on C8Kv)
 
 ```bash
-cat > 04_vk_pod_hello-app.yaml << 'EOF'
+cat > 04_vk_pod_hello-app-r3.yaml << 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
-  name: iox-xe-hello-app-pod
+  name: iox-xe-hello-app-pod-r3-0
   namespace: default
 spec:
-  nodeName: cat8kv-node
+  nodeName: cat8kv-node-r3
   containers:
   - name: test-app
     image: flash:/hello-app.iosxe.tar
     resources:
       requests:
-        memory: "64Mi"
-        cpu: "250m"
+        memory: "4Mi"
+        cpu: "50m"
       limits:
-        memory: "128Mi"
-        cpu: "500m"
+        memory: "8Mi"
+        cpu: "75m"
 EOF
 ```
 
 Apply:
 
 ```bash
-kubectl apply -f 04_vk_pod_hello-app.yaml
+kubectl apply -f 04_vk_pod_hello-app-r3.yaml
 ```
 
 Expected:
 
 ```text
-pod/iox-xe-hello-app-pod created
+pod/iox-xe-hello-app-pod-r3-0 created
 ```
 
 ---
@@ -362,12 +364,12 @@ Expected progression:
 dcloud@ubuntu-lab:~$ kubectl get pods -o wide -w
 NAME                                     READY   STATUS              RESTARTS   AGE   IP          NODE          NOMINATED NODE   READINESS GATES
 cisco-virtual-kubelet-7b58bd86db-mvnr2   1/1     Running             0          54s   10.0.0.61   ubuntu-lab    <none>           <none>
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          8s    0.0.0.0     cat8kv-node   <none>           <none>
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          13s   0.0.0.0     cat8kv-node   <none>           <none>
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          18s   0.0.0.0     cat8kv-node   <none>           <none>
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          23s   198.18.102.175   cat8kv-node   <none>           <none>
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          28s   198.18.102.175   cat8kv-node   <none>           <none>
-iox-xe-hello-app-pod                     0/1     ContainerCreating   0          34s   198.18.102.175   cat8kv-node   <none>           <none>
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          8s    0.0.0.0     cat8kv-node-r3   <none>           <none>
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          13s   0.0.0.0     cat8kv-node-r3   <none>           <none>
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          18s   0.0.0.0     cat8kv-node-r3   <none>           <none>
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          23s   198.18.102.175   cat8kv-node-r3   <none>           <none>
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          28s   198.18.102.175   cat8kv-node-r3   <none>           <none>
+iox-xe-hello-app-pod-r3-0                     0/1     ContainerCreating   0          34s   198.18.102.175   cat8kv-node-r3   <none>           <none>
 
 ```
 
@@ -377,7 +379,7 @@ Expected output after successful deployment
 dcloud@ubuntu-lab:~$ kubectl get pods -o wide -w
 NAME                                     READY   STATUS    RESTARTS   AGE     IP               NODE          NOMINATED NODE   READINESS GATES
 cisco-virtual-kubelet-7b58bd86db-mvnr2   1/1     Running   0          8m9s    10.0.0.61        ubuntu-lab    <none>           <none>
-iox-xe-hello-app-pod                     1/1     Running   0          7m23s   198.18.102.175   cat8kv-node   <none>           <none>
+iox-xe-hello-app-pod-r3-0                1/1     Running   0          7m23s   198.18.102.175   cat8kv-node-r3   <none>           <none>
 ```
 
 ---
