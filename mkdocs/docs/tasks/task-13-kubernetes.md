@@ -372,6 +372,7 @@ kubectl apply -f 04_vk_pod_hello-app-r3.yaml
 **Expected Output:**
 
 ```text
+pod/iox-xe-hello-app-pod-r3-0 unchanged
 pod/iox-xe-hello-app-pod-r3-1 created
 pod/iox-xe-hello-app-pod-r3-2 created
 pod/iox-xe-hello-app-pod-r3-3 created
@@ -422,9 +423,7 @@ Inside k9s:
 * Verify the following deployments are in **READY** state:
 
 ```text
-pod/iox-xe-hello-app-pod-r3-0 unchanged
 cisco-virtual-kubelet-r1
-cisco-virtual-kubelet-r2
 cisco-virtual-kubelet-r3
 ```
 
@@ -445,7 +444,6 @@ Inside k9s:
 
 ```text
 iox-xe-hello-app-pod-r1-*  → cat8kv-node-r1
-iox-xe-hello-app-pod-r2-*  → cat8kv-node-r2
 iox-xe-hello-app-pod-r3-*  → cat8kv-node-r3
 ```
 
@@ -464,15 +462,13 @@ The following sample output shows Virtual Kubelet deployments and hello-app Pods
 ```text
 NAME                                      READY  STATUS   RESTARTS  IP               NODE              AGE
 cisco-virtual-kubelet-r1-*                1/1    Running  0         10.0.0.155       ubuntu-lab        10h
-cisco-virtual-kubelet-r2-*                1/1    Running  4         10.0.0.107       ubuntu-lab        11h
 cisco-virtual-kubelet-r3-*                1/1    Running  0         10.0.0.232       ubuntu-lab        10h
 
 iox-xe-hello-app-pod-r1-1                 1/1    Running  0         198.18.100.4     cat8kv-node-r1    10h
 iox-xe-hello-app-pod-r1-2                 1/1    Running  0         198.18.100.2     cat8kv-node-r1    10h
 iox-xe-hello-app-pod-r1-3                 1/1    Running  0         198.18.100.3     cat8kv-node-r1    10h
 
-iox-xe-hello-app-pod-r2                   1/1    Running  0         198.18.101.2     cat8kv-node-r2    10h
-
+iox-xe-hello-app-pod-r3-0                 1/1    Running  0         198.18.102.174   cat8kv-node-r3    11h
 iox-xe-hello-app-pod-r3-1                 1/1    Running  0         198.18.102.180   cat8kv-node-r3    10h
 iox-xe-hello-app-pod-r3-2                 1/1    Running  0         198.18.102.197   cat8kv-node-r3    10h
 iox-xe-hello-app-pod-r3-3                 1/1    Running  0         198.18.102.182   cat8kv-node-r3    10h
