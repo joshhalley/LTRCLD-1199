@@ -15,6 +15,8 @@
         <link rel="canonical" href="https://joshhalley.github.io/LTRCLD-1199/tasks/task-14-ssh-keys/">
       
       
+        <link rel="prev" href="../task-13-kubernetes/">
+      
       
       
         
@@ -25,7 +27,7 @@
     
     
       
-        <title>Task14: Passwordless Access using SSH Keys - LTRCLD-1199 – Containers on IOS-XE</title>
+        <title>Task 14: – Passwordless Access using SSH Keys - LTRCLD-1199 – Containers on IOS-XE</title>
       
     
     
@@ -102,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Task14: Passwordless Access using SSH Keys
+              Task 14: – Passwordless Access using SSH Keys
             
           </span>
         </div>
@@ -249,18 +251,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -281,7 +285,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -623,6 +627,253 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-13-kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 13: – Deploy multiple hello-app using Virtual Kubelet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 14: – Passwordless Access using SSH Keys
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 14: – Passwordless Access using SSH Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-create-ssh-key-on-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Create SSH Key on Ubuntu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-copy-public-key-from-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Copy Public Key from Ubuntu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-configure-ssh-public-key-on-cat8kv-routers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Configure SSH Public Key on Cat8Kv Routers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-ensure-ssh-is-enabled-on-the-router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Ensure SSH is Enabled on the Router
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-ssh-from-ubuntu-using-the-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: SSH from Ubuntu using the Key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-simplify-access-using-ssh-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Simplify Access using SSH Config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 6: Simplify Access using SSH Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sample Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-execute-router-commands-directly-from-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Execute Router Commands Directly from Ubuntu
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 7: Execute Router Commands Directly from Ubuntu">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-output_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sample Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 

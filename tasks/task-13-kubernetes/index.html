@@ -15,6 +15,10 @@
         <link rel="canonical" href="https://joshhalley.github.io/LTRCLD-1199/tasks/task-13-kubernetes/">
       
       
+        <link rel="prev" href="../task-12-telegraf/">
+      
+      
+        <link rel="next" href="../task-14-ssh-keys/">
       
       
         
@@ -25,7 +29,7 @@
     
     
       
-        <title>Task 13: Deploy multiple hello-app using Virtual Kubelet - LTRCLD-1199 – Containers on IOS-XE</title>
+        <title>Task 13: – Deploy multiple hello-app using Virtual Kubelet - LTRCLD-1199 – Containers on IOS-XE</title>
       
     
     
@@ -102,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Task 13: Deploy multiple hello-app using Virtual Kubelet
+              Task 13: – Deploy multiple hello-app using Virtual Kubelet
             
           </span>
         </div>
@@ -249,18 +253,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -281,7 +287,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -628,6 +634,364 @@
 
               
             
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 13: – Deploy multiple hello-app using Virtual Kubelet
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 13: – Deploy multiple hello-app using Virtual Kubelet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lab-topology-and-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab Topology and Components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-router-preparation-cat8kv-task-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Router Preparation (cat8kv-task-1)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 1: Router Preparation (cat8kv-task-1)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-router-access-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Router Access Details
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-dhcp-server-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 DHCP Server Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-enable-restconf-and-https-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Enable RESTCONF and HTTPS Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-upload-application-image-to-router-flash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Upload Application Image to Router Flash
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-kubernetes-manifests-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Kubernetes Manifests Preparation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-deploy-virtual-kubelet-on-cat8kv-task-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Deploy Virtual Kubelet on Cat8Kv-task-1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 3: Deploy Virtual Kubelet on Cat8Kv-task-1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-vk-device-and-node-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 VK Device and Node Mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-virtual-kubelet-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Virtual Kubelet Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-deploy-hello-app-pods-on-cat8kv-task-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Deploy hello-app Pods on Cat8Kv-task-1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-deploy-additional-hello-app-pods-on-cat8kv-task-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Deploy additional hello-app Pods on Cat8Kv-task-3
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-monitor-deployments-and-pods-using-k9s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Monitor Deployments and Pods using k9s
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 6: Monitor Deployments and Pods using k9s">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-launch-k9s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Launch k9s
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-verify-virtual-kubelet-deployments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Verify Virtual Kubelet Deployments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-verify-hello-app-pods-on-cat8kv-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Verify hello-app Pods on Cat8Kv Nodes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-sample-k9s-output-pods-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Sample k9s Output (Pods View)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#65-useful-k9s-shortcuts-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Useful k9s Shortcuts (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task-14-ssh-keys/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Task 14: – Passwordless Access using SSH Keys
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -882,6 +1246,23 @@
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#65-useful-k9s-shortcuts-optional" class="md-nav__link">
@@ -1300,7 +1681,7 @@ iox-xe-hello-app-pod-r3-1                 1/1    Running  0         198.18.102.1
 iox-xe-hello-app-pod-r3-2                 1/1    Running  0         198.18.102.197   cat8kv-node-r3    10h
 iox-xe-hello-app-pod-r3-3                 1/1    Running  0         198.18.102.182   cat8kv-node-r3    10h
 </code></pre>
-<hr />
+<h2 id="_1"><img alt="Example" src="../../images/k9s.jpg" /><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <h3 id="65-useful-k9s-shortcuts-optional">6.5 Useful k9s Shortcuts (Optional)<a class="headerlink" href="#65-useful-k9s-shortcuts-optional" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
