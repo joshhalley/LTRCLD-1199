@@ -56,7 +56,7 @@ To get the most value from this lab, you should be familiar with:
 
 ## Lab Topology
 
-Participants do not need access to the `Ubuntu Mgmt` 1, `Ubuntu Mgmt 2` and `Infra Cat8Kv` to execute this lab.
+Participants do not need access to the `Ubuntu Mgmt 1`, `Ubuntu Mgmt 2` and `Infra Cat8Kv` to execute this lab.
 
 ![Lab Topology](images/topology.jpg)
 
@@ -87,6 +87,6 @@ Use the following information to access the lab devices via Out-of-Band (OOB).
 * LAN IP is towards LAB Ubuntu
 * WAN IP is towards Mgmt Ubuntu, other Cat8Kvs and Internet
 * Container Gateway is the IP of the virtualportgroup interface, which will be default Gateway for all containers on that router
-* Container IPs will be part of respective Gateway subnet stating from .5
+* Container IPs will be part of respective Gateway subnet starting from .5
 
 ---

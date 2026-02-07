@@ -24,7 +24,7 @@
 
 ---
 
-This task focuses on deploying and managing a containerized application on a **Cisco IOS XE Router** router using **Terraform (Infrastructure as Code)**.
+This task focuses on deploying and managing a containerized application on a **Cisco IOS XE Router** using **Terraform (Infrastructure as Code)**.
 
 You will:
 
@@ -43,7 +43,8 @@ Before starting **Task-2**, the C8000v router must be prepared for **RESTCONF** 
 
 Terraform uses RESTCONF APIs to manage App-Hosting resources, and the lab container images are **unsigned**, so signature verification must be disabled.
 
-Run the following commands on the **cat8Kv-task-2** SSH 198.18.1.12:
+Run the following commands on the **cat8Kv-task-2**  
+* SSH 198.18.1.12:
 
 ```ios
 conf t
