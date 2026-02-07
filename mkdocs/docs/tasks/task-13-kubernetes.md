@@ -295,9 +295,9 @@ spec:
 EOF
 ```
 * You now have one Pod per file  
-04_vk_pod_hello-app_r1_1.yaml  
-04_vk_pod_hello-app_r1_2.yaml  
-04_vk_pod_hello-app_r1_3.yaml  
+04_vk_pod_hello-app-r1-1.yaml  
+04_vk_pod_hello-app-r1-2.yaml  
+04_vk_pod_hello-app-r1-3.yaml 
 
 * Simple sequential script
 ```bash
@@ -310,9 +310,9 @@ nano deploy_r1_apps.sh
 set -e
 
 PODS=(
-  04_vk_pod_hello-app_r1_1.yaml
-  04_vk_pod_hello-app_r1_2.yaml
-  04_vk_pod_hello-app_r1_3.yaml
+  04_vk_pod_hello-app-r1-1.yaml  
+  04_vk_pod_hello-app-r1-2.yaml  
+  04_vk_pod_hello-app-r1-3.yaml 
 )
 
 for pod in "${PODS[@]}"; do
@@ -419,9 +419,9 @@ spec:
 EOF
 ```
 * You now have one Pod per file  
-04_vk_pod_hello-app_r3_1.yaml  
-04_vk_pod_hello-app_r3_2.yaml  
-04_vk_pod_hello-app_r3_3.yaml  
+04_vk_pod_hello-app-r3-1.yaml  
+04_vk_pod_hello-app-r3-2.yaml  
+04_vk_pod_hello-app-r3-3.yaml  
 
 * Simple sequential script
 ```bash
@@ -434,9 +434,9 @@ nano deploy_r3apps.sh
 set -e
 
 PODS=(
-  04_vk_pod_hello-app_r3_1.yaml
-  04_vk_pod_hello-app_r3_2.yaml
-  04_vk_pod_hello-app_r3_3.yaml
+ 04_vk_pod_hello-app-r3-1.yaml  
+ 04_vk_pod_hello-app-r3-2.yaml  
+ 04_vk_pod_hello-app-r3-3.yaml 
 )
 
 for pod in "${PODS[@]}"; do
