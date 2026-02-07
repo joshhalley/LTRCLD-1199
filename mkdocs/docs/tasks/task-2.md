@@ -8,7 +8,7 @@
 - [Step 1: Check Container Registry and retrieve image](#step-1-check-container-registry-and-retrieve-image)
 - [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
 - [Step 3: SCP swiss-knife to Router](#step-3-scp-swiss-knife-to-router)
-- [Step 3: SCP Wireshark to Router](#step-3-scp-wireshark-to-router)
+- [Step 4: SCP Wireshark to Router](#step-4-scp-wireshark-to-router)
 - [Step 5: Verify Tool Versions](#step-5-verify-tool-versions)
 - [Step 6: Clone the App-Hosting Terraform Provider](#step-6-clone-the-app-hosting-terraform-provider)
 - [Step 7: Configure Terraform to Use the Local Provider](#step-7-configure-terraform-to-use-the-local-provider)
