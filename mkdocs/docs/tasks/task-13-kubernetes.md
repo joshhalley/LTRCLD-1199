@@ -1,14 +1,3 @@
-You’re right — **my “full corrected output” did not fully preserve everything you originally provided**, specifically:
-
-* ✅ the **k9s image** line: `![Example](../images/k9s.jpg)`
-* ✅ the **Expected Output** blocks for **both** deploy scripts
-* ✅ your **R3 “pod … unchanged”** line that you had in the sample output
-
-Below is the **FULL file**, corrected for formatting/indexing/consistency, **while preserving everything from your original text** (including the image line and the expected outputs). You can **copy + replace** the whole page.
-
----
-
-````md
 # Task 13: Deploy multiple hello-app using Virtual Kubelet
 
 [⬅️ Back to Main Menu](../index.md)
@@ -67,7 +56,7 @@ Login to the router using SSH:
 
 ```bash
 ssh admin@198.18.1.11
-````
+```
 
 ---
 
