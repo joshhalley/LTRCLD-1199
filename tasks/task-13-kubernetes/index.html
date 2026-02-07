@@ -1474,8 +1474,11 @@ EOF
 </code></pre>
 <hr />
 <h2 id="step-4-deploy-hello-app-pods-on-cat8kv-task-1">Step 4: Deploy hello-app Pods on Cat8Kv-task-1<a class="headerlink" href="#step-4-deploy-hello-app-pods-on-cat8kv-task-1" title="Permanent link">&para;</a></h2>
-<p><strong>File:</strong> <code>04_vk_pod_hello-app-r1.yaml</code></p>
-<pre><code class="language-bash">cat &gt; 04_vk_pod_hello-app-r1.yaml &lt;&lt; 'EOF'
+<ul>
+<li>Create the below files one per pod
+<strong>File:</strong> <code>04_vk_pod_hello-app-r1-1.yaml</code></li>
+</ul>
+<pre><code class="language-bash">cat &gt; 04_vk_pod_hello-app-r1-1.yaml &lt;&lt; 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1494,6 +1497,10 @@ spec:
         memory: &quot;8Mi&quot;
         cpu: &quot;75m&quot;
 ---
+EOF
+</code></pre>
+<p><strong>File:</strong> <code>04_vk_pod_hello-app-r1-2.yaml</code></p>
+<pre><code class="language-bash">cat &gt; 04_vk_pod_hello-app-r1-2.yaml &lt;&lt; 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1511,7 +1518,10 @@ spec:
       limits:
         memory: &quot;8Mi&quot;
         cpu: &quot;75m&quot;
----
+EOF
+</code></pre>
+<p><strong>File:</strong> <code>04_vk_pod_hello-app-r1-3.yaml</code></p>
+<pre><code class="language-bash">cat &gt; 04_vk_pod_hello-app-r1-3.yaml &lt;&lt; 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1531,8 +1541,50 @@ spec:
         cpu: &quot;75m&quot;
 EOF
 </code></pre>
-<p>Apply the pods:</p>
-<pre><code class="language-bash">kubectl apply -f 04_vk_pod_hello-app-r1.yaml
+<ul>
+<li>
+<p>You now have one Pod per file
+04_vk_pod_hello-app_r1_1.yaml
+04_vk_pod_hello-app_r1_2.yaml
+04_vk_pod_hello-app_r1_3.yaml</p>
+</li>
+<li>
+<p>Simple sequential script</p>
+</li>
+</ul>
+<pre><code class="language-bash">nano deploy_r1_apps.sh
+</code></pre>
+<ul>
+<li>Paste this</li>
+</ul>
+<pre><code class="language-bash">#!/usr/bin/env bash
+
+set -e
+
+PODS=(
+  04_vk_pod_hello-app_r1_1.yaml
+  04_vk_pod_hello-app_r1_2.yaml
+  04_vk_pod_hello-app_r1_3.yaml
+)
+
+for pod in &quot;${PODS[@]}&quot;; do
+  echo &quot;Applying $pod ...&quot;
+  kubectl apply -f &quot;$pod&quot;
+  echo &quot;Sleeping 30 seconds to avoid app-hosting race...&quot;
+  sleep 30
+done
+
+echo &quot;All pods applied.&quot;
+</code></pre>
+<ul>
+<li>Make it executable:</li>
+</ul>
+<pre><code class="language-bash">chmod +x deploy_r1_apps.sh
+</code></pre>
+<ul>
+<li>Apply the pods:</li>
+</ul>
+<pre><code class="language-bash">./deploy_r1_apps.sh
 </code></pre>
 <p><strong>Expected Output:</strong></p>
 <pre><code class="language-text">pod/iox-xe-hello-app-pod-r1-1 created
@@ -1541,10 +1593,12 @@ pod/iox-xe-hello-app-pod-r1-3 created
 </code></pre>
 <hr />
 <h2 id="step-5-deploy-additional-hello-app-pods-on-cat8kv-task-3">Step 5: Deploy additional hello-app Pods on Cat8Kv-task-3<a class="headerlink" href="#step-5-deploy-additional-hello-app-pods-on-cat8kv-task-3" title="Permanent link">&para;</a></h2>
-<p>Update the file <code>04_vk_pod_hello-app-r3.yaml</code> with additional Pods targeting <strong>cat8kv-node-r3</strong>:</p>
-<pre><code class="language-bash">nano 04_vk_pod_hello-app-r3.yaml
-</code></pre>
-<pre><code class="language-yaml">apiVersion: v1
+<ul>
+<li>Create the below files one per pod
+<strong>File:</strong> <code>04_vk_pod_hello-app-r3-1.yaml</code></li>
+</ul>
+<pre><code class="language-bash">cat &gt; 04_vk_pod_hello-app-r3-1.yaml &lt;&lt; 'EOF'
+apiVersion: v1
 kind: Pod
 metadata:
   name: iox-xe-hello-app-pod-r3-1
@@ -1562,6 +1616,10 @@ spec:
         memory: &quot;8Mi&quot;
         cpu: &quot;75m&quot;
 ---
+EOF
+</code></pre>
+<p><strong>File:</strong> <code>04_vk_pod_hello-app-r3-2.yaml</code></p>
+<pre><code class="language-bash">cat &gt; 04_vk_pod_hello-app-r3-2.yaml &lt;&lt; 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1579,7 +1637,10 @@ spec:
       limits:
         memory: &quot;8Mi&quot;
         cpu: &quot;75m&quot;
----
+EOF
+</code></pre>
+<p><strong>File:</strong> <code>04_vk_pod_hello-app-r3-3.yaml</code></p>
+<pre><code class="language-bash">cat &gt; 04_vk_pod_hello-app-r3-3.yaml &lt;&lt; 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1597,9 +1658,52 @@ spec:
       limits:
         memory: &quot;8Mi&quot;
         cpu: &quot;75m&quot;
+EOF
 </code></pre>
-<p>Apply the pods:</p>
-<pre><code class="language-bash">kubectl apply -f 04_vk_pod_hello-app-r3.yaml
+<ul>
+<li>
+<p>You now have one Pod per file
+04_vk_pod_hello-app_r3_1.yaml
+04_vk_pod_hello-app_r3_2.yaml
+04_vk_pod_hello-app_r3_3.yaml</p>
+</li>
+<li>
+<p>Simple sequential script</p>
+</li>
+</ul>
+<pre><code class="language-bash">nano deploy_r3apps.sh
+</code></pre>
+<ul>
+<li>Paste this</li>
+</ul>
+<pre><code class="language-bash">#!/usr/bin/env bash
+
+set -e
+
+PODS=(
+  04_vk_pod_hello-app_r3_1.yaml
+  04_vk_pod_hello-app_r3_2.yaml
+  04_vk_pod_hello-app_r3_3.yaml
+)
+
+for pod in &quot;${PODS[@]}&quot;; do
+  echo &quot;Applying $pod ...&quot;
+  kubectl apply -f &quot;$pod&quot;
+  echo &quot;Sleeping 30 seconds to avoid app-hosting race...&quot;
+  sleep 30
+done
+
+echo &quot;All pods applied.&quot;
+</code></pre>
+<ul>
+<li>Make it executable:</li>
+</ul>
+<pre><code class="language-bash">chmod +x deploy_r3_apps.sh
+</code></pre>
+<ul>
+<li>Apply the pods:</li>
+</ul>
+<pre><code class="language-bash">./deploy_r3_apps.sh
 </code></pre>
 <p><strong>Expected Output:</strong></p>
 <pre><code class="language-text">pod/iox-xe-hello-app-pod-r3-0 unchanged
