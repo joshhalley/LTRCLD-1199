@@ -17,9 +17,6 @@
 
 In this lab, `socat` is used to validate connectivity, simulate services, proxy traffic, generate traffic, transfer files, and inspect application flows running inside containers.
 
-Here’s a **clean, lab-ready section** you can drop **immediately after the intro**.
-It’s written in the same neutral, instructional tone you’ve been using elsewhere.
-
 ---
 
 ## Accessing the Lab Containers

@@ -70,8 +70,8 @@ Use the following information to access the lab devices via Out-of-Band (OOB).
 |--------------|---------------|----------------|------------|
 | Ubuntu LAB   | 198.18.1.100  | dcloud         | C1sco12345 |
 | cat8Kv-task-1| 198.18.1.11   | admin          | C1sco12345 |
-| cat8Kv-task-2| 198.18.2.12   | admin          | C1sco12345 |
-| cat8Kv-task-3| 198.18.2.13   | admin          | C1sco12345 |
+| cat8Kv-task-2| 198.18.1.12   | admin          | C1sco12345 |
+| cat8Kv-task-3| 198.18.1.13   | admin          | C1sco12345 |
 | Windows LAB  | 198.18.1.20   | administrator  | C1sco12345 |
 
 ---
@@ -81,8 +81,8 @@ Use the following information to access the lab devices via Out-of-Band (OOB).
 | Name         | LAN IP        | WAN IP         | Container GW   |
 |--------------|---------------|----------------|----------------|
 | cat8Kv-task-1| 198.18.9.11   | 198.18.6.11    | 198.18.100.1   |
-| cat8Kv-task-2| 198.18.9.12   | 198.18.7.11    | 198.18.101.1   |
-| cat8Kv-task-3| 198.18.9.13   | 198.18.8.11    | 198.18.102.1   |
+| cat8Kv-task-2| 198.18.9.12   | 198.18.7.12    | 198.18.101.1   |
+| cat8Kv-task-3| 198.18.9.13   | 198.18.8.13    | 198.18.102.1   |
 
 * LAN IP is towards LAB Ubuntu
 * WAN IP is towards Mgmt Ubuntu, other Cat8Kvs and Internet

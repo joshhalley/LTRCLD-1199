@@ -7,8 +7,8 @@
 - [Prerequisites: Router Preparation](#prerequisites-router-preparation)
 - [Step 1: Check Container Registry and retrieve image](#step-1-check-container-registry-and-retrieve-image)
 - [Step 2: Create TAR Image from Docker](#step-2-create-tar-image-from-docker)
-- [Step 3: SCP File to Router](#step-3-scp-file-to-router)
-- [Step 4: Verify MD5 Hash](#step-4-verify-md5-hash)
+- [Step 3: SCP swiss-knife to Router](#step-3-scp-swiss-knife-to-router)
+- [Step 3: SCP Wireshark to Router](#step-3-scp-wireshark-to-router)
 - [Step 5: Verify Tool Versions](#step-5-verify-tool-versions)
 - [Step 6: Clone the App-Hosting Terraform Provider](#step-6-clone-the-app-hosting-terraform-provider)
 - [Step 7: Configure Terraform to Use the Local Provider](#step-7-configure-terraform-to-use-the-local-provider)
@@ -162,7 +162,7 @@ dir bootflash: | include tar
 
 ---
 
-## Step 3: SCP Wireshark to Router
+## Step 4: SCP Wireshark to Router
 
 * Login to cat8Kv-task-2 using 198.18.1.12
 * Copy the TAR image from your lab ubuntu to the router

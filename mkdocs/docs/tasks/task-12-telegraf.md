@@ -280,10 +280,11 @@ curl http://198.18.5.101:9090/api/v1/targets
 
 1. Open Grafana:
 
+Grafana runs on Mgmt node (pre-provisioned), access via LAB PC browser
+
 ```text
 http://198.18.1.101:3000
 ```
-The above link can be opned directly from the LAB PC
 
 Login: `admin / C1sco12345`
 
