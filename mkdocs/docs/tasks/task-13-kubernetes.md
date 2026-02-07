@@ -318,8 +318,8 @@ PODS=(
 for pod in "${PODS[@]}"; do
   echo "Applying $pod ..."
   kubectl apply -f "$pod"
-  echo "Sleeping 30 seconds to avoid app-hosting race..."
-  sleep 30
+  echo "Sleeping 60 seconds to avoid app-hosting race..."
+  sleep 60
 done
 
 echo "All pods applied."
@@ -425,7 +425,7 @@ EOF
 
 * Simple sequential script
 ```bash
-nano deploy_r3apps.sh
+nano deploy_r3_apps.sh
 ```
 * Paste this
 ```bash
@@ -442,8 +442,8 @@ PODS=(
 for pod in "${PODS[@]}"; do
   echo "Applying $pod ..."
   kubectl apply -f "$pod"
-  echo "Sleeping 30 seconds to avoid app-hosting race..."
-  sleep 30
+  echo "Sleeping 60 seconds to avoid app-hosting race..."
+  sleep 60
 done
 
 echo "All pods applied."
