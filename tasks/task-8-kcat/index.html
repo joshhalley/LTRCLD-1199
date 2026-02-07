@@ -945,7 +945,7 @@
 <p><a href="../../">⬅️ Back to Main Menu</a></p>
 <p>kcat is a lightweight CLI tool to validate <strong>Kafka connectivity, topics, and message flow</strong> without needing to install a full Kafka client stack on the router.</p>
 <p><strong>Lab context</strong> 
-- Kafka Broker is running on <strong>Mgmt Ubuntu 1</strong> (<code>198.18.5.101:9092</code>)
+- Kafka Broker is running on <strong>Mgmt Ubuntu 1</strong> (<code>198.18.5.101:9092</code>)<br />
 - You will run kcat from the <strong>Swiss-Knife container</strong> on <strong>cat8Kv-task-1</strong></p>
 <hr />
 <h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
@@ -964,9 +964,9 @@
 </code></pre>
 <hr />
 <h2 id="step-2-validate-broker-connectivity-and-metadata">Step 2: Validate broker connectivity and metadata<a class="headerlink" href="#step-2-validate-broker-connectivity-and-metadata" title="Permanent link">&para;</a></h2>
-<p>This confirms: /
-- TCP reachability to the broker /
-- Kafka protocol handshake works /
+<p>This confirms:<br />
+- TCP reachability to the broker<br />
+- Kafka protocol handshake works<br />
 - You can retrieve cluster/topic metadata</p>
 <pre><code class="language-bash">kcat -b 198.18.5.101:9092 -L
 </code></pre>
@@ -980,8 +980,8 @@
 </code></pre>
 <hr />
 <h2 id="step-3-list-topics-read-only-check">Step 3: List topics (read-only check)<a class="headerlink" href="#step-3-list-topics-read-only-check" title="Permanent link">&para;</a></h2>
-<p>Use this when: /
-- An application reports “topic not found” /
+<p>Use this when:<br />
+- An application reports “topic not found”<br />
 - You want to validate you are pointing to the correct environment/broker</p>
 <pre><code class="language-bash">kcat -b 198.18.5.101:9092 -L | grep -i topic
 </code></pre>
@@ -1002,8 +1002,8 @@ What this demonstrates:</p>
 <pre><code class="language-bash">kcat -b 198.18.5.101:9092 -t netops-test -C
 </code></pre>
 <p><strong>Notes:</strong>
-- This command runs continuously. /
-- The message sent in the previous step can be seen here /
+- This command runs continuously.<br />
+- The message sent in the previous step can be seen here<br />
 - Press <strong>Ctrl+C</strong> to stop the consumer.</p>
 <hr />
 <h2 id="troubleshooting-quick-tips">Troubleshooting quick tips<a class="headerlink" href="#troubleshooting-quick-tips" title="Permanent link">&para;</a></h2>

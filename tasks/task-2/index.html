@@ -1262,7 +1262,7 @@
 <li><a href="#step-16-verify-deployment-on-the-router">Step 16: Verify Deployment on the Router</a></li>
 </ul>
 <hr />
-<p>This task focuses on deploying and managing a containerized application on a <strong>Cisco IOS XE Router</strong> router using <strong>Terraform (Infrastructure as Code)</strong>.</p>
+<p>This task focuses on deploying and managing a containerized application on a <strong>Cisco IOS XE Router</strong> using <strong>Terraform (Infrastructure as Code)</strong>.</p>
 <p>You will:</p>
 <ul>
 <li>Retrieve the container image from a registry</li>
@@ -1277,7 +1277,8 @@
 <h2 id="prerequisites-router-preparation">Prerequisites: Router Preparation<a class="headerlink" href="#prerequisites-router-preparation" title="Permanent link">&para;</a></h2>
 <p>Before starting <strong>Task-2</strong>, the C8000v router must be prepared for <strong>RESTCONF</strong> access and <strong>IOX App-Hosting</strong>.</p>
 <p>Terraform uses RESTCONF APIs to manage App-Hosting resources, and the lab container images are <strong>unsigned</strong>, so signature verification must be disabled.</p>
-<p>Run the following commands on the <strong>cat8Kv-task-2</strong> SSH 198.18.1.12:</p>
+<p>Run the following commands on the <strong>cat8Kv-task-2</strong><br />
+* SSH 198.18.1.12:</p>
 <pre><code class="language-ios">conf t
 !
 ip http secure-server
