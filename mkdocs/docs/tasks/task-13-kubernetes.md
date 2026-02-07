@@ -223,10 +223,11 @@ deployment.apps/cisco-virtual-kubelet-r1 created
 
 ## Step 4: Deploy hello-app Pods on Cat8Kv-task-1
 
-**File:** `04_vk_pod_hello-app-r1.yaml`
+* Create the below files one per pod
+**File:** `04_vk_pod_hello-app-r1-1.yaml`
 
 ```bash
-cat > 04_vk_pod_hello-app-r1.yaml << 'EOF'
+cat > 04_vk_pod_hello-app-r1-1.yaml << 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -245,6 +246,12 @@ spec:
         memory: "8Mi"
         cpu: "75m"
 ---
+EOF
+```
+**File:** `04_vk_pod_hello-app-r1-2.yaml`
+
+```bash
+cat > 04_vk_pod_hello-app-r1-2.yaml << 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -262,7 +269,12 @@ spec:
       limits:
         memory: "8Mi"
         cpu: "75m"
----
+EOF
+```
+**File:** `04_vk_pod_hello-app-r1-3.yaml`
+
+```bash
+cat > 04_vk_pod_hello-app-r1-3.yaml << 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -282,11 +294,45 @@ spec:
         cpu: "75m"
 EOF
 ```
+* You now have one Pod per file
+04_vk_pod_hello-app_r1_1.yaml
+04_vk_pod_hello-app_r1_2.yaml
+04_vk_pod_hello-app_r1_3.yaml
 
-Apply the pods:
-
+* Simple sequential script
 ```bash
-kubectl apply -f 04_vk_pod_hello-app-r1.yaml
+nano deploy_r1_apps.sh
+```
+* Paste this
+```bash
+#!/usr/bin/env bash
+
+set -e
+
+PODS=(
+  04_vk_pod_hello-app_r1_1.yaml
+  04_vk_pod_hello-app_r1_2.yaml
+  04_vk_pod_hello-app_r1_3.yaml
+)
+
+for pod in "${PODS[@]}"; do
+  echo "Applying $pod ..."
+  kubectl apply -f "$pod"
+  echo "Sleeping 30 seconds to avoid app-hosting race..."
+  sleep 30
+done
+
+echo "All pods applied."
+```
+
+* Make it executable:
+```bash
+chmod +x deploy_r1_apps.sh
+```
+
+* Apply the pods:
+```bash
+./deploy_r1_apps.sh
 ```
 
 **Expected Output:**
@@ -301,13 +347,11 @@ pod/iox-xe-hello-app-pod-r1-3 created
 
 ## Step 5: Deploy additional hello-app Pods on Cat8Kv-task-3
 
-Update the file `04_vk_pod_hello-app-r3.yaml` with additional Pods targeting **cat8kv-node-r3**:
+* Create the below files one per pod
+**File:** `04_vk_pod_hello-app-r3-1.yaml`
 
 ```bash
-nano 04_vk_pod_hello-app-r3.yaml
-```
-
-```yaml
+cat > 04_vk_pod_hello-app-r3-1.yaml << 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -326,6 +370,12 @@ spec:
         memory: "8Mi"
         cpu: "75m"
 ---
+EOF
+```
+**File:** `04_vk_pod_hello-app-r3-2.yaml`
+
+```bash
+cat > 04_vk_pod_hello-app-r3-2.yaml << 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -343,7 +393,12 @@ spec:
       limits:
         memory: "8Mi"
         cpu: "75m"
----
+EOF
+```
+**File:** `04_vk_pod_hello-app-r3-3.yaml`
+
+```bash
+cat > 04_vk_pod_hello-app-r3-3.yaml << 'EOF'
 apiVersion: v1
 kind: Pod
 metadata:
@@ -361,12 +416,47 @@ spec:
       limits:
         memory: "8Mi"
         cpu: "75m"
+EOF
+```
+* You now have one Pod per file
+04_vk_pod_hello-app_r3_1.yaml
+04_vk_pod_hello-app_r3_2.yaml
+04_vk_pod_hello-app_r3_3.yaml
+
+* Simple sequential script
+```bash
+nano deploy_r3apps.sh
+```
+* Paste this
+```bash
+#!/usr/bin/env bash
+
+set -e
+
+PODS=(
+  04_vk_pod_hello-app_r3_1.yaml
+  04_vk_pod_hello-app_r3_2.yaml
+  04_vk_pod_hello-app_r3_3.yaml
+)
+
+for pod in "${PODS[@]}"; do
+  echo "Applying $pod ..."
+  kubectl apply -f "$pod"
+  echo "Sleeping 30 seconds to avoid app-hosting race..."
+  sleep 30
+done
+
+echo "All pods applied."
 ```
 
-Apply the pods:
-
+* Make it executable:
 ```bash
-kubectl apply -f 04_vk_pod_hello-app-r3.yaml
+chmod +x deploy_r3_apps.sh
+```
+
+* Apply the pods:
+```bash
+./deploy_r3_apps.sh
 ```
 
 **Expected Output:**
