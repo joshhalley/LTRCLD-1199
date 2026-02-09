@@ -1581,7 +1581,6 @@ EOF
 </code></pre>
 <p>Paste:</p>
 <pre><code class="language-bash">#!/usr/bin/env bash
-
 set -e
 
 PODS=(
@@ -1596,21 +1595,47 @@ FILES=(
   04_vk_pod_hello-app-r1-3.yaml
 )
 
+spinner() {
+  local pid=$1
+  local pod_name=$2
+  local frames='(._.) (-_-) (o_o) (O_O) (^-^)'
+  local i=0
+
+  while kill -0 &quot;$pid&quot; 2&gt;/dev/null; do
+    i=$(( (i + 1) % 5 ))
+    frame=$(echo &quot;$frames&quot; | awk &quot;{print \$$((i+1))}&quot;)
+    printf '\r%s  Waiting for %s to be Ready...' &quot;$frame&quot; &quot;$pod_name&quot;
+    sleep 0.3
+  done
+
+  # Clear line then print final message
+  printf '\r%-80s\r' &quot;&quot;
+  printf '[OK] %s is Ready.\n' &quot;$pod_name&quot;
+}
+
 for i in &quot;${!PODS[@]}&quot;; do
   echo &quot;Applying ${FILES[$i]} ...&quot;
   kubectl apply -f &quot;${FILES[$i]}&quot;
 
-  echo &quot;Waiting for ${PODS[$i]} to be Ready (max 6 min)...&quot;
+  echo &quot;Waiting for ${PODS[$i]} to be Ready (max 5 min)...&quot;
+
   kubectl wait \
     --for=condition=Ready \
     pod/${PODS[$i]} \
-    --timeout=360s
+    --timeout=300s &amp;
+  WAIT_PID=$!
 
-  echo &quot;Pod ${PODS[$i]} is Ready. Sleeping 10s...&quot;
+  spinner &quot;$WAIT_PID&quot; &quot;${PODS[$i]}&quot;
+
+  # Propagate kubectl wait exit code (timeout/failure will exit due to set -e)
+  wait &quot;$WAIT_PID&quot;
+
+  echo &quot;Sleeping 10s before next pod...&quot;
   sleep 10
 done
 
 echo &quot;All pods deployed successfully.&quot;
+
 </code></pre>
 <p>Make it executable:</p>
 <pre><code class="language-bash">chmod +x deploy_r1_apps.sh
@@ -1619,24 +1644,27 @@ echo &quot;All pods deployed successfully.&quot;
 <pre><code class="language-bash">./deploy_r1_apps.sh
 </code></pre>
 <p><strong>Expected Output:</strong></p>
-<pre><code class="language-text">root@ubuntu-lab:~# ./deploy_r1_apps.sh 
+<pre><code class="language-text">dcloud@ubuntu-lab:~$ ./deploy_r1_apps.sh
 Applying 04_vk_pod_hello-app-r1-1.yaml ...
 pod/iox-xe-hello-app-pod-r1-1 created
-Waiting for iox-xe-hello-app-pod-r1-1 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r1-1 condition met
-Pod iox-xe-hello-app-pod-r1-1 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r1-1 to be Ready (max 5 min)...
+(-_-)  Waiting for iox-xe-hello-app-pod-r1-1 to be Ready...pod/iox-xe-hello-app-pod-r1-1 condition met
+[OK] iox-xe-hello-app-pod-r1-1 is Ready.                                        
+Sleeping 10s before next pod...
 Applying 04_vk_pod_hello-app-r1-2.yaml ...
 pod/iox-xe-hello-app-pod-r1-2 created
-Waiting for iox-xe-hello-app-pod-r1-2 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r1-2 condition met
-Pod iox-xe-hello-app-pod-r1-2 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r1-2 to be Ready (max 5 min)...
+(._.)  Waiting for iox-xe-hello-app-pod-r1-2 to be Ready...pod/iox-xe-hello-app-pod-r1-2 condition met
+[OK] iox-xe-hello-app-pod-r1-2 is Ready.                                        
+Sleeping 10s before next pod...
 Applying 04_vk_pod_hello-app-r1-3.yaml ...
 pod/iox-xe-hello-app-pod-r1-3 created
-Waiting for iox-xe-hello-app-pod-r1-3 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r1-3 condition met
-Pod iox-xe-hello-app-pod-r1-3 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r1-3 to be Ready (max 5 min)...
+(-_-)  Waiting for iox-xe-hello-app-pod-r1-3 to be Ready...pod/iox-xe-hello-app-pod-r1-3 condition met
+[OK] iox-xe-hello-app-pod-r1-3 is Ready.                                        
+Sleeping 10s before next pod...
 All pods deployed successfully.
-root@ubuntu-lab:~# 
+dcloud@ubuntu-lab:~$ 
 </code></pre>
 <hr />
 <h2 id="step-5-deploy-additional-hello-app-pods-on-cat8kv-task-3">Step 5: Deploy additional hello-app Pods on Cat8Kv-task-3<a class="headerlink" href="#step-5-deploy-additional-hello-app-pods-on-cat8kv-task-3" title="Permanent link">&para;</a></h2>
@@ -1716,7 +1744,6 @@ EOF
 </code></pre>
 <p>Paste:</p>
 <pre><code class="language-bash">#!/usr/bin/env bash
-
 set -e
 
 PODS=(
@@ -1731,21 +1758,47 @@ FILES=(
   04_vk_pod_hello-app-r3-3.yaml
 )
 
+spinner() {
+  local pid=$1
+  local pod_name=$2
+  local frames='(._.) (-_-) (o_o) (O_O) (^-^)'
+  local i=0
+
+  while kill -0 &quot;$pid&quot; 2&gt;/dev/null; do
+    i=$(( (i + 1) % 5 ))
+    frame=$(echo &quot;$frames&quot; | awk &quot;{print \$$((i+1))}&quot;)
+    printf '\r%s  Waiting for %s to be Ready...' &quot;$frame&quot; &quot;$pod_name&quot;
+    sleep 0.3
+  done
+
+  # Clear line then print final message
+  printf '\r%-80s\r' &quot;&quot;
+  printf '[OK] %s is Ready.\n' &quot;$pod_name&quot;
+}
+
 for i in &quot;${!PODS[@]}&quot;; do
   echo &quot;Applying ${FILES[$i]} ...&quot;
   kubectl apply -f &quot;${FILES[$i]}&quot;
 
-  echo &quot;Waiting for ${PODS[$i]} to be Ready (max 6 min)...&quot;
+  echo &quot;Waiting for ${PODS[$i]} to be Ready (max 5 min)...&quot;
+
   kubectl wait \
     --for=condition=Ready \
     pod/${PODS[$i]} \
-    --timeout=360s
+    --timeout=300s &amp;
+  WAIT_PID=$!
 
-  echo &quot;Pod ${PODS[$i]} is Ready. Sleeping 10s...&quot;
+  spinner &quot;$WAIT_PID&quot; &quot;${PODS[$i]}&quot;
+
+  # Propagate kubectl wait exit code (timeout/failure will exit due to set -e)
+  wait &quot;$WAIT_PID&quot;
+
+  echo &quot;Sleeping 10s before next pod...&quot;
   sleep 10
 done
 
 echo &quot;All pods deployed successfully.&quot;
+
 </code></pre>
 <p>Make it executable:</p>
 <pre><code class="language-bash">chmod +x deploy_r3_apps.sh
@@ -1754,24 +1807,26 @@ echo &quot;All pods deployed successfully.&quot;
 <pre><code class="language-bash">./deploy_r3_apps.sh
 </code></pre>
 <p><strong>Expected Output:</strong></p>
-<pre><code class="language-text">root@ubuntu-lab:~# ./deploy_r3_apps.sh 
+<pre><code class="language-text">dcloud@ubuntu-lab:~$ ./deploy_r3_apps.sh
 Applying 04_vk_pod_hello-app-r3-1.yaml ...
 pod/iox-xe-hello-app-pod-r3-1 created
-Waiting for iox-xe-hello-app-pod-r3-1 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r3-1 condition met
-Pod iox-xe-hello-app-pod-r3-1 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r3-1 to be Ready (max 5 min)...
+(-_-)  Waiting for iox-xe-hello-app-pod-r3-1 to be Ready...pod/iox-xe-hello-app-pod-r3-1 condition met
+[OK] iox-xe-hello-app-pod-r3-1 is Ready.                                        
+Sleeping 10s before next pod...
 Applying 04_vk_pod_hello-app-r3-2.yaml ...
 pod/iox-xe-hello-app-pod-r3-2 created
-Waiting for iox-xe-hello-app-pod-r3-2 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r3-2 condition met
-Pod iox-xe-hello-app-pod-r3-2 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r3-2 to be Ready (max 5 min)...
+(^-^)  Waiting for iox-xe-hello-app-pod-r3-2 to be Ready...pod/iox-xe-hello-app-pod-r3-2 condition met
+[OK] iox-xe-hello-app-pod-r3-2 is Ready.                                        
+Sleeping 10s before next pod...
 Applying 04_vk_pod_hello-app-r3-3.yaml ...
 pod/iox-xe-hello-app-pod-r3-3 created
-Waiting for iox-xe-hello-app-pod-r3-3 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r3-3 condition met
-Pod iox-xe-hello-app-pod-r3-3 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r3-3 to be Ready (max 5 min)...
+(-_-)  Waiting for iox-xe-hello-app-pod-r3-3 to be Ready...pod/iox-xe-hello-app-pod-r3-3 condition met
+[OK] iox-xe-hello-app-pod-r3-3 is Ready.                                        
+Sleeping 10s before next pod...
 All pods deployed successfully.
-root@ubuntu-lab:~# H
 </code></pre>
 <hr />
 <h2 id="step-6-monitor-deployments-and-pods-using-k9s">Step 6: Monitor Deployments and Pods using k9s<a class="headerlink" href="#step-6-monitor-deployments-and-pods-using-k9s" title="Permanent link">&para;</a></h2>
