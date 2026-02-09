@@ -320,7 +320,6 @@ Paste:
 
 ```bash
 #!/usr/bin/env bash
-
 set -e
 
 PODS=(
@@ -335,21 +334,47 @@ FILES=(
   04_vk_pod_hello-app-r1-3.yaml
 )
 
+spinner() {
+  local pid=$1
+  local pod_name=$2
+  local frames='(._.) (-_-) (o_o) (O_O) (^-^)'
+  local i=0
+
+  while kill -0 "$pid" 2>/dev/null; do
+    i=$(( (i + 1) % 5 ))
+    frame=$(echo "$frames" | awk "{print \$$((i+1))}")
+    printf '\r%s  Waiting for %s to be Ready...' "$frame" "$pod_name"
+    sleep 0.3
+  done
+
+  # Clear line then print final message
+  printf '\r%-80s\r' ""
+  printf '[OK] %s is Ready.\n' "$pod_name"
+}
+
 for i in "${!PODS[@]}"; do
   echo "Applying ${FILES[$i]} ..."
   kubectl apply -f "${FILES[$i]}"
 
-  echo "Waiting for ${PODS[$i]} to be Ready (max 6 min)..."
+  echo "Waiting for ${PODS[$i]} to be Ready (max 5 min)..."
+
   kubectl wait \
     --for=condition=Ready \
     pod/${PODS[$i]} \
-    --timeout=360s
+    --timeout=300s &
+  WAIT_PID=$!
 
-  echo "Pod ${PODS[$i]} is Ready. Sleeping 10s..."
+  spinner "$WAIT_PID" "${PODS[$i]}"
+
+  # Propagate kubectl wait exit code (timeout/failure will exit due to set -e)
+  wait "$WAIT_PID"
+
+  echo "Sleeping 10s before next pod..."
   sleep 10
 done
 
 echo "All pods deployed successfully."
+
 ```
 
 Make it executable:
@@ -367,24 +392,27 @@ Apply the pods:
 **Expected Output:**
 
 ```text
-root@ubuntu-lab:~# ./deploy_r1_apps.sh 
+dcloud@ubuntu-lab:~$ ./deploy_r1_apps.sh
 Applying 04_vk_pod_hello-app-r1-1.yaml ...
 pod/iox-xe-hello-app-pod-r1-1 created
-Waiting for iox-xe-hello-app-pod-r1-1 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r1-1 condition met
-Pod iox-xe-hello-app-pod-r1-1 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r1-1 to be Ready (max 5 min)...
+(-_-)  Waiting for iox-xe-hello-app-pod-r1-1 to be Ready...pod/iox-xe-hello-app-pod-r1-1 condition met
+[OK] iox-xe-hello-app-pod-r1-1 is Ready.                                        
+Sleeping 10s before next pod...
 Applying 04_vk_pod_hello-app-r1-2.yaml ...
 pod/iox-xe-hello-app-pod-r1-2 created
-Waiting for iox-xe-hello-app-pod-r1-2 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r1-2 condition met
-Pod iox-xe-hello-app-pod-r1-2 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r1-2 to be Ready (max 5 min)...
+(._.)  Waiting for iox-xe-hello-app-pod-r1-2 to be Ready...pod/iox-xe-hello-app-pod-r1-2 condition met
+[OK] iox-xe-hello-app-pod-r1-2 is Ready.                                        
+Sleeping 10s before next pod...
 Applying 04_vk_pod_hello-app-r1-3.yaml ...
 pod/iox-xe-hello-app-pod-r1-3 created
-Waiting for iox-xe-hello-app-pod-r1-3 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r1-3 condition met
-Pod iox-xe-hello-app-pod-r1-3 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r1-3 to be Ready (max 5 min)...
+(-_-)  Waiting for iox-xe-hello-app-pod-r1-3 to be Ready...pod/iox-xe-hello-app-pod-r1-3 condition met
+[OK] iox-xe-hello-app-pod-r1-3 is Ready.                                        
+Sleeping 10s before next pod...
 All pods deployed successfully.
-root@ubuntu-lab:~# 
+dcloud@ubuntu-lab:~$ 
 ```
 
 ---
@@ -483,7 +511,6 @@ Paste:
 
 ```bash
 #!/usr/bin/env bash
-
 set -e
 
 PODS=(
@@ -498,21 +525,47 @@ FILES=(
   04_vk_pod_hello-app-r3-3.yaml
 )
 
+spinner() {
+  local pid=$1
+  local pod_name=$2
+  local frames='(._.) (-_-) (o_o) (O_O) (^-^)'
+  local i=0
+
+  while kill -0 "$pid" 2>/dev/null; do
+    i=$(( (i + 1) % 5 ))
+    frame=$(echo "$frames" | awk "{print \$$((i+1))}")
+    printf '\r%s  Waiting for %s to be Ready...' "$frame" "$pod_name"
+    sleep 0.3
+  done
+
+  # Clear line then print final message
+  printf '\r%-80s\r' ""
+  printf '[OK] %s is Ready.\n' "$pod_name"
+}
+
 for i in "${!PODS[@]}"; do
   echo "Applying ${FILES[$i]} ..."
   kubectl apply -f "${FILES[$i]}"
 
-  echo "Waiting for ${PODS[$i]} to be Ready (max 6 min)..."
+  echo "Waiting for ${PODS[$i]} to be Ready (max 5 min)..."
+
   kubectl wait \
     --for=condition=Ready \
     pod/${PODS[$i]} \
-    --timeout=360s
+    --timeout=300s &
+  WAIT_PID=$!
 
-  echo "Pod ${PODS[$i]} is Ready. Sleeping 10s..."
+  spinner "$WAIT_PID" "${PODS[$i]}"
+
+  # Propagate kubectl wait exit code (timeout/failure will exit due to set -e)
+  wait "$WAIT_PID"
+
+  echo "Sleeping 10s before next pod..."
   sleep 10
 done
 
 echo "All pods deployed successfully."
+
 ```
 
 Make it executable:
@@ -530,24 +583,26 @@ Apply the pods:
 **Expected Output:**
 
 ```text
-root@ubuntu-lab:~# ./deploy_r3_apps.sh 
+dcloud@ubuntu-lab:~$ ./deploy_r3_apps.sh
 Applying 04_vk_pod_hello-app-r3-1.yaml ...
 pod/iox-xe-hello-app-pod-r3-1 created
-Waiting for iox-xe-hello-app-pod-r3-1 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r3-1 condition met
-Pod iox-xe-hello-app-pod-r3-1 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r3-1 to be Ready (max 5 min)...
+(-_-)  Waiting for iox-xe-hello-app-pod-r3-1 to be Ready...pod/iox-xe-hello-app-pod-r3-1 condition met
+[OK] iox-xe-hello-app-pod-r3-1 is Ready.                                        
+Sleeping 10s before next pod...
 Applying 04_vk_pod_hello-app-r3-2.yaml ...
 pod/iox-xe-hello-app-pod-r3-2 created
-Waiting for iox-xe-hello-app-pod-r3-2 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r3-2 condition met
-Pod iox-xe-hello-app-pod-r3-2 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r3-2 to be Ready (max 5 min)...
+(^-^)  Waiting for iox-xe-hello-app-pod-r3-2 to be Ready...pod/iox-xe-hello-app-pod-r3-2 condition met
+[OK] iox-xe-hello-app-pod-r3-2 is Ready.                                        
+Sleeping 10s before next pod...
 Applying 04_vk_pod_hello-app-r3-3.yaml ...
 pod/iox-xe-hello-app-pod-r3-3 created
-Waiting for iox-xe-hello-app-pod-r3-3 to be Ready (max 6 min)...
-pod/iox-xe-hello-app-pod-r3-3 condition met
-Pod iox-xe-hello-app-pod-r3-3 is Ready. Sleeping 10s...
+Waiting for iox-xe-hello-app-pod-r3-3 to be Ready (max 5 min)...
+(-_-)  Waiting for iox-xe-hello-app-pod-r3-3 to be Ready...pod/iox-xe-hello-app-pod-r3-3 condition met
+[OK] iox-xe-hello-app-pod-r3-3 is Ready.                                        
+Sleeping 10s before next pod...
 All pods deployed successfully.
-root@ubuntu-lab:~# H
 ```
 
 ---

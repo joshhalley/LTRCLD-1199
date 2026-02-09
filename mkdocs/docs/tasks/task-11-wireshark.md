@@ -77,7 +77,7 @@ getcap /usr/bin/dumpcap
 Expected output:
 
 ```bash
-/usr/bin/dumpcap = cap_net_admin,cap_net_raw+eip
+/usr/bin/dumpcap = cap_net_admin,cap_net_raw=eip
 ```
 
 ---

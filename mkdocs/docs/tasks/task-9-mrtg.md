@@ -78,7 +78,7 @@ snmpwalk -v2c -c public 198.18.8.13 sysDescr.0
 ```bash
 vi /opt/mrtg/mrtg.cfg
 ```
-
+press I
 ```cfg
 ### ===== Global =====
 WorkDir: /opt/mrtg/html
@@ -89,7 +89,7 @@ Include: /opt/mrtg/routers/r1.cfg
 Include: /opt/mrtg/routers/r2.cfg
 Include: /opt/mrtg/routers/r3.cfg
 ```
-
+esc :wq! to save
 ---
 
 ## Step 4: Router MRTG Targets
@@ -110,7 +110,7 @@ Naming rules used below:
 ```bash
 vi /opt/mrtg/routers/r1.cfg
 ```
-
+press I
 ```cfg
 ############################
 ### Cat8Kv-Task-1
@@ -138,7 +138,7 @@ MaxBytes[Cat8Kv_Task1_MemPool1]: 4294967295
 Title[Cat8Kv_Task1_MemPool1]: Cat8Kv-Task-1 Memory Pool 1
 PageTop[Cat8Kv_Task1_MemPool1]: <h1>Cat8Kv-Task-1 Memory Pool 1</h1>
 ```
-
+esc :wq! to save
 ---
 
 ### 4.2 Task-2 Targets: `/opt/mrtg/routers/r2.cfg` (IP: `198.18.7.12`)
@@ -146,7 +146,7 @@ PageTop[Cat8Kv_Task1_MemPool1]: <h1>Cat8Kv-Task-1 Memory Pool 1</h1>
 ```bash
 vi /opt/mrtg/routers/r2.cfg
 ```
-
+press I
 ```cfg
 ############################
 ### Cat8Kv-Task-2
@@ -174,7 +174,7 @@ MaxBytes[Cat8Kv_Task2_MemPool1]: 4294967295
 Title[Cat8Kv_Task2_MemPool1]: Cat8Kv-Task-2 Memory Pool 1
 PageTop[Cat8Kv_Task2_MemPool1]: <h1>Cat8Kv-Task-2 Memory Pool 1</h1>
 ```
-
+esc :wq! to save
 ---
 
 ### 4.3 Task-3 Targets: `/opt/mrtg/routers/r3.cfg` (IP: `198.18.8.13`)
@@ -182,7 +182,7 @@ PageTop[Cat8Kv_Task2_MemPool1]: <h1>Cat8Kv-Task-2 Memory Pool 1</h1>
 ```bash
 vi /opt/mrtg/routers/r3.cfg
 ```
-
+press I
 ```cfg
 ############################
 ### Cat8Kv-Task-3
@@ -210,7 +210,7 @@ MaxBytes[Cat8Kv_Task3_MemPool1]: 4294967295
 Title[Cat8Kv_Task3_MemPool1]: Cat8Kv-Task-3 Memory Pool 1
 PageTop[Cat8Kv_Task3_MemPool1]: <h1>Cat8Kv-Task-3 Memory Pool 1</h1>
 ```
-
+esc :wq! to save
 ---
 
 ## Step 5: Initialize MRTG and Generate Graphs
